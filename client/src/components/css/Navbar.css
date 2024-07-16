@@ -1,0 +1,121 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #e0f7e9;
+  padding: 10px 20px;
+  position: relative;
+}
+
+.menu-icon {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.menu-icon .bar {
+  width: 35px;
+  height: 5px;
+  background-color: black;
+  margin: 6px 0;
+}
+
+.navbar-logo {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 24px;
+  font-weight: bold;
+  flex-grow: 1;
+}
+
+.navbar-logo a {
+  text-decoration: none;
+  color: #000;
+}
+
+.navbar-links {
+  display: none;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.navbar-links.open {
+  display: block;
+  position: absolute;
+  top: 60px;
+  left: 0;
+  background-color: #fff;
+  width: 200px;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-links li {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.navbar-links li a {
+  text-decoration: none;
+  color: #333;
+}
+
+
+.navbar-icons {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-icon {
+  margin-right: 24px; /* Adjust the margin value as needed */
+}
+
+.navbar-icon:last-child {
+  margin-right: 0; /* Remove margin from the last icon */
+}
+
+.navbar-icon svg, .navbar-link svg {
+  width: 24px;
+  height: 24px;
+}
+
+.navbar-link {
+  text-decoration: none;
+  color: #000;
+  font-size: 18px;
+}
+
+
+/* Media use */
+@media (max-width: 768px) {
+  .menu-icon {
+    display: block;
+  }
+
+  .navbar-links {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 60px;
+    left: 20px;
+    background-color: #e0f7e9;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 200px;
+  }
+
+  .navbar-links.open {
+    display: flex;
+  }
+
+  .navbar-links li {
+    margin: 10px 0;
+  }
+
+  .navbar-icons {
+    display: none;
+  }
+}
