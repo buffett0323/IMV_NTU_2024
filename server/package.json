@@ -3,10 +3,11 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Buffett",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -15,5 +16,5 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.5.1"
   },
-  "description": ""
+  "description": "node app that connect to mongo db"
 }
