@@ -7,11 +7,12 @@ const Signup: React.FC = () => {
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log("Submitting signup form");
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/signup', { email, password });
-      console.log(response.data);
+      const response = await axios.post('http://localhost:8000/api/auth/signup', { email, password });
+      console.log("Response received:", response.data);
     } catch (error) {
-      console.error(error);
+      console.error("Error occurred:", error);
     }
   };
 
