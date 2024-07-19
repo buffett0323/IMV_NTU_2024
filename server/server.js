@@ -6,6 +6,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const authRoutes = require('./routes/auth');
 const app = express();
+const PORT = 8000;
 
 // Construct the MongoDB URI using the password from the text file
 const password = fs.readFileSync(path.join(__dirname, 'password.txt'), 'utf8').trim();
@@ -30,6 +31,6 @@ async function connect() {
 
 connect();
 
-app.listen(8000, () => {
-  console.log('Server started on port 8000.');
+app.listen(PORT, () => {
+  console.log(`Server started on port ${PORT}.`);
 });

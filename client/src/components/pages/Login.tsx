@@ -7,11 +7,14 @@ const Login: React.FC = () => {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log("Submitting login form");
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/login', { email, password });
-      console.log(response.data);
+      const response = await axios.post('http://localhost:8000/api/auth/login', { email, password });
+      console.log("Response received:", response.data);
+      // Handle successful login (e.g., redirect or show success message)
     } catch (error) {
-      console.error(error);
+      console.error("Error occurred:", error);
+      // Handle login error (e.g., show error message)
     }
   };
 
