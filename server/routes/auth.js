@@ -37,52 +37,33 @@ router.get('/callback', async (req, res) => {
 
     const userProfile = profileResponse.data;
 
-    // Send user profile information to your backend
-    // Example: Save the user profile to the database or create a session
-    // await saveUserProfileToDatabase(userProfile);
+    // Save user profile to MongoDB
+    const existingUser = await User.findOne({ lineUserId: userProfile.userId });
+    if (existingUser) {
+      // Update existing user
+      existingUser.displayName = userProfile.displayName;
+      existingUser.pictureUrl = userProfile.pictureUrl;
+      existingUser.statusMessage = userProfile.statusMessage;
+      await existingUser.save();
+      console.log("Find existing user:", existingUser);
+    } else {
+      // Create new user
+      const newUser = new User({
+        lineUserId: userProfile.userId,
+        displayName: userProfile.displayName,
+        pictureUrl: userProfile.pictureUrl,
+        statusMessage: userProfile.statusMessage,
+      });
+      await newUser.save();
+      console.log("Create new user:", newUser);
+    }
 
-    res.json(userProfile); // or redirect to a success page
+    // Redirect to the frontend with user information or token
+    console.log("Successfully login!");
+    res.redirect(`http://localhost:3000/?userId=${userProfile.userId}&displayName=${userProfile.displayName}`);
   } catch (error) {
     console.error('Error exchanging code for token or fetching profile:', error.response ? error.response.data : error.message);
     res.status(500).send('Authentication failed');
-  }
-});
-
-
-// Signup page
-router.post('/signup', async (req, res) => {
-  const { email, password } = req.body;
-  console.log("Signup request received:", { email, password });
-
-  try {
-    const newUser = new User({ email, password });
-    await newUser.save();
-    console.log("User created successfully:", newUser);
-    res.status(201).send({ message: 'User created successfully' });
-  } catch (error) {
-    console.error("Error creating user:", error); 
-    res.status(400).send({ error: 'User creation failed', details: error });
-  }
-});
-
-
-// Login route
-router.post('/login', async (req, res) => {
-  const { email, password } = req.body;
-  console.log("Login request received:", { email, password });
-
-  try {
-    const user = await User.findOne({ email, password });
-    if (user) {
-      console.log("User found:", user);
-      res.status(200).send({ message: 'Login successful' });
-    } else {
-      console.log("User not found or incorrect password");
-      res.status(400).send({ error: 'Invalid email or password' });
-    }
-  } catch (error) {
-    console.error("Error during login:", error); 
-    res.status(500).send({ error: 'Internal server error', details: error });
   }
 });
 

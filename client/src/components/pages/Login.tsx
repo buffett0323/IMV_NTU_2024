@@ -1,40 +1,26 @@
-import React, { useState } from 'react';
-import { LineLogin } from 'reactjs-line-login';
-import 'reactjs-line-login/dist/index.css';
-
-interface Payload {
-  sub: string;
-  name: string;
-  picture: string;
-  email?: string;
-}
+import React from 'react';
+import '../css/Login.css';
+import loginButtonImage from '../img/btn_login_base.png';
 
 const LoginPage: React.FC = () => {
-  const [payload, setPayload] = useState<Payload | null>(null);
-  const [idToken, setIdToken] = useState<string | null>(null);
+  const handleLogin = () => {
+    const responseType = 'code';
+    const clientId = '2005899680';
+    const redirectUri = 'http://localhost:8000/api/auth/callback'; //encodeURIComponent('http://localhost:8000/api/auth/callback');
+    const state = '123456789';
+    const scope = 'profile%20openid%20email';
+  
+    const lineLoginUrl = `https://access.line.me/oauth2/v2.1/authorize?response_type=${responseType}&client_id=${clientId}&redirect_uri=${redirectUri}&state=${state}&scope=${scope}`;
+    window.location.href = lineLoginUrl;
+  };
 
   return (
     <div>
-      <h1>Login with Line</h1>
-      <LineLogin
-        clientID={process.env.REACT_APP_CLIENT_ID || ''}
-        clientSecret={process.env.REACT_APP_CLIENT_SECRET || ''}
-        state={process.env.REACT_APP_STATE || ''}
-        nonce={process.env.REACT_APP_NONCE || ''}
-        redirectURI={process.env.REACT_APP_REDIRECT_URI || ''}
-        scope={process.env.REACT_APP_SCOPE || ''}
-        setPayload={setPayload}
-        setIdToken={setIdToken}
-      />
-      {payload && idToken ? (
-        <div>
-          <h2>Welcome, {payload.name}</h2>
-          <img src={payload.picture} alt="Profile" />
-          <p>ID Token: {idToken}</p>
-        </div>
-      ) : (
-        <p>Please log in with Line</p>
-      )}
+      <h1>Login</h1>
+      <h3>Login with Line</h3>
+      <button onClick={handleLogin}>
+        <img src={loginButtonImage} alt="Login with Line" width="150" />
+      </button>
     </div>
   );
 };
