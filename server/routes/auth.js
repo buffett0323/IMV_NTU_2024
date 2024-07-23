@@ -60,7 +60,7 @@ router.get('/callback', async (req, res) => {
 
     // Redirect to the frontend with user information or token
     console.log("Successfully login!");
-    res.redirect(`http://localhost:3000/?userId=${userProfile.userId}&displayName=${userProfile.displayName}`);
+    res.redirect(`http://localhost:3000/home?userId=${userProfile.userId}&displayName=${userProfile.displayName}&pictureUrl=${userProfile.pictureUrl}&statusMessage=${userProfile.statusMessage}`);
   } catch (error) {
     console.error('Error exchanging code for token or fetching profile:', error.response ? error.response.data : error.message);
     res.status(500).send('Authentication failed');

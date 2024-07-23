@@ -1,7 +1,7 @@
 import React from 'react';
 import './css/AboutUs.css';
 
-const AboutUs: React.FC = () => {
+const Home: React.FC = () => {
   return (
     <section className="about-us">
       <h2>About Us</h2>
@@ -16,4 +16,4 @@ const AboutUs: React.FC = () => {
   );
 }
 
-export default AboutUs;
+export default Home;
