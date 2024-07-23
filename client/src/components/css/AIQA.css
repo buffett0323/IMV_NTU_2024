@@ -1,0 +1,64 @@
+.aiqa {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    max-width: 1000px;
+    margin: auto;
+  }
+  
+  .aiqa h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .aiqa p {
+    margin-bottom: 20px;
+  }
+  
+  .chat-window {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    max-height: 300px;
+    overflow-y: auto;
+    margin-bottom: 20px;
+  }
+  
+  .chat-message {
+    margin: 10px 0;
+  }
+  
+  .chat-message.user {
+    text-align: right;
+  }
+  
+  .chat-message.bot {
+    text-align: left;
+  }
+  
+  .chat-form {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .chat-form input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .chat-form button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .chat-form button:hover {
+    background-color: #0056b3;
+  }
+  

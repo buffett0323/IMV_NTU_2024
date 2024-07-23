@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useUser } from './pages/UserContext'; // Adjust the path as needed
+import { useUser } from './pages/UserContext';
 import './css/Member.css';
 
 const Member: React.FC = () => {

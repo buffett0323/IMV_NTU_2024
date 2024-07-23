@@ -7,6 +7,31 @@
   position: relative;
 }
 
+.circle-border {
+  border: 1px solid black;  /* Add a black border */
+  border-radius: 50%;  /* Make the outer div circular */
+  padding: 0.5px;  /* Adjust the padding to create the border thickness */
+  display: inline-flex;  /* Center the inner content */
+  justify-content: center;
+  align-items: center;
+}
+
+.circle {
+  border-radius: 100%;
+  height: 30px;
+  width: 30px;  /* Ensure the width is set for the outer circle */
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.circle img {
+  height: 100%;  /* Make the image cover the inner circle */
+  width: auto;
+  object-fit: cover;
+}
+
 .menu-icon {
   cursor: pointer;
   display: flex;
@@ -85,6 +110,17 @@
   text-decoration: none;
   color: #000;
   font-size: 18px;
+}
+
+.visitor-counter {
+  background-color: rgb(255, 248, 248);
+  color: rgb(12, 97, 87);
+  /* border-radius: 50%; */
+  /* padding: 0.2em 0.5em; */
+  /* margin-left: 0.5em; */
+  font-size: 1em;
+  display: inline-block;
+  /* vertical-align: middle; */
 }
 
 

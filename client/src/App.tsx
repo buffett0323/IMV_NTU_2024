@@ -1,6 +1,4 @@
 import React from 'react';
-// import React, { useEffect, useState } from 'react';
-// import { useLocation } from 'react-router-dom';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
 import Navbar from './components/Navbar';
@@ -15,6 +13,7 @@ import Member from './components/Member';
 import Footer from './components/Footer';
 import Login from './components/pages/Login';
 import Signup from './components/pages/Signup';
+import AIQA from './components/AIQA';
 import { UserProvider } from './components/pages/UserContext';
 
 const App: React.FC = () => {
@@ -25,7 +24,7 @@ const App: React.FC = () => {
           <Navbar />
           <Routes>
             <Route path="/" element={<AboutUs />} />
-            <Route path="/home" element={<Home />} /> { /* Handle Login */ }
+            <Route path="/home" element={<Home />} /> {/* Handle Login */}
             <Route path="/market" element={<Market />} />
             <Route path="/fertilizer" element={<Fertilizer />} />
             <Route path="/info" element={<Info />} />
@@ -33,8 +32,8 @@ const App: React.FC = () => {
             <Route path="/cart" element={<Cart />} />
             <Route path="/member" element={<Member />} /> {/* Main Page */}
             <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />    
-            <Route />     
+            <Route path="/signup" element={<Signup />} />
+            <Route path='/aiqa' element={<AIQA/>} />
           </Routes>
           <Footer />
         </div>

@@ -1,12 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { ShoppingCart, CircleUser, AlignJustify } from 'lucide-react';
+import { ShoppingCart, CircleUser, AlignJustify, ShieldQuestion } from 'lucide-react';
+import { useUser } from './pages/UserContext';
 import './css/Navbar.css';
-const IPCC_Weblink = 'https://www.ipcc.ch/';
+
+const IPCC_Weblink = 'https://www.ipcc.ch/'; // The website link for IPCC
 
 const Navbar: React.FC = () => {
+  // const [visitorCount, setVisitorCount] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLUListElement>(null);
+  const { user } = useUser();
 
   const toggleMenu = () => {
     setMenuOpen((prev) => !prev);
@@ -30,6 +34,16 @@ const Navbar: React.FC = () => {
     };
   }, [menuOpen]);
 
+
+  // useEffect(() => {
+  //   // Simulate fetching the visitor count from an API
+  //   const fetchVisitorCount = () => {
+  //     setVisitorCount(0); 
+  //   };
+
+  //   fetchVisitorCount();
+  // }, []);
+
   return (
     <nav className="navbar">
       <div className="menu-icon" onClick={toggleMenu}>
@@ -50,12 +64,25 @@ const Navbar: React.FC = () => {
         )}
       </ul>
       <div className="navbar-icons">
+        <Link to="/aiqa" className="navbar-icon">
+          {/* <span className="visitor-counter">{visitorCount}</span> */}
+          <ShieldQuestion />
+        </Link>
         <Link to="/cart" className="navbar-icon">
           <ShoppingCart />
         </Link>
-        <Link to="/member" className="navbar-link">
-          <CircleUser />
-        </Link>
+        {user ? (
+          <div className="circle-border">
+            <Link to="/member" className="circle">
+              <img src={user.pictureUrl} alt="User profile" className="navbar-icon" width="30" height="auto" />
+            </Link>
+          </div>
+        ) : (
+          <Link to="/member" className="navbar-link">
+            <CircleUser />
+          </Link>
+        )
+        }
       </div>
     </nav>
   );
