@@ -7,7 +7,6 @@ import './css/Navbar.css';
 const IPCC_Weblink = 'https://www.ipcc.ch/'; // The website link for IPCC
 
 const Navbar: React.FC = () => {
-  // const [visitorCount, setVisitorCount] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLUListElement>(null);
   const { user } = useUser();
@@ -34,16 +33,6 @@ const Navbar: React.FC = () => {
     };
   }, [menuOpen]);
 
-
-  // useEffect(() => {
-  //   // Simulate fetching the visitor count from an API
-  //   const fetchVisitorCount = () => {
-  //     setVisitorCount(0); 
-  //   };
-
-  //   fetchVisitorCount();
-  // }, []);
-
   return (
     <nav className="navbar">
       <div className="menu-icon" onClick={toggleMenu}>
@@ -55,18 +44,17 @@ const Navbar: React.FC = () => {
       <ul className={`navbar-links ${menuOpen ? 'open' : ''}`} ref={menuRef}>
         {menuOpen && (
           <>
-            <li><Link to="/market">農產品市場</Link></li>
-            <li><Link to="/fertilizer">肥料與資源</Link></li>
-            <li><Link to="/info">生產者資訊</Link></li>
-            <li><Link to="/plan">碳固定計畫</Link></li>
-            <li><Link to="/producer">賣家中心</Link></li>
-            <li><a href={IPCC_Weblink} target="_blank" rel="noopener noreferrer">氣候變遷網站</a></li>
+            <li><Link to="/market" onClick={toggleMenu}>農產品市場</Link></li>
+            <li><Link to="/fertilizer" onClick={toggleMenu}>肥料與資源</Link></li>
+            <li><Link to="/info" onClick={toggleMenu}>生產者資訊</Link></li>
+            <li><Link to="/plan" onClick={toggleMenu}>碳固定計畫</Link></li>
+            <li><Link to="/producer" onClick={toggleMenu}>賣家中心</Link></li>
+            <li><a href={IPCC_Weblink} target="_blank" rel="noopener noreferrer" onClick={toggleMenu}>氣候變遷網站</a></li>
           </>
         )}
       </ul>
       <div className="navbar-icons">
         <Link to="/aiqa" className="navbar-icon">
-          {/* <span className="visitor-counter">{visitorCount}</span> */}
           <ShieldQuestion />
         </Link>
         <Link to="/cart" className="navbar-icon">
