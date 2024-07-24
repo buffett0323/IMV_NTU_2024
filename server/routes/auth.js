@@ -1,6 +1,8 @@
 const express = require('express');
 const axios = require('axios');
 const User = require('../models/user');
+const Product = require('../models/product');
+const { v4: uuidv4 } = require('uuid');
 const router = express.Router();
 
 const clientId = '2005899680';
@@ -64,6 +66,38 @@ router.get('/callback', async (req, res) => {
   } catch (error) {
     console.error('Error exchanging code for token or fetching profile:', error.response ? error.response.data : error.message);
     res.status(500).send('Authentication failed');
+  }
+});
+
+
+
+router.post('/products', async (req, res) => {
+  const { name, price, userId } = req.body;
+  const newProduct = new Product({ 
+    name:name, 
+    price:price, 
+    lineUserId:userId, 
+    productId: uuidv4()
+  });
+  try {
+    const savedProduct = await newProduct.save();
+    res.status(201).json(savedProduct);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+
+router.get('/products/:userId', async (req, res) => {
+  try {
+    const products = await Product.find({ userId: req.params.lineUserId });
+    if (!products.length) {
+      console.log('No products found for this user');
+    } else {
+      console.log('Successfully find', products.length, "products!");
+    }
+    res.json(products);
+  } catch (err) {
+    res.status(500).send(err);
   }
 });
 

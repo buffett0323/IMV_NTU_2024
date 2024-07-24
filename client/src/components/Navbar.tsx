@@ -59,6 +59,7 @@ const Navbar: React.FC = () => {
             <li><Link to="/fertilizer">肥料與資源</Link></li>
             <li><Link to="/info">生產者資訊</Link></li>
             <li><Link to="/plan">碳固定計畫</Link></li>
+            <li><Link to="/producer">賣家中心</Link></li>
             <li><a href={IPCC_Weblink} target="_blank" rel="noopener noreferrer">氣候變遷網站</a></li>
           </>
         )}

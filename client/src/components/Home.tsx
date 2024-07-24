@@ -19,7 +19,7 @@ const Home: React.FC = () => {
 
     if (userId && displayName) {
       setUser({ 
-        userId, 
+        lineUserId: userId, 
         displayName, 
         pictureUrl: pictureUrl ?? undefined, 
         statusMessage: statusMessage ?? undefined 

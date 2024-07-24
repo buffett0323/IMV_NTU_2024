@@ -14,6 +14,7 @@ import Footer from './components/Footer';
 import Login from './components/pages/Login';
 import Signup from './components/pages/Signup';
 import AIQA from './components/AIQA';
+import Producer from './components/Producer';
 import { UserProvider } from './components/pages/UserContext';
 
 const App: React.FC = () => {
@@ -34,6 +35,7 @@ const App: React.FC = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path='/aiqa' element={<AIQA/>} />
+            <Route path='/producer' element={<Producer/>} />
           </Routes>
           <Footer />
         </div>
