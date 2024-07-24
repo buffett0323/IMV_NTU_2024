@@ -77,12 +77,13 @@ router.post('/products', async (req, res) => {
   const newProduct = new Product({ 
     name: name,
     price: price,
-    lineUserName: lineUserName, //生產者名字
-    lineUserId: lineUserId, //生產者id
+    lineUserName: lineUserName, // 生產者名字
+    lineUserId: lineUserId, // 生產者id
     farmPlace: farmPlace,
     netWeight: netWeight, // unit: (g)
     pesticideRecord: pesticideRecord,
-    productId: uuidv4()
+    productId: uuidv4(),
+    timestamp: Date.now() // Add the current timestamp
   });
   try {
     const savedProduct = await newProduct.save();

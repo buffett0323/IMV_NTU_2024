@@ -3,14 +3,15 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const ProductSchema = new Schema({
-    name: String,
-    price: Number,
-    lineUserName: String, //生產者名字
-    lineUserId: String, //生產者id
-    farmPlace: String,
-    netWeight: Number, // unit: (g)
-    pesticideRecord: String,
-    productId: { type: String, unique: true }
+    name: { type: String, required: true },
+    price: { type: Number, required: true },
+    lineUserName: { type: String, required: true }, //生產者名字
+    lineUserId: { type: String, required: true }, //生產者id
+    farmPlace: { type: String, required: true },
+    netWeight: { type: Number, required: true }, // unit: (g)
+    pesticideRecord: { type: String, required: true },
+    productId: { type: String, unique: true },
+    timestamp: { type: Date, default: Date.now }
 });
 
 const Product = mongoose.model('Product', ProductSchema);
