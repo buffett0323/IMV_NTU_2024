@@ -72,11 +72,16 @@ router.get('/callback', async (req, res) => {
 
 
 router.post('/products', async (req, res) => {
-  const { name, price, userId } = req.body;
+  console.log("req_body", req.body);
+  const { name, price, farmPlace, netWeight, pesticideRecord, lineUserId, lineUserName } = req.body;
   const newProduct = new Product({ 
-    name:name, 
-    price:price, 
-    lineUserId:userId, 
+    name: name,
+    price: price,
+    lineUserName: lineUserName, //生產者名字
+    lineUserId: lineUserId, //生產者id
+    farmPlace: farmPlace,
+    netWeight: netWeight, // unit: (g)
+    pesticideRecord: pesticideRecord,
     productId: uuidv4()
   });
   try {
