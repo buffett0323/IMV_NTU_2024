@@ -70,7 +70,7 @@ router.get('/callback', async (req, res) => {
 });
 
 
-
+// Adding a product
 router.post('/products', async (req, res) => {
   console.log("req_body", req.body);
   const { name, price, farmPlace, netWeight, pesticideRecord, lineUserId, lineUserName } = req.body;
@@ -92,18 +92,49 @@ router.post('/products', async (req, res) => {
   }
 });
 
+// Get all products available
 router.get('/products/:userId', async (req, res) => {
   try {
     const products = await Product.find({ userId: req.params.lineUserId });
     if (!products.length) {
       console.log('No products found for this user');
     } else {
-      console.log('Successfully find', products.length, "products!");
+      console.log('Find', products.length, "products!");
     }
     res.json(products);
   } catch (err) {
     res.status(500).send(err);
   }
 });
+
+
+// Update a product
+router.put('/products/:id', async (req, res) => {
+  try {
+      const updatedProduct = await Product.findOneAndUpdate(
+          { productId: req.params.id },
+          req.body,
+          { new: true, runValidators: true }
+      );
+      if (!updatedProduct) return res.status(404).json({ message: 'Product not found' });
+      else console.log("Successfully Update Product:", req.body );
+      res.json(updatedProduct);
+  } catch (err) {
+      res.status(400).json({ message: err.message });
+  }
+});
+
+// Delete a product
+router.delete('/products/:id', async (req, res) => {
+  try {
+      const deletedProduct = await Product.findOneAndDelete({ productId: req.params.id });
+      if (!deletedProduct) return res.status(404).json({ message: 'Product not found' });
+      else console.log("Successfully Delete Product:", req.params.id );
+      res.json({ message: 'Product deleted' });
+  } catch (err) {
+      res.status(500).json({ message: err.message });
+  }
+});
+
 
 module.exports = router;
