@@ -1,22 +1,21 @@
 .market {
-    padding: 20px;
-  }
-  
-  .product-list {
-    display: flex;
-    flex-wrap: wrap;
-  }
-  
-  .product-box {
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 20px;
-    margin: 10px;
-    width: calc(33.333% - 40px); /* 3 columns layout */
-    box-sizing: border-box;
-  }
-  
-  .product-box h3 {
-    margin-top: 0;
-  }
-  
+  padding: 20px;
+}
+
+.product-list {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.product-box {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 20px;
+  margin: 10px;
+  width: calc(33.333% - 40px); /* 3 columns layout */
+  box-sizing: border-box;
+}
+
+.product-box h3 {
+  margin-top: 0;
+}

@@ -6,6 +6,7 @@ interface Product {
   productId: string;
   name: string;
   price: number;
+  quantity: number;
   lineUserName: string;
   lineUserId: string;
   farmPlace: string;
@@ -37,11 +38,12 @@ const Market: React.FC = () => {
         {products.map(product => (
           <div className="product-box" key={product.productId}>
             <h3>{product.name}</h3>
-            <p>Price: {product.price}</p>
-            <p>Producer: {product.lineUserName}</p>
-            <p>Farm Place: {product.farmPlace}</p>
-            <p>Net Weight: {product.netWeight}g</p>
-            <p>Pesticide Record: {product.pesticideRecord}</p>
+            <p>價錢: {product.price}</p>
+            <p>數量: {product.quantity}</p>
+            <p>生產者: {product.lineUserName}</p>
+            <p>生產地: {product.farmPlace}</p>
+            <p>淨重量: {product.netWeight}g</p>
+            <p>農藥紀錄: {product.pesticideRecord}</p>
           </div>
         ))}
       </div>
