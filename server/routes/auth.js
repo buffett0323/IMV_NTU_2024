@@ -2,6 +2,7 @@ const express = require('express');
 const axios = require('axios');
 const User = require('../models/user');
 const Product = require('../models/product');
+const Order = require('../models/order');
 const { v4: uuidv4 } = require('uuid');
 const router = express.Router();
 
@@ -147,5 +148,41 @@ router.get('/products', async (req, res) => {
     res.status(500).send(err);
   }
 });
+
+// Create a new order
+router.post('/orders', async (req, res) => {
+  console.log("Create New Order!");
+  const { userId, productId, productName, productPrice, quantity, totalAmount } = req.body;
+
+  const newOrder = new Order({
+    userId,
+    productId,
+    productName,
+    productPrice,
+    quantity,
+    totalAmount,
+  });
+
+  try {
+    await newOrder.save();
+    res.status(201).json(newOrder);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
+
+// Endpoint to get orders by userId
+router.get('/orders/:userId', async (req, res) => {
+  const { userId } = req.params;
+  
+  try {
+    const orders = await Order.find({ userId });
+    res.json(orders);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 
 module.exports = router;
