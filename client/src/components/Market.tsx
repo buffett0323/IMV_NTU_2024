@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useUser } from './pages/UserContext';
 import axios from 'axios';
 import './css/Market.css';
 
@@ -16,7 +17,9 @@ interface Product {
 }
 
 const Market: React.FC = () => {
+  const { user } = useUser();
   const [products, setProducts] = useState<Product[]>([]);
+  const [orderQuantities, setOrderQuantities] = useState<{ [key: string]: number }>({});
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -31,6 +34,38 @@ const Market: React.FC = () => {
     fetchProducts();
   }, []);
 
+  const handleQuantityChange = (productId: string, quantity: number) => {
+    setOrderQuantities({ ...orderQuantities, [productId]: quantity });
+  };
+
+  const handleOrder = async (product: Product) => {
+    if (user) {
+      const userId = user.lineUserId;
+      const quantity = orderQuantities[product.productId] || 1; // Default to 1 if not specified
+  
+      const order = {
+        userId,
+        productId: product.productId,
+        productName: product.name,
+        productPrice: product.price,
+        quantity,
+        totalAmount: product.price * quantity,
+      };
+  
+      try {
+        await axios.post('http://localhost:8000/api/auth/orders', order);
+        alert('Order placed successfully');
+      } catch (error) {
+        console.error('Error placing the order', error);
+        alert('Failed to place the order');
+      }
+    }
+    else {
+      alert("Please Login First!");
+    }
+    
+  };
+
   return (
     <section className="market">
       <h2>農產品市場</h2>
@@ -44,6 +79,15 @@ const Market: React.FC = () => {
             <p>生產地: {product.farmPlace}</p>
             <p>淨重量: {product.netWeight}g</p>
             <p>農藥紀錄: {product.pesticideRecord}</p>
+            <div className="order-form">
+              <input
+                type="number"
+                min="1"
+                value={orderQuantities[product.productId] || 1}
+                onChange={(e) => handleQuantityChange(product.productId, parseInt(e.target.value))}
+              />
+              <button onClick={() => handleOrder(product)}>訂購</button>
+            </div>
           </div>
         ))}
       </div>

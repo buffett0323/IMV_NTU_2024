@@ -5,6 +5,7 @@
 .product-list {
   display: flex;
   flex-wrap: wrap;
+  justify-content: flex-start; /* Align boxes from left to right */
 }
 
 .product-box {
@@ -12,7 +13,7 @@
   border-radius: 5px;
   padding: 20px;
   margin: 10px;
-  width: calc(33.333% - 40px); /* 3 columns layout */
+  width: 300px;
   box-sizing: border-box;
 }
 
