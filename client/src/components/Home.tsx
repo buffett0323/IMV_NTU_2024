@@ -13,6 +13,8 @@ const Home: React.FC = () => {
     const displayName = query.get('displayName');
     const pictureUrl = query.get('pictureUrl');
     const statusMessage = query.get('statusMessage');
+    const email = query.get('query');
+    const password = query.get('password');
 
     console.log("UserID:", userId);
     console.log("statusMessage:", statusMessage);
@@ -22,7 +24,9 @@ const Home: React.FC = () => {
         lineUserId: userId, 
         displayName, 
         pictureUrl: pictureUrl ?? undefined, 
-        statusMessage: statusMessage ?? undefined 
+        statusMessage: statusMessage ?? undefined,
+        email: email ?? undefined,
+        password: password ?? undefined,
       });
       navigate('/');
     }

@@ -10,6 +10,7 @@ const Producer: React.FC = () => {
   const [products, setProducts] = useState<{
     name: string,
     price: number,
+    quantity: number,
     lineUserName: string,
     lineUserId: string,
     farmPlace: string,
@@ -22,15 +23,17 @@ const Producer: React.FC = () => {
   const [newProduct, setNewProduct] = useState<{
     name: string,
     price: number,
+    quantity: number,
     farmPlace: string,
     netWeight: number,
     pesticideRecord: string,
     timestamp: string
-  }>({ name: '', price: 0, farmPlace: '', netWeight: 0, pesticideRecord: '', timestamp: '' });
+  }>({ name: '', price: 0, quantity: 0, farmPlace: '', netWeight: 0, pesticideRecord: '', timestamp: '' });
   
   const [editProduct, setEditProduct] = useState<{
     name: string,
     price: number,
+    quantity: number,
     farmPlace: string,
     netWeight: number,
     pesticideRecord: string,
@@ -72,7 +75,7 @@ const Producer: React.FC = () => {
       axios.post('http://localhost:8000/api/auth/products', productToAdd)
         .then(response => {
           setProducts([...products, response.data]);
-          setNewProduct({ name: '', price: 0, farmPlace: '', netWeight: 0, pesticideRecord: '', timestamp: '' });
+          setNewProduct({ name: '', price: 0, quantity: 0, farmPlace: '', netWeight: 0, pesticideRecord: '', timestamp: '' });
         })
         .catch(error => {
           console.error('There was an error adding the product!', error);
@@ -110,14 +113,14 @@ const Producer: React.FC = () => {
   return (
     <section className="market">
       <h2>賣家中心</h2>
-
+      <h3>{user?.displayName} 的產品</h3>
       <div className="product-list">
-        <h3>{user?.displayName} 的產品</h3>
         <div className="product-grid">
           {products.map((product) => (
             <div className="product-box" key={product.productId}>
               <div className="product-name">{product.name}</div>
-              <div className="product-price">價格: ${product.price}</div>
+              <div className="product-price">單價: ${product.price}</div>
+              <div className="product-quantity">數量: {product.quantity}個</div>
               <div className="product-farmPlace">產地: {product.farmPlace}</div>
               <div className="product-netWeight">重量: {product.netWeight}g</div>
               <div className="product-pesticideRecord">農藥紀錄: {product.pesticideRecord}</div>
@@ -145,7 +148,14 @@ const Producer: React.FC = () => {
           name="price" 
           value={newProduct.price} 
           onChange={handleInputChange} 
-          placeholder="價格"
+          placeholder="單價"
+        />
+        <input 
+          type="number" 
+          name="quantity" 
+          value={newProduct.quantity} 
+          onChange={handleInputChange} 
+          placeholder="數量"
         />
         <input 
           type="text" 
@@ -187,7 +197,14 @@ const Producer: React.FC = () => {
               name="price" 
               value={editProduct.price} 
               onChange={handleEditInputChange} 
-              placeholder="價格"
+              placeholder="單價"
+            />
+            <input 
+              type="number" 
+              name="quantity" 
+              value={editProduct.quantity} 
+              onChange={handleEditInputChange} 
+              placeholder="數量"
             />
             <input 
               type="text" 

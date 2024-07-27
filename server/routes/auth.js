@@ -73,10 +73,11 @@ router.get('/callback', async (req, res) => {
 // Adding a product
 router.post('/products', async (req, res) => {
   console.log("req_body", req.body);
-  const { name, price, farmPlace, netWeight, pesticideRecord, lineUserId, lineUserName } = req.body;
+  const { name, price, quantity, farmPlace, netWeight, pesticideRecord, lineUserId, lineUserName } = req.body;
   const newProduct = new Product({ 
     name: name,
     price: price,
+    quantity: quantity,
     lineUserName: lineUserName, // 生產者名字
     lineUserId: lineUserId, // 生產者id
     farmPlace: farmPlace,
@@ -137,5 +138,15 @@ router.delete('/products/:id', async (req, res) => {
   }
 });
 
+// Get all the products
+router.get('/products', async (req, res) => {
+  console.log("GET Products");
+  try {
+    const products = await Product.find();
+    res.json(products);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
 
 module.exports = router;

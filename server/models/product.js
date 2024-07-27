@@ -11,7 +11,8 @@ const ProductSchema = new Schema({
     netWeight: { type: Number, required: true }, // unit: (g)
     pesticideRecord: { type: String, required: true },
     productId: { type: String, unique: true },
-    timestamp: { type: Date, default: Date.now }
+    timestamp: { type: Date, default: Date.now },
+    quantity: { type: Number, required: true},
 });
 
 const Product = mongoose.model('Product', ProductSchema);

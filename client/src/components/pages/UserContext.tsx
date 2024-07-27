@@ -5,6 +5,8 @@ interface User {
   displayName: string;
   pictureUrl?: string;
   statusMessage?: string;
+  email?: string;
+  password?: string;
 }
 
 interface UserContextProps {
