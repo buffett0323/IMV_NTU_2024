@@ -140,7 +140,6 @@ router.delete('/products/:id', async (req, res) => {
 
 // Get all the products
 router.get('/products', async (req, res) => {
-  console.log("GET Products");
   try {
     const products = await Product.find();
     res.json(products);
