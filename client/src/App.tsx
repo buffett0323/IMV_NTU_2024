@@ -10,7 +10,7 @@ import Info from './components/Info';
 import Plan from './components/Plan';
 import Cart from './components/Cart';
 import Member from './components/Member';
-import Footer from './components/Footer';
+// import Footer from './components/Footer';
 import Login from './components/pages/Login';
 import Signup from './components/pages/Signup';
 import AIQA from './components/AIQA';
@@ -37,7 +37,7 @@ const App: React.FC = () => {
             <Route path='/aiqa' element={<AIQA/>} />
             <Route path='/producer' element={<Producer/>} />
           </Routes>
-          <Footer />
+          {/* <Footer /> */}
         </div>
       </Router>
     </UserProvider>

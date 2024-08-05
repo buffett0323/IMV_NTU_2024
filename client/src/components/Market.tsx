@@ -71,22 +71,28 @@ const Market: React.FC = () => {
       <h2>農產品市場</h2>
       <div className="product-list">
         {products.map(product => (
-          <div className="product-box" key={product.productId}>
-            <h3>{product.name}</h3>
-            <p>價錢: {product.price}</p>
-            <p>數量: {product.quantity}</p>
-            <p>生產者: {product.lineUserName}</p>
-            <p>生產地: {product.farmPlace}</p>
-            <p>淨重量: {product.netWeight}g</p>
-            <p>農藥紀錄: {product.pesticideRecord}</p>
-            <div className="order-form">
-              <input
-                type="number"
-                min="1"
-                value={orderQuantities[product.productId] || 1}
-                onChange={(e) => handleQuantityChange(product.productId, parseInt(e.target.value))}
-              />
-              <button onClick={() => handleOrder(product)}>訂購</button>
+          <div className="product-card" key={product.productId}>
+            <div className="product-image">
+              {/* Replace with an actual image URL or placeholder */}
+              {/* <img src="image_url_or_placeholder.jpg" alt={product.name} /> */}
+            </div>
+            <div className="product-info">
+              <h3>{product.name}</h3>
+              <p>價錢: {product.price} 元</p>
+              <p>數量: {product.quantity}</p>
+              <p>生產者: {product.lineUserName}</p>
+              <p>生產地: {product.farmPlace}</p>
+              <p>淨重量: {product.netWeight}g</p>
+              <p>農藥紀錄: {product.pesticideRecord}</p>
+              <div className="order-form">
+                <input
+                  type="number"
+                  min="1"
+                  value={orderQuantities[product.productId] || 1}
+                  onChange={(e) => handleQuantityChange(product.productId, parseInt(e.target.value))}
+                />
+                <button onClick={() => handleOrder(product)}>訂購</button>
+              </div>
             </div>
           </div>
         ))}
