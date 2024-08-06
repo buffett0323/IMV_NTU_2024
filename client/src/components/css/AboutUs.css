@@ -1,22 +1,49 @@
 .about-us {
-    padding: 20px;
-    background-color: #f9f9f9;
-  }
-  
-  .about-us h2 {
-    font-size: 32px;
-    margin-bottom: 10px;
-  }
-  
-  .about-us p {
-    font-size: 16px;
-    line-height: 1.5;
-    margin-bottom: 20px;
-  }
-  
-  .about-us img {
-    max-width: 100%;
-    height: auto;
-    margin: 20px 0;
-  }
-  
+  padding: 20px;
+  display: flex;
+  justify-content: center; /* Center the content container */
+}
+
+.content-container {
+  width: 70%; /* Set the width of the content to 70% */
+  display: flex;
+  flex-direction: column;
+}
+
+.text-image-pair {
+  display: flex;
+  margin-bottom: 20px;
+  align-items: center; /* Align items vertically in the center */
+}
+
+.text-image-pair:nth-child(even) .text {
+  order: 1;
+}
+
+.text-image-pair:nth-child(even) .image {
+  order: 0;
+}
+
+.text {
+  flex: 1;
+  padding: 10px;
+  text-align: left; /* Align text to the left */
+  font-size: 1.2em; /* Increase the font size */
+  line-height: 1.6; /* Add line height for better readability */
+}
+
+.image {
+  flex: 1;
+  padding: 20px;
+}
+
+.image img {
+  width: 100%;
+  height: auto;
+}
+
+.highlight {
+  font-size: 1.5em; /* Larger font size for highlights */
+  color: #4CAF50; /* Different color (green in this example) */
+  margin-bottom: 10px; /* Space between highlight and paragraph */
+}
