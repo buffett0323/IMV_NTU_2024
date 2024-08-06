@@ -1,5 +1,8 @@
 const express = require('express');
 const axios = require('axios');
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
 const User = require('../models/user');
 const Product = require('../models/product');
 const Order = require('../models/order');
@@ -71,22 +74,48 @@ router.get('/callback', async (req, res) => {
 });
 
 
+// Ensure the uploads directory exists
+const uploadsDir = path.join(__dirname, '../uploads');
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir);
+}
+
+// Set up multer for file upload
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, uploadsDir); // Specify the directory to store images
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + '-' + file.originalname); // Use a unique filename
+  }
+});
+const upload = multer({ storage: storage });
+
+
 // Adding a product
-router.post('/products', async (req, res) => {
+router.post('/products', upload.single('imageFile'), async (req, res) => {
   console.log("req_body", req.body);
+  console.log("req_file", req.file);
+
   const { name, price, quantity, farmPlace, netWeight, pesticideRecord, lineUserId, lineUserName } = req.body;
-  const newProduct = new Product({ 
+  const imageUrl = req.file ? `/uploads/${req.file.filename}` : '';
+  
+  const newProduct = new Product({
     name: name,
     price: price,
     quantity: quantity,
-    lineUserName: lineUserName, // 生產者名字
-    lineUserId: lineUserId, // 生產者id
+    lineUserName: lineUserName,
+    lineUserId: lineUserId,
     farmPlace: farmPlace,
-    netWeight: netWeight, // unit: (g)
+    netWeight: netWeight,
     pesticideRecord: pesticideRecord,
     productId: uuidv4(),
-    timestamp: Date.now() // Add the current timestamp
+    timestamp: Date.now(),
+    imageUrl: imageUrl,
   });
+
+  console.log("newProduct", newProduct);
+
   try {
     const savedProduct = await newProduct.save();
     res.status(201).json(savedProduct);
@@ -94,6 +123,7 @@ router.post('/products', async (req, res) => {
     res.status(500).send(err);
   }
 });
+
 
 // Get all products available
 router.get('/products/:userId', async (req, res) => {

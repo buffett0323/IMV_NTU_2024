@@ -4,7 +4,6 @@ import { useUser } from './pages/UserContext';
 import './css/Producer.css';
 import { Pencil, Delete } from 'lucide-react';
 
-
 const Producer: React.FC = () => {
   const { user } = useUser();
   const [products, setProducts] = useState<{
@@ -17,6 +16,7 @@ const Producer: React.FC = () => {
     netWeight: number,
     pesticideRecord: string,
     productId?: string,
+    imageUrl?: string,
     timestamp: string
   }[]>([]);
   
@@ -27,6 +27,7 @@ const Producer: React.FC = () => {
     farmPlace: string,
     netWeight: number,
     pesticideRecord: string,
+    imageFile?: File,
     timestamp: string
   }>({ name: '', price: 0, quantity: 0, farmPlace: '', netWeight: 0, pesticideRecord: '', timestamp: '' });
   
@@ -37,6 +38,7 @@ const Producer: React.FC = () => {
     farmPlace: string,
     netWeight: number,
     pesticideRecord: string,
+    imageFile?: File,
     productId?: string,
     timestamp: string
   } | null>(null);
@@ -61,6 +63,12 @@ const Producer: React.FC = () => {
     setNewProduct({ ...newProduct, [name]: value });
   };
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setNewProduct({ ...newProduct, imageFile: e.target.files[0] });
+    }
+  };
+
   const handleEditInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (editProduct) {
       const { name, value } = e.target;
@@ -68,24 +76,56 @@ const Producer: React.FC = () => {
     }
   };
 
-  const handleAddProduct = () => {
-    if (user) {
-      const timestamp = new Date().toISOString();
-      const productToAdd = { ...newProduct, lineUserId: user.lineUserId, lineUserName: user.displayName, timestamp };
-      axios.post('http://localhost:8000/api/auth/products', productToAdd)
-        .then(response => {
-          setProducts([...products, response.data]);
-          setNewProduct({ name: '', price: 0, quantity: 0, farmPlace: '', netWeight: 0, pesticideRecord: '', timestamp: '' });
-        })
-        .catch(error => {
-          console.error('There was an error adding the product!', error);
-        });
+  const handleEditFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (editProduct && e.target.files && e.target.files[0]) {
+      setEditProduct({ ...editProduct, imageFile: e.target.files[0] });
     }
   };
 
+  const handleAddProduct = () => {
+    if (user && newProduct.imageFile) {
+      const formData = new FormData();
+      formData.append('name', newProduct.name);
+      formData.append('price', newProduct.price.toString());
+      formData.append('quantity', newProduct.quantity.toString());
+      formData.append('farmPlace', newProduct.farmPlace);
+      formData.append('netWeight', newProduct.netWeight.toString());
+      formData.append('pesticideRecord', newProduct.pesticideRecord);
+      formData.append('lineUserId', user.lineUserId);
+      formData.append('lineUserName', user.displayName);
+      formData.append('timestamp', new Date().toISOString());
+      formData.append('imageFile', newProduct.imageFile);
+  
+      axios.post('http://localhost:8000/api/auth/products', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+      .then(response => {
+        setProducts([...products, response.data]);
+        setNewProduct({ name: '', price: 0, quantity: 0, farmPlace: '', netWeight: 0, pesticideRecord: '', timestamp: '' });
+      })
+      .catch(error => {
+        console.error('There was an error adding the product!', error);
+      });
+    }
+  };
+  
+
   const handleEditProduct = () => {
     if (editProduct) {
-      axios.put(`http://localhost:8000/api/auth/products/${editProduct.productId}`, editProduct)
+      const formData = new FormData();
+      formData.append('name', editProduct.name);
+      formData.append('price', editProduct.price.toString());
+      formData.append('quantity', editProduct.quantity.toString());
+      formData.append('farmPlace', editProduct.farmPlace);
+      formData.append('netWeight', editProduct.netWeight.toString());
+      formData.append('pesticideRecord', editProduct.pesticideRecord);
+      if (editProduct.imageFile) {
+        formData.append('imageFile', editProduct.imageFile);
+      }
+
+      axios.put(`http://localhost:8000/api/auth/products/${editProduct.productId}`, formData)
         .then(response => {
           setProducts(products.map(p => (p.productId === editProduct.productId ? response.data : p)));
           setShowEditModal(false);
@@ -124,6 +164,11 @@ const Producer: React.FC = () => {
               <div className="product-farmPlace">產地: {product.farmPlace}</div>
               <div className="product-netWeight">重量: {product.netWeight}g</div>
               <div className="product-pesticideRecord">農藥紀錄: {product.pesticideRecord}</div>
+              {/* {product.imageUrl && <img src={product.imageUrl} alt={product.name} />} */}
+              {product.imageUrl && (
+                <img src={product.imageUrl} alt={product.name} className="product-image" 
+                onError={(e) => console.log('Image failed to load:', product.imageUrl, "Current:", window.location.pathname)}/>
+              )}
               <div className="product-timestamp">上架時間: {new Date(product.timestamp).toLocaleString()}</div>
               <div className="button-group">
                 <button onClick={() => { setEditProduct(product); setShowEditModal(true); }}><Pencil /></button>
@@ -178,6 +223,12 @@ const Producer: React.FC = () => {
           onChange={handleInputChange} 
           placeholder="農藥紀錄"
         />
+        <input 
+          type="file" 
+          name="imageFile" 
+          onChange={handleFileChange} 
+          placeholder="產品圖片"
+        />
         <button onClick={handleAddProduct}>新增</button>
       </div>
 
@@ -226,6 +277,11 @@ const Producer: React.FC = () => {
               value={editProduct.pesticideRecord} 
               onChange={handleEditInputChange} 
               placeholder="農藥紀錄"
+            />
+            <input 
+              type="file" 
+              name="imageFile" 
+              onChange={handleEditFileChange} 
             />
             <button onClick={handleEditProduct}>保存</button>
             <button onClick={() => setShowEditModal(false)}>取消</button>

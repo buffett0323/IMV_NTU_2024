@@ -5,14 +5,14 @@
 .product-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
-  justify-content: space-between;
+  gap: 20px; /* Increase gap for better spacing */
+  justify-content: flex-start; /* Align items to the start */
 }
 
 .product-list {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: flex-start; /* Align items to the start */
 }
 
 .product-box {
@@ -24,31 +24,37 @@
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  align-items: center; /* Center-align all elements */
 }
 
-.product-box h3 {
-  margin-top: 0;
+.product-image {
+  width: 100%;
+  height: auto;
+  margin-bottom: 10px;
 }
 
 .product-name {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: bold;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
+  text-align: center; /* Center-align text */
 }
 
 .product-quantity,
 .product-price,
 .product-farmPlace,
 .product-netWeight,
-.product-pesticideRecord {
+.product-pesticideRecord,
+.product-timestamp {
   font-size: 14px;
   color: #555;
   margin-bottom: 5px;
+  text-align: center; /* Center-align text */
 }
 
 .button-group {
   display: flex;
+  justify-content: center; /* Center the buttons */
   gap: 10px; /* Adjust the gap as needed */
 }
 

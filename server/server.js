@@ -19,6 +19,10 @@ app.use(bodyParser.json());
 // Routes
 app.use('/api/auth', authRoutes);
 
+// Serve static files from the 'uploads' directory
+const uploadsDir = path.join(__dirname, 'uploads');
+app.use('/uploads', express.static(uploadsDir));
+
 // Connect to MongoDB
 async function connect() {
   try {
