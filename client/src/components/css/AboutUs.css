@@ -30,6 +30,8 @@
   text-align: left; /* Align text to the left */
   font-size: 1.2em; /* Increase the font size */
   line-height: 1.6; /* Add line height for better readability */
+  margin-right: 20px; /* Add margin to the right for spacing */
+  margin-left: 20px;
 }
 
 .image {

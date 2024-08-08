@@ -1,6 +1,8 @@
 import React from 'react';
 import './css/AboutUs.css';
 import Veg_pic from './img/gen_veg.png';
+import Econ_pic from './img/gen_econ.png';
+import Fresh_pic from './img/gen_fresh.png';
 
 const Home: React.FC = () => {
   return (
@@ -20,7 +22,7 @@ const Home: React.FC = () => {
         </div>
         <div className="text-image-pair">
           <div className="image">
-            <img src={Veg_pic} alt="Description 2" />
+            <img src={Econ_pic} alt="Description 2" />
           </div>
           <div className="text">
             <h3 className="highlight">農田裡的隱形經濟</h3>
@@ -37,7 +39,7 @@ const Home: React.FC = () => {
             </p>
           </div>
           <div className="image">
-            <img src={Veg_pic} alt="Description 3" />
+            <img src={Fresh_pic} alt="Description 3" />
           </div>
         </div>
       </div>
