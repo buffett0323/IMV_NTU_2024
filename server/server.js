@@ -16,6 +16,10 @@ const uri = `mongodb+srv://buffett:${password}@imvntu2024.2zjdkz5.mongodb.net/?r
 app.use(cors());
 app.use(bodyParser.json());
 
+// Increase the request size limit
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
+
 // Routes
 app.use('/api/auth', authRoutes);
 

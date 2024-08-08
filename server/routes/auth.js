@@ -93,12 +93,8 @@ const upload = multer({ storage: storage });
 
 
 // Adding a product
-router.post('/products', upload.single('imageFile'), async (req, res) => {
-  console.log("req_body", req.body);
-  console.log("req_file", req.file);
-
-  const { name, price, quantity, farmPlace, netWeight, pesticideRecord, lineUserId, lineUserName } = req.body;
-  const imageUrl = req.file ? `/uploads/${req.file.filename}` : '';
+router.post('/products', async (req, res) => {
+  const { name, price, quantity, farmPlace, netWeight, pesticideRecord, lineUserId, lineUserName, imageBase64 } = req.body;
   
   const newProduct = new Product({
     name: name,
@@ -111,10 +107,8 @@ router.post('/products', upload.single('imageFile'), async (req, res) => {
     pesticideRecord: pesticideRecord,
     productId: uuidv4(),
     timestamp: Date.now(),
-    imageUrl: imageUrl,
+    imageBase64: imageBase64,
   });
-
-  console.log("newProduct", newProduct);
 
   try {
     const savedProduct = await newProduct.save();

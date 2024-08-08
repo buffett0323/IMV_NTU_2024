@@ -16,7 +16,7 @@ const Producer: React.FC = () => {
     netWeight: number,
     pesticideRecord: string,
     productId?: string,
-    imageUrl?: string,
+    imageBase64?: string,
     timestamp: string
   }[]>([]);
   
@@ -27,9 +27,11 @@ const Producer: React.FC = () => {
     farmPlace: string,
     netWeight: number,
     pesticideRecord: string,
-    imageFile?: File,
+    imageBase64: string,
     timestamp: string
-  }>({ name: '', price: 0, quantity: 0, farmPlace: '', netWeight: 0, pesticideRecord: '', timestamp: '' });
+  }>({
+    name: '', price: 0, quantity: 0, farmPlace: '', netWeight: 0, pesticideRecord: '', imageBase64: '', timestamp: ''
+  });
   
   const [editProduct, setEditProduct] = useState<{
     name: string,
@@ -38,13 +40,16 @@ const Producer: React.FC = () => {
     farmPlace: string,
     netWeight: number,
     pesticideRecord: string,
-    imageFile?: File,
+    imageBase64: string,
     productId?: string,
     timestamp: string
   } | null>(null);
   
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [showEditModal, setShowEditModal] = useState(false);
   const [deleteProductId, setDeleteProductId] = useState<string | null>(null);
+  const MAX_BASE64_SIZE = 50 * 1024 * 1024; // 50 MB
+
 
   useEffect(() => {
     if (user) {
@@ -63,11 +68,34 @@ const Producer: React.FC = () => {
     setNewProduct({ ...newProduct, [name]: value });
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      setNewProduct({ ...newProduct, imageFile: e.target.files[0] });
+      const file = e.target.files[0];
+      const base64 = await convertToBase64(file);
+      console.log("BASE64 Length:", base64.length);
+      if (base64.length > MAX_BASE64_SIZE) {
+        setErrorMessage('The Base64 encoded image exceeds the 50MB limit. Please choose a smaller file.');
+        return;
+      }
+      setNewProduct({ ...newProduct, imageBase64: base64 });
+      setErrorMessage(null); // Clear error message if file is valid
     }
   };
+  
+  const handleEditFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (editProduct && e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      const base64 = await convertToBase64(file);
+      console.log("BASE64 Length:", base64.length);
+      if (base64.length > MAX_BASE64_SIZE) {
+        setErrorMessage('The Base64 encoded image exceeds the 50MB limit. Please choose a smaller file.');
+        return;
+      }
+      setEditProduct({ ...editProduct, imageBase64: base64 });
+      setErrorMessage(null); // Clear error message if file is valid
+    }
+  };
+  
 
   const handleEditInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (editProduct) {
@@ -76,56 +104,39 @@ const Producer: React.FC = () => {
     }
   };
 
-  const handleEditFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (editProduct && e.target.files && e.target.files[0]) {
-      setEditProduct({ ...editProduct, imageFile: e.target.files[0] });
-    }
+
+  const convertToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = error => reject(error);
+    });
   };
 
   const handleAddProduct = () => {
-    if (user && newProduct.imageFile) {
-      const formData = new FormData();
-      formData.append('name', newProduct.name);
-      formData.append('price', newProduct.price.toString());
-      formData.append('quantity', newProduct.quantity.toString());
-      formData.append('farmPlace', newProduct.farmPlace);
-      formData.append('netWeight', newProduct.netWeight.toString());
-      formData.append('pesticideRecord', newProduct.pesticideRecord);
-      formData.append('lineUserId', user.lineUserId);
-      formData.append('lineUserName', user.displayName);
-      formData.append('timestamp', new Date().toISOString());
-      formData.append('imageFile', newProduct.imageFile);
-  
-      axios.post('http://localhost:8000/api/auth/products', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      })
-      .then(response => {
-        setProducts([...products, response.data]);
-        setNewProduct({ name: '', price: 0, quantity: 0, farmPlace: '', netWeight: 0, pesticideRecord: '', timestamp: '' });
-      })
-      .catch(error => {
-        console.error('There was an error adding the product!', error);
-      });
+    if (user) {
+      const productData = {
+        ...newProduct,
+        lineUserId: user.lineUserId,
+        lineUserName: user.displayName,
+        timestamp: new Date().toISOString()
+      };
+      axios.post('http://localhost:8000/api/auth/products', productData)
+        .then(response => {
+          setProducts([...products, response.data]);
+          setNewProduct({ name: '', price: 0, quantity: 0, farmPlace: '', netWeight: 0, pesticideRecord: '', imageBase64: '', timestamp: '' });
+        })
+        .catch(error => {
+          console.error('There was an error adding the product!', error);
+        });
     }
   };
   
 
   const handleEditProduct = () => {
     if (editProduct) {
-      const formData = new FormData();
-      formData.append('name', editProduct.name);
-      formData.append('price', editProduct.price.toString());
-      formData.append('quantity', editProduct.quantity.toString());
-      formData.append('farmPlace', editProduct.farmPlace);
-      formData.append('netWeight', editProduct.netWeight.toString());
-      formData.append('pesticideRecord', editProduct.pesticideRecord);
-      if (editProduct.imageFile) {
-        formData.append('imageFile', editProduct.imageFile);
-      }
-
-      axios.put(`http://localhost:8000/api/auth/products/${editProduct.productId}`, formData)
+      axios.put(`http://localhost:8000/api/auth/products/${editProduct.productId}`, editProduct)
         .then(response => {
           setProducts(products.map(p => (p.productId === editProduct.productId ? response.data : p)));
           setShowEditModal(false);
@@ -154,6 +165,7 @@ const Producer: React.FC = () => {
     <section className="market">
       <h2>賣家中心</h2>
       <h3>{user?.displayName} 的產品</h3>
+      {errorMessage && <div className="error-message">{errorMessage}</div>}
       <div className="product-list">
         <div className="product-grid">
           {products.map((product) => (
@@ -164,14 +176,15 @@ const Producer: React.FC = () => {
               <div className="product-farmPlace">產地: {product.farmPlace}</div>
               <div className="product-netWeight">重量: {product.netWeight}g</div>
               <div className="product-pesticideRecord">農藥紀錄: {product.pesticideRecord}</div>
-              {/* {product.imageUrl && <img src={product.imageUrl} alt={product.name} />} */}
-              {product.imageUrl && (
-                <img src={product.imageUrl} alt={product.name} className="product-image" 
-                onError={(e) => console.log('Image failed to load:', product.imageUrl, "Current:", window.location.pathname)}/>
-              )}
+              {product.imageBase64 && <img src={product.imageBase64} alt={product.name} className="product-image" />}
               <div className="product-timestamp">上架時間: {new Date(product.timestamp).toLocaleString()}</div>
               <div className="button-group">
-                <button onClick={() => { setEditProduct(product); setShowEditModal(true); }}><Pencil /></button>
+                <button onClick={() => { setEditProduct({
+                    ...product,
+                    imageBase64: product.imageBase64 || '' // Ensure imageBase64 is a string
+                  });
+                  setShowEditModal(true);
+                }}><Pencil /></button>
                 <button onClick={() => product.productId && setDeleteProductId(product.productId)}><Delete /></button>
               </div>
             </div>
@@ -280,7 +293,7 @@ const Producer: React.FC = () => {
             />
             <input 
               type="file" 
-              name="imageFile" 
+              name="imageBase64" 
               onChange={handleEditFileChange} 
             />
             <button onClick={handleEditProduct}>保存</button>
@@ -288,7 +301,7 @@ const Producer: React.FC = () => {
           </div>
         </div>
       )}
-
+  
       {deleteProductId && (
         <div className="modal">
           <div className="modal-content">
@@ -301,6 +314,7 @@ const Producer: React.FC = () => {
       )}
     </section>
   );
-};
-
-export default Producer;
+  };
+  
+  export default Producer;
+  

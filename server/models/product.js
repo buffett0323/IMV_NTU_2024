@@ -13,7 +13,7 @@ const ProductSchema = new Schema({
     productId: { type: String, unique: true },
     timestamp: { type: Date, default: Date.now },
     quantity: { type: Number, required: true},
-    imageUrl: { type: String }, // Image URL
+    imageBase64: { type: String}, // Add this field to store the Base64 string// imageUrl: { type: String }, // Image URL
 });
 
 const Product = mongoose.model('Product', ProductSchema);
