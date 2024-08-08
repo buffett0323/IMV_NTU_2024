@@ -19,7 +19,7 @@
     "line-ts": "^2.0.0",
     "lucide": "^0.408.0",
     "lucide-react": "^0.408.0",
-    "nth-check": "^2.0.0",
+    "nth-check": "^2.0.1",
     "passport": "^0.7.0",
     "passport-line": "^0.0.4",
     "postcss": "^8.4.31",
