@@ -18,18 +18,21 @@ const Home: React.FC = () => {
     const premiereLevelNumber: number | undefined = premiereLevel ? Number(premiereLevel) : undefined;
 
     console.log("UserID:", userId);
-    console.log(displayName, pictureUrl, deliveryAddress, email, premiereLevel)
 
     if (userId && displayName) {
-      setUser({ 
-        lineUserId: userId, 
-        displayName, 
-        pictureUrl: pictureUrl ?? undefined, 
+      setUser({
+        lineUserId: userId,
+        displayName,
+        pictureUrl: pictureUrl ?? undefined,
         deliveryAddress: deliveryAddress ?? undefined,
         email: email ?? undefined,
         premiereLevel: premiereLevelNumber,
       });
       navigate('/');
+    } else {
+      // Handle case where user data is incomplete or missing, perhaps by redirecting or showing an error
+      console.error("User data is missing or incomplete");
+      navigate('/login');
     }
   }, [location, setUser, navigate]);
 

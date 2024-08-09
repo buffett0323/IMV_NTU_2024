@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useUser } from './pages/UserContext';
 import './css/Member.css';
 import axios from 'axios';
 
 const Member: React.FC = () => {
   const { setUser, user } = useUser();
+  const navigate = useNavigate();
 
   // State to manage the form inputs
   const [displayName, setDisplayName] = useState(user?.displayName || '');
@@ -17,26 +18,29 @@ const Member: React.FC = () => {
     setIsEditing(true);
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (user) {
       const updatedUser = {
         displayName,
         email,
-        deliveryAddress: deliveryAddress,
+        deliveryAddress,
         lineUserId: user.lineUserId,
       };
-      
-      axios.put('http://localhost:8000/api/auth/user/:id', updatedUser)
-        .then(response => {
-          // Optionally update user state if necessary
-          console.log('User updated successfully', response.data);
-          setUser(response.data);
-          setIsEditing(false);
-        })
-        .catch(error => {
-          console.error('There was an error updating the user!', error);
-        });
+
+      try {
+        const response = await axios.put(`http://localhost:8000/api/auth/user/${user.lineUserId}`, updatedUser);
+        console.log('User updated successfully', response.data);
+        setUser(response.data);
+        setIsEditing(false);
+      } catch (error) {
+        console.error('There was an error updating the user!', error);
+      }
     }
+  };
+
+  const handleLogout = () => {
+    setUser(null);
+    navigate('/login');
   };
 
   return (
@@ -44,7 +48,7 @@ const Member: React.FC = () => {
       <h1>會員資訊</h1>
       {user ? (
         <div>
-          <h2>會員名字:  {user.displayName}</h2>
+          <h2>會員名字: {user.displayName}</h2>
           <img src={user.pictureUrl} alt="User profile" />
 
           {isEditing ? (
@@ -82,15 +86,20 @@ const Member: React.FC = () => {
               <button onClick={handleEdit} className="btn edit">Edit</button>
             </div>
           )}
+
+          {/* Logout button at the end of the page */}
+          <div className="logout-section">
+            <button onClick={handleLogout} className="btn logout">Logout</button>
+          </div>
         </div>
       ) : (
         <div className="auth-buttons">
-          <h3>Not Login Yet</h3>
+          <h3>Not Logged In Yet</h3>
           <Link to="/login" className="btn">Login with Line</Link>
         </div>
       )}
     </section>
   );
-}
+};
 
 export default Member;
