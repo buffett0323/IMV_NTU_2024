@@ -48,8 +48,6 @@ router.get('/callback', async (req, res) => {
     if (existingUser) {
       // Update existing user
       existingUser.displayName = userProfile.displayName;
-      existingUser.pictureUrl = userProfile.pictureUrl;
-      existingUser.statusMessage = userProfile.statusMessage;
       await existingUser.save();
       console.log("Find existing user:", existingUser);
     } else {
@@ -58,7 +56,9 @@ router.get('/callback', async (req, res) => {
         lineUserId: userProfile.userId,
         displayName: userProfile.displayName,
         pictureUrl: userProfile.pictureUrl,
-        statusMessage: userProfile.statusMessage,
+        email: "",
+        deliveryAddress: "",
+        premiereLevel: 0,
       });
       await newUser.save();
       console.log("Create new user:", newUser);
@@ -66,13 +66,35 @@ router.get('/callback', async (req, res) => {
 
     // Redirect to the frontend with user information or token
     console.log("Successfully login!");
-    res.redirect(`http://localhost:3000/home?userId=${userProfile.userId}&displayName=${userProfile.displayName}&pictureUrl=${userProfile.pictureUrl}&statusMessage=${userProfile.statusMessage}`);
+    res.redirect(`http://localhost:3000/home?userId=${userProfile.userId}&displayName=${userProfile.displayName}&pictureUrl=${userProfile.pictureUrl}`);
   } catch (error) {
     console.error('Error exchanging code for token or fetching profile:', error.response ? error.response.data : error.message);
     res.status(500).send('Authentication failed');
   }
 });
 
+
+// Update user info
+router.put('/user/:userId', async (req, res) => {
+  console.log("Update USER INFO:", req.body);
+  const { lineUserId, displayName, email, deliveryAddress } = req.body;
+
+  try {
+    const updatedUser = await User.findOneAndUpdate(
+      { lineUserId },
+      { displayName, email, deliveryAddress },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.json(updatedUser);
+  } catch (error) {
+    console.error('Error updating user:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
 
 // Ensure the uploads directory exists
 const uploadsDir = path.join(__dirname, '../uploads');

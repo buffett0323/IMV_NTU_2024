@@ -5,9 +5,8 @@ const userSchema = new Schema({
   lineUserId: { type: String, required: true },
   displayName: String,
   pictureUrl: String,
-  statusMessage: String, // 個性簽名
   email: String,
-  password: String,
+  deliveryAddress: String, // 配送地址
   premiereLevel: Number, // 分等級制
 });
 

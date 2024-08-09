@@ -4,9 +4,9 @@ interface User {
   lineUserId: string;
   displayName: string;
   pictureUrl?: string;
-  statusMessage?: string;
   email?: string;
-  password?: string;
+  deliveryAddress?: string;
+  premiereLevel?: number;
 }
 
 interface UserContextProps {

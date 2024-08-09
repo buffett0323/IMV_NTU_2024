@@ -12,21 +12,22 @@ const Home: React.FC = () => {
     const userId = query.get('userId');
     const displayName = query.get('displayName');
     const pictureUrl = query.get('pictureUrl');
-    const statusMessage = query.get('statusMessage');
-    const email = query.get('query');
-    const password = query.get('password');
+    const deliveryAddress = query.get('deliveryAddress');
+    const email = query.get('email');
+    const premiereLevel = query.get('premiereLevel');
+    const premiereLevelNumber: number | undefined = premiereLevel ? Number(premiereLevel) : undefined;
 
     console.log("UserID:", userId);
-    console.log("statusMessage:", statusMessage);
+    console.log(displayName, pictureUrl, deliveryAddress, email, premiereLevel)
 
     if (userId && displayName) {
       setUser({ 
         lineUserId: userId, 
         displayName, 
         pictureUrl: pictureUrl ?? undefined, 
-        statusMessage: statusMessage ?? undefined,
+        deliveryAddress: deliveryAddress ?? undefined,
         email: email ?? undefined,
-        password: password ?? undefined,
+        premiereLevel: premiereLevelNumber,
       });
       navigate('/');
     }
