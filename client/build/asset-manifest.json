@@ -1,0 +1,19 @@
+{
+  "files": {
+    "main.css": "/IMV_NTU_2024/static/css/main.a2f986d9.css",
+    "main.js": "/IMV_NTU_2024/static/js/main.01a1e5e4.js",
+    "static/js/488.97a77069.chunk.js": "/IMV_NTU_2024/static/js/488.97a77069.chunk.js",
+    "static/media/imv_propose.pdf": "/IMV_NTU_2024/static/media/imv_propose.1ad5f671fff2030c1c8b.pdf",
+    "static/media/gen_econ.png": "/IMV_NTU_2024/static/media/gen_econ.bb709020e0179492c356.png",
+    "static/media/gen_veg.png": "/IMV_NTU_2024/static/media/gen_veg.f0d8382a8744d1c8613f.png",
+    "static/media/gen_fresh.png": "/IMV_NTU_2024/static/media/gen_fresh.9fa969eddef83221a5b8.png",
+    "index.html": "/IMV_NTU_2024/index.html",
+    "main.a2f986d9.css.map": "/IMV_NTU_2024/static/css/main.a2f986d9.css.map",
+    "main.01a1e5e4.js.map": "/IMV_NTU_2024/static/js/main.01a1e5e4.js.map",
+    "488.97a77069.chunk.js.map": "/IMV_NTU_2024/static/js/488.97a77069.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.a2f986d9.css",
+    "static/js/main.01a1e5e4.js"
+  ]
+}
