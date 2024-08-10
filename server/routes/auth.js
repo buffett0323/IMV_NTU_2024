@@ -7,6 +7,7 @@ const User = require('../models/user');
 const Product = require('../models/product');
 const Order = require('../models/order');
 const { v4: uuidv4 } = require('uuid');
+const { spawn } = require('child_process');
 const router = express.Router();
 
 const clientId = '2005899680';
@@ -228,6 +229,36 @@ router.get('/orders/:userId', async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
+});
+
+
+// Calculation of fertilizer
+router.post('/calculate', (req, res) => {
+  console.log("Calculate Data:", data);
+  const data = req.body;
+  const pythonProcess = spawn('python3', ['../calculation/calculate_and_plot.py', JSON.stringify(data)]);
+
+  let result = '';
+
+  pythonProcess.stdout.on('data', (data) => {
+    result += data.toString();  // Accumulate the output data
+  });
+
+  pythonProcess.stderr.on('data', (data) => {
+    console.error(`stderr: ${data}`);
+    // Send the error back if necessary
+    res.status(500).send({ error: data.toString() });
+  });
+
+  pythonProcess.on('close', (code) => {
+    if (code === 0) {
+      // Only send the response once the process has finished
+      res.json({ result: result });
+    } else {
+      res.status(500).send({ error: `Process exited with code ${code}` });
+    }
+    console.log(`child process exited with code ${code}`);
+  });
 });
 
 

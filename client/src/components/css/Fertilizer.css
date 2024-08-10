@@ -1,0 +1,92 @@
+.fertilizer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .fertilizer-container h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .fertilizer-container p {
+    text-align: center;
+    color: #555;
+    margin-bottom: 20px;
+  }
+  
+  .input-group {
+    margin-bottom: 15px;
+  }
+  
+  .input-group label {
+    font-weight: bold;
+    color: #333;
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .input-group input, .input-group select {
+    width: calc(100% - 500px);
+    padding: 8px 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    outline: none;
+    box-sizing: border-box;
+  }
+  
+  .input-group input:focus, .input-group select:focus {
+    border-color: #007bff;
+  }
+  
+  .calculate-button {
+    display: center;
+    width: calc(100% - 500px);
+    padding: 10px 0;
+    font-size: 18px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-bottom: 20px;
+  }
+  
+  .calculate-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .plot-container {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .plot-container img {
+    max-width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .download-button {
+    display: block;
+    margin: 10px auto;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .download-button:hover {
+    background-color: #218838;
+  }
+  
