@@ -38,7 +38,7 @@
     "web-vitals": "^4.2.1",
     "xlsx": "^0.18.5"
   },
-  "homepage": "https://buffett0323.github.io/IMV_NTU_2024",
+  "homepage": "https://buffett0323.github.io/",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

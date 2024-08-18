@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
 import Navbar from './components/Navbar';
-import AboutUs from './components/AboutUs'
+import AboutUs from './components/AboutUs';
 import Home from './components/Home';
 import Market from './components/Market';
 import Fertilizer from './components/Fertilizer';

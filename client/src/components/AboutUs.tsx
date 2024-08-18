@@ -4,7 +4,7 @@ import Veg_pic from './img/gen_veg.png';
 import Econ_pic from './img/gen_econ.png';
 import Fresh_pic from './img/gen_fresh.png';
 
-const Home: React.FC = () => {
+const AboutUs: React.FC = () => {
   return (
     <section className="about-us">
       {/* <h2>About Us</h2> */}
@@ -47,4 +47,4 @@ const Home: React.FC = () => {
   );
 }
 
-export default Home;
+export default AboutUs;
