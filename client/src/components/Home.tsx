@@ -18,6 +18,11 @@ const Home: React.FC = () => {
     const premiereLevelNumber: number | undefined = premiereLevel ? Number(premiereLevel) : undefined;
 
     console.log("UserID:", userId);
+    console.log("displayName:", displayName);
+    console.log("pictureUrl:", pictureUrl);
+    console.log("deliveryAddress:", deliveryAddress);
+    console.log("email:", email);
+    console.log("premiereLevel:", premiereLevel);
 
     if (userId && displayName) {
       setUser({

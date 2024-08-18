@@ -50,7 +50,13 @@ router.get('/callback', async (req, res) => {
       // Update existing user
       existingUser.displayName = userProfile.displayName;
       await existingUser.save();
+      
+      // Save user profile including email & deliveryAddress
+      userProfile.email = existingUser.email;
+      userProfile.deliveryAddress = existingUser.deliveryAddress;
+      userProfile.premiereLevel = existingUser.premiereLevel;
       console.log("Find existing user:", existingUser);
+      console.log("User Profile:", userProfile);
     } else {
       // Create new user
       const newUser = new User({
@@ -62,12 +68,15 @@ router.get('/callback', async (req, res) => {
         premiereLevel: 0,
       });
       await newUser.save();
+
+      // Save new user profile 
+      // userProfile = newUser;
       console.log("Create new user:", newUser);
     }
 
     // Redirect to the frontend with user information or token
     console.log("Successfully login!");
-    res.redirect(`http://localhost:3000/home?userId=${userProfile.userId}&displayName=${userProfile.displayName}&pictureUrl=${userProfile.pictureUrl}`);
+    res.redirect(`http://localhost:3000/home?userId=${userProfile.userId}&displayName=${userProfile.displayName}&pictureUrl=${userProfile.pictureUrl}&email=${userProfile.email}&deliveryAddress=${userProfile.deliveryAddress}&premiereLevel=${userProfile.premiereLevel}`);
   } catch (error) {
     console.error('Error exchanging code for token or fetching profile:', error.response ? error.response.data : error.message);
     res.status(500).send('Authentication failed');
