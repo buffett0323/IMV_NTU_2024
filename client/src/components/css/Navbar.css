@@ -5,6 +5,7 @@
   background-color: #e0f7e9;
   padding: 10px 20px;
   position: relative;
+  z-index: 1000; /* Ensure the navbar is above other elements */
 }
 
 .circle-border {
@@ -64,6 +65,7 @@
   list-style-type: none;
   padding: 0;
   margin: 0;
+  z-index: 1001; /* Ensure the links are above other elements */
 }
 
 .navbar-links.open {
@@ -75,7 +77,9 @@
   width: 200px;
   border: 1px solid #ddd;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  z-index: 1001; /* Ensure the dropdown is above other elements */
 }
+
 
 .navbar-links li {
   padding: 10px;
@@ -141,14 +145,11 @@
     border: 1px solid #ccc;
     border-radius: 5px;
     width: 200px;
+    z-index: 1001; /* Ensure the links are above other elements */
   }
 
   .navbar-links.open {
     display: flex;
-  }
-
-  .navbar-links li {
-    margin: 10px 0;
   }
 
   .navbar-icons {

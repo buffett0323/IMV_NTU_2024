@@ -51,7 +51,7 @@ const Fertilizer: React.FC = () => {
 
       <div className="input-group">
         <label>
-          Fertilizer amount： 
+          Fertilizer amount (g): 
           <input
             type="number"
             value={param2}
@@ -62,7 +62,7 @@ const Fertilizer: React.FC = () => {
 
       <div className="input-group">
         <label>
-          Olivine amount： 
+          Olivine amount (g): 
           <input
             type="number"
             value={param3}
@@ -76,7 +76,7 @@ const Fertilizer: React.FC = () => {
       {plotUrl && (
         <div className="plot-container">
           <img src={`data:image/png;base64,${plotUrl}`} alt="Generated Plot" />
-          <button className="download-button" onClick={handleDownload}>Download Plot</button>
+          <button className="download-button" onClick={handleDownload}>Download Figure</button>
         </div>
       )}
     </section>

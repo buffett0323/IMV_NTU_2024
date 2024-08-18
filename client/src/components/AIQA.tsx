@@ -25,17 +25,17 @@ const AIQA: React.FC = () => {
             <h3>碳索者農業網，把您所有的問題變成沒有問題。</h3>
             
             <div className="faq-section">
-                <h3>常見問題 (FAQ)</h3>
-                <ul className="faq-list">
-                    {faq.map((item, index) => (
-                        <li key={index} className="faq-item">
-                            <h4>{item.question}</h4>
-                            <p>{item.answer}</p>
-                            {item.reference && <a href={item.reference} target="_blank" rel="noopener noreferrer">參考資料</a>}
-                        </li>
-                    ))}
-                </ul>
-            </div>
+              <h3>常見問題 (FAQ)</h3>
+              <ul className="faq-list">
+                  {faq.map((item, index) => (
+                      <li key={index} className="faq-item">
+                          <h4>{`${index + 1}. ${item.question}`}</h4> {/* Add the number in front of the question */}
+                          <p>{item.answer}</p>
+                          {item.reference && <a href={item.reference} target="_blank" rel="noopener noreferrer">參考資料</a>}
+                      </li>
+                  ))}
+              </ul>
+          </div>
         </section>
     );
 };

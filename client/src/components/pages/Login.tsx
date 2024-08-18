@@ -16,8 +16,7 @@ const LoginPage: React.FC = () => {
 
   return (
     <div>
-      <h1>Login</h1>
-      <h3>Login with Line</h3>
+      <h1>Login with Line</h1>
       <button onClick={handleLogin}>
         <img src={loginButtonImage} alt="Login with Line" width="150" />
       </button>
