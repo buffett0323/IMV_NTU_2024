@@ -1,5 +1,10 @@
 ### Designed by Buffett
 
+## Live Demo
+
+You can view the live demo of this project here: [IMV_NTU_2024](https://buffett0323.github.io/IMV_NTU_2024)
+
+
 Frontend: TS React<br>
 Backend: Node JS<br>
 
