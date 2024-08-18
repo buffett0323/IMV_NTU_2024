@@ -1,59 +1,43 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './css/AIQA.css';
 import axios from 'axios';
 
-
 const AIQA: React.FC = () => {
-    const [question, setQuestion] = useState('');
-    const [chat, setChat] = useState<{ sender: string; message: string }[]>([]);
-  
-    const handleSubmit = async (event: React.FormEvent) => {
-      event.preventDefault();
-      // Add the user's question to the chat
-      setChat((prevChat) => [...prevChat, { sender: 'user', message: question }]);
-  
-      try {
-        // Call the AI endpoint to get the answer
-        const aiResponse = await axios.post('http://localhost:7001/api/ask-ai', { question });
-        const aiAnswer = aiResponse.data.answer;
-  
-        // Add the AI response to the chat
-        setChat((prevChat) => [...prevChat, { sender: 'bot', message: aiAnswer }]);
-  
-        // // Send the question via email
-        // await axios.post('http://localhost:3001/api/send-email', { question });
-        // console.log('Email sent successfully');
-      } catch (error) {
-        console.error('Failed to get answer from AI or send email', error);
-      }
-  
-      setQuestion('');
-    };
-  
+    const [faq, setFaq] = useState<{ question: string; answer: string; reference?: string }[]>([]);
+
+    useEffect(() => {
+        const fetchFAQ = async () => {
+            try {
+                // Fetch the FAQ data from the backend API
+                const response = await axios.get('http://localhost:8000/api/auth/get-faq');
+                setFaq(response.data);
+            } catch (error) {
+                console.error('Failed to load FAQ data', error);
+            }
+        };
+
+        fetchFAQ();
+    }, []);
+
     return (
-      <section className="aiqa">
-        <h2>Q&A</h2>
-        <p>碳索者農業網，把您所有的問題變成沒有問題。</p>
-        <div className="chat-window">
-          {chat.map((chatMessage, index) => (
-            <div key={index} className={`chat-message ${chatMessage.sender}`}>
-              <p>{chatMessage.message}</p>
+        <section className="aiqa">
+            <h2>Q&A</h2>
+            <h3>碳索者農業網，把您所有的問題變成沒有問題。</h3>
+            
+            <div className="faq-section">
+                <h3>常見問題 (FAQ)</h3>
+                <ul className="faq-list">
+                    {faq.map((item, index) => (
+                        <li key={index} className="faq-item">
+                            <h4>{item.question}</h4>
+                            <p>{item.answer}</p>
+                            {item.reference && <a href={item.reference} target="_blank" rel="noopener noreferrer">參考資料</a>}
+                        </li>
+                    ))}
+                </ul>
             </div>
-          ))}
-        </div>
-        <form onSubmit={handleSubmit} className="chat-form">
-          <input
-            type="text"
-            id="question"
-            value={question}
-            onChange={(e) => setQuestion(e.target.value)}
-            placeholder="請輸入您的問題..."
-            required
-          />
-          <button type="submit">提交</button>
-        </form>
-      </section>
+        </section>
     );
-  }
-  
+};
+
 export default AIQA;

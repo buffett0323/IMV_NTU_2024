@@ -39,7 +39,7 @@ def analyze_growth(data, mass_col, oliv_col, kno3_col, degree=2, title='Growth C
         z=zz, x=xx, y=yy, colorscale='Viridis',
         contours={"z": {"show": True, "start": z_start, "end": z_end, "size": z_step, "color": "white"}}
     )])
-    fig.add_trace(go.Scatter3d(x=df[oliv_col], y=df[kno3_col], z=df[mass_col], mode='markers', marker=dict(size=5, color='red')))
+    # fig.add_trace(go.Scatter3d(x=df[oliv_col], y=df[kno3_col], z=df[mass_col], mode='markers', marker=dict(size=5, color='red')))
     fig.add_annotation(text=equation, xref="paper", yref="paper", x=0.5, y=0.95, showarrow=False, font=dict(size=12))
     
     # Update plot layout

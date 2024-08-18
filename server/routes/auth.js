@@ -9,6 +9,7 @@ const Order = require('../models/order');
 const { v4: uuidv4 } = require('uuid');
 const { spawn } = require('child_process');
 const router = express.Router();
+const XLSX = require('xlsx');
 
 const clientId = '2005899680';
 const clientSecret = 'fb1c25c861ce3f9cf3519375bc3e1361';
@@ -107,22 +108,22 @@ router.put('/user/:userId', async (req, res) => {
   }
 });
 
-// Ensure the uploads directory exists
-const uploadsDir = path.join(__dirname, '../uploads');
-if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir);
-}
+// // Ensure the uploads directory exists
+// const uploadsDir = path.join(__dirname, '../uploads');
+// if (!fs.existsSync(uploadsDir)) {
+//   fs.mkdirSync(uploadsDir);
+// }
 
-// Set up multer for file upload
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, uploadsDir); // Specify the directory to store images
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + '-' + file.originalname); // Use a unique filename
-  }
-});
-const upload = multer({ storage: storage });
+// // Set up multer for file upload
+// const storage = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//     cb(null, uploadsDir); // Specify the directory to store images
+//   },
+//   filename: (req, file, cb) => {
+//     cb(null, Date.now() + '-' + file.originalname); // Use a unique filename
+//   }
+// });
+// const upload = multer({ storage: storage });
 
 
 // Adding a product
@@ -272,6 +273,30 @@ router.post('/calculate', (req, res) => {
     console.log(`child process exited with code ${code}`);
   });
 });
+
+
+// Get XLSX data
+router.get('/get-faq', (req, res) => {
+  try {
+      // Specify the path to the Excel file
+      const filePath = path.join(__dirname, '../xlsx/qa_0804.xlsx');
+      
+      // Read the Excel file
+      const workbook = XLSX.readFile(filePath);
+      const sheetName = workbook.SheetNames[0];
+      const worksheet = workbook.Sheets[sheetName];
+      
+      // Convert sheet to JSON format
+      const faqData = XLSX.utils.sheet_to_json(worksheet);
+
+      // Send the FAQ data as JSON response
+      res.json(faqData);
+  } catch (error) {
+      console.error('Error reading Excel file:', error);
+      res.status(500).json({ message: 'Failed to load FAQ data' });
+  }
+});
+
 
 
 module.exports = router;
