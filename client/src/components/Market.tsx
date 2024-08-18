@@ -4,16 +4,17 @@ import axios from 'axios';
 import './css/Market.css';
 
 interface Product {
-  productId: string;
-  name: string;
-  price: number;
-  quantity: number;
-  lineUserName: string;
-  lineUserId: string;
-  farmPlace: string;
-  netWeight: number;
-  pesticideRecord: string;
-  timestamp: Date;
+  name: string,
+  price: number,
+  quantity: number,
+  lineUserName: string,
+  lineUserId: string,
+  farmPlace: string,
+  netWeight: number,
+  pesticideRecord: string,
+  productId: string,
+  imageBase64: string,
+  timestamp: string
 }
 
 const Market: React.FC = () => {
@@ -73,8 +74,7 @@ const Market: React.FC = () => {
         {products.map(product => (
           <div className="product-card" key={product.productId}>
             <div className="product-image">
-              {/* Replace with an actual image URL or placeholder */}
-              {/* <img src="image_url_or_placeholder.jpg" alt={product.name} /> */}
+              {product.imageBase64 && <img src={product.imageBase64} alt={product.name} className="product-image" />}
             </div>
             <div className="product-info">
               <h3>{product.name}</h3>

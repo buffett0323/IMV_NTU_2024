@@ -12,6 +12,7 @@ const Member: React.FC = () => {
   const [displayName, setDisplayName] = useState(user?.displayName || '');
   const [email, setEmail] = useState(user?.email || '');
   const [deliveryAddress, setDeliveryAddress] = useState(user?.deliveryAddress || '');
+  // const [premiereLevel, setPremiereLevel] = useState(user?.premiereLevel || 0);
   const [isEditing, setIsEditing] = useState(false);
 
   const handleEdit = () => {
@@ -83,6 +84,7 @@ const Member: React.FC = () => {
             <div>
               <p>電子郵件: {user.email || '未提供'}</p>
               <p>配送地址: {user.deliveryAddress || '未提供'}</p>
+              <p>會員分級等制: {user.premiereLevel} 級</p>
               <button onClick={handleEdit} className="btn edit">Edit</button>
             </div>
           )}

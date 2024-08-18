@@ -56,7 +56,6 @@ router.get('/callback', async (req, res) => {
       userProfile.deliveryAddress = existingUser.deliveryAddress;
       userProfile.premiereLevel = existingUser.premiereLevel;
       console.log("Find existing user:", existingUser);
-      console.log("User Profile:", userProfile);
     } else {
       // Create new user
       const newUser = new User({
@@ -70,7 +69,9 @@ router.get('/callback', async (req, res) => {
       await newUser.save();
 
       // Save new user profile 
-      // userProfile = newUser;
+      userProfile.email = newUser.email;
+      userProfile.deliveryAddress = newUser.deliveryAddress;
+      userProfile.premiereLevel = newUser.premiereLevel;
       console.log("Create new user:", newUser);
     }
 
@@ -243,8 +244,10 @@ router.get('/orders/:userId', async (req, res) => {
 
 // Calculation of fertilizer
 router.post('/calculate', (req, res) => {
-  console.log("Calculate Data:", data);
+  
   const data = req.body;
+  console.log("Calculate Data:", data);
+
   const pythonProcess = spawn('python3', ['../calculation/calculate_and_plot.py', JSON.stringify(data)]);
 
   let result = '';
