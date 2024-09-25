@@ -19,7 +19,6 @@ const redirectUri = 'http://localhost:8000/api/auth/callback';
 // Functions to catch the line login information
 router.get('/callback', async (req, res) => {
   const { code, state } = req.query;
-
   try {
     // Exchange authorization code for access token
     const tokenResponse = await axios.post('https://api.line.me/oauth2/v2.1/token', new URLSearchParams({
@@ -45,52 +44,52 @@ router.get('/callback', async (req, res) => {
 
     const userProfile = profileResponse.data;
 
-    // Save user profile to MongoDB
-    const existingUser = await User.findOne({ lineUserId: userProfile.userId });
+    // Check if user already exists in MongoDB
+    let existingUser = await User.findOne({ lineUserId: userProfile.userId });
     if (existingUser) {
       // Update existing user
       existingUser.displayName = userProfile.displayName;
+
+      // Check for an empty email and update if necessary
+      if (!existingUser.email || existingUser.email.trim() === "") {
+        existingUser.email = `no-email-${existingUser.lineUserId}@example.com`;
+      }
+
       await existingUser.save();
-      
-      // Save user profile including email & deliveryAddress
-      userProfile.email = existingUser.email;
-      userProfile.deliveryAddress = existingUser.deliveryAddress;
-      userProfile.premiereLevel = existingUser.premiereLevel;
-      console.log("Find existing user:", existingUser);
+      console.log("Existing User:", existingUser);
+
+      // Redirect to frontend with updated user information
+      res.redirect(`http://localhost:3000/home?userId=${existingUser.lineUserId}&displayName=${existingUser.displayName}&pictureUrl=${existingUser.pictureUrl}&email=${existingUser.email}&deliveryAddress=${existingUser.deliveryAddress}&premiereLevel=${existingUser.premiereLevel}`);
     } else {
-      // Create new user
+      // Create a new user
       const newUser = new User({
         lineUserId: userProfile.userId,
         displayName: userProfile.displayName,
         pictureUrl: userProfile.pictureUrl,
-        email: "",
+        // Assign a default or placeholder email
+        email: `no-email-${userProfile.userId}@example.com`,
         deliveryAddress: "",
         premiereLevel: 0,
       });
       await newUser.save();
+      console.log("New User:", newUser);
 
-      // Save new user profile 
-      userProfile.email = newUser.email;
-      userProfile.deliveryAddress = newUser.deliveryAddress;
-      userProfile.premiereLevel = newUser.premiereLevel;
-      console.log("Create new user:", newUser);
+      // Redirect to frontend with new user information
+      res.redirect(`http://localhost:3000/home?userId=${newUser.lineUserId}&displayName=${newUser.displayName}&pictureUrl=${newUser.pictureUrl}&email=${newUser.email}`);
     }
-
-    // Redirect to the frontend with user information or token
-    console.log("Successfully login!");
-    res.redirect(`http://localhost:3000/home?userId=${userProfile.userId}&displayName=${userProfile.displayName}&pictureUrl=${userProfile.pictureUrl}&email=${userProfile.email}&deliveryAddress=${userProfile.deliveryAddress}&premiereLevel=${userProfile.premiereLevel}`);
   } catch (error) {
     console.error('Error exchanging code for token or fetching profile:', error.response ? error.response.data : error.message);
-    res.status(500).send('Authentication failed');
+    res.status(500).send('Authentication failed. Error: ' + (error.response ? JSON.stringify(error.response.data) : error.message));
   }
 });
+
 
 
 // Update user info
 router.put('/user/:userId', async (req, res) => {
   console.log("Update USER INFO:", req.body);
-  const { lineUserId, displayName, email, deliveryAddress } = req.body;
-
+  const {displayName, email, deliveryAddress, lineUserId} = req.body;
+  console.log("TT:", displayName, email, deliveryAddress, lineUserId);
   try {
     const updatedUser = await User.findOneAndUpdate(
       { lineUserId },
@@ -99,6 +98,7 @@ router.put('/user/:userId', async (req, res) => {
     );
 
     if (!updatedUser) {
+      console.log("User Not found!")
       return res.status(404).json({ message: 'User not found' });
     }
     res.json(updatedUser);

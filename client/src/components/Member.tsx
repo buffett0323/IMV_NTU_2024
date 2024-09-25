@@ -29,6 +29,7 @@ const Member: React.FC = () => {
       };
 
       try {
+        console.log("MEMBER:", user);
         const response = await axios.put(`http://localhost:8000/api/auth/user/${user.lineUserId}`, updatedUser);
         console.log('User updated successfully', response.data);
         setUser(response.data);

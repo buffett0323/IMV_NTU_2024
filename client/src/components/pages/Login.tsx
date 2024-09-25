@@ -6,8 +6,8 @@ const LoginPage: React.FC = () => {
   const handleLogin = () => {
     const responseType = 'code';
     const clientId = '2005899680';
-    const redirectUri = 'http://localhost:8000/api/auth/callback'; //encodeURIComponent('http://localhost:8000/api/auth/callback');
-    const state = '123456789';
+    const redirectUri = encodeURIComponent('http://localhost:8000/api/auth/callback'); //'http://localhost:8000/api/auth/callback';
+    const state = Math.random().toString(36).substring(7);
     const scope = 'profile%20openid%20email';
   
     const lineLoginUrl = `https://access.line.me/oauth2/v2.1/authorize?response_type=${responseType}&client_id=${clientId}&redirect_uri=${redirectUri}&state=${state}&scope=${scope}`;
