@@ -113,23 +113,6 @@ router.put('/user/:userId', async (req, res) => {
   }
 });
 
-// // Ensure the uploads directory exists
-// const uploadsDir = path.join(__dirname, '../uploads');
-// if (!fs.existsSync(uploadsDir)) {
-//   fs.mkdirSync(uploadsDir);
-// }
-
-// // Set up multer for file upload
-// const storage = multer.diskStorage({
-//   destination: (req, file, cb) => {
-//     cb(null, uploadsDir); // Specify the directory to store images
-//   },
-//   filename: (req, file, cb) => {
-//     cb(null, Date.now() + '-' + file.originalname); // Use a unique filename
-//   }
-// });
-// const upload = multer({ storage: storage });
-
 
 // Adding a product
 router.post('/products', async (req, res) => {
@@ -159,9 +142,10 @@ router.post('/products', async (req, res) => {
 
 
 // Get all products available
-router.get('/products/:userId', async (req, res) => {
+router.get('/products/get_all', async (req, res) => {
   try {
-    const products = await Product.find({ userId: req.params.lineUserId });
+    console.log("Search all objects by", req.query.username);
+    const products = await Product.find({ lineUserId: req.query.username });
     if (!products.length) {
       console.log('No products found for this user');
     } else {
@@ -305,8 +289,7 @@ router.get('/get-faq', (req, res) => {
 
 // Register route
 router.post('/seller/register', async (req, res) => {
-  const { username, password } = req.body;
-  console.log("Seller Register:", req.body);
+  const { name, username, password, email, phoneNumber } = req.body;
 
   try {
     // Check if user already exists
@@ -320,8 +303,11 @@ router.post('/seller/register', async (req, res) => {
 
     // Create new seller
     const newSeller = new Seller({
+      name,
       username,
       password: hashedPassword,
+      email,
+      phoneNumber,
     });
 
     await newSeller.save();
@@ -335,7 +321,6 @@ router.post('/seller/register', async (req, res) => {
 
 // Login route
 router.post('/seller/login', async (req, res) => {
-  console.log("Login:", req.body);
   const { username, password } = req.body;
 
   try {
@@ -353,13 +338,24 @@ router.post('/seller/login', async (req, res) => {
 
     // Generate JWT token
     const token = jwt.sign({ id: seller._id }, JWT_SECRET, { expiresIn: '1h' });
-
-    res.json({ message: 'Login successful', token });
+    console.log("Seller successfully log in:", req.body);
+    // Send back seller info and token
+    res.json({
+      message: 'Login successful',
+      token,
+      seller: {
+        name: seller.name,
+        username: seller.username,
+        email: seller.email,
+        phoneNumber: seller.phoneNumber,
+      }
+    });
   } catch (error) {
     console.error('Error logging in seller:', error);
     res.status(500).json({ message: 'Server error' });
   }
 });
+
 
 
 module.exports = router;

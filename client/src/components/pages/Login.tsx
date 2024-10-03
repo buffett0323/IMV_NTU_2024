@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
 import '../css/Login.css';
 import loginButtonImage from '../img/btn_login_base.png';
+import { useSeller } from './UserContext'; 
 
 const LoginPage: React.FC = () => {
   // State for seller login and registration
+  const { seller, setSeller } = useSeller(); // access setSeller function from context
+  const [sellerName, setSellerName] = useState('');
   const [sellerUsername, setSellerUsername] = useState('');
   const [sellerPassword, setSellerPassword] = useState('');
+  const [sellerEmail, setSellerEmail] = useState('');
+  const [sellerPhoneNumber, setSellerPhoneNumber] = useState('');
   const [isRegistering, setIsRegistering] = useState(false);
 
   // Handle buyer login using Line
@@ -33,16 +38,22 @@ const LoginPage: React.FC = () => {
           password: sellerPassword,
         }),
       });
-      
+
       const data = await response.json();
       if (response.ok) {
         alert('Login successful!');
-        // Redirect to seller dashboard or handle login success
+        setSeller({
+          name: data.seller.name,
+          username: data.seller.username,
+          email: data.seller.email,
+          phoneNumber: data.seller.phoneNumber,
+        }); // Store seller data globally
+        console.log("SET Seller!", seller);
       } else {
         alert('Login failed: ' + data.message);
       }
     } catch (error) {
-      console.error('Error logging in:', error);
+      console.error('Error logging in seller:', error);
     }
   };
 
@@ -55,8 +66,11 @@ const LoginPage: React.FC = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
+          name: sellerName,
           username: sellerUsername,
           password: sellerPassword,
+          email: sellerEmail,
+          phoneNumber: sellerPhoneNumber,
         }),
       });
 
@@ -81,6 +95,28 @@ const LoginPage: React.FC = () => {
       
       <h1>{isRegistering ? 'Seller Registration' : 'Seller Login'}</h1>
       <div>
+        {isRegistering && (
+          <>
+            <input
+              type="text"
+              placeholder="Name"
+              value={sellerName}
+              onChange={(e) => setSellerName(e.target.value)}
+            />
+            <input
+              type="email"
+              placeholder="Email"
+              value={sellerEmail}
+              onChange={(e) => setSellerEmail(e.target.value)}
+            />
+            <input
+              type="text"
+              placeholder="Phone Number"
+              value={sellerPhoneNumber}
+              onChange={(e) => setSellerPhoneNumber(e.target.value)}
+            />
+          </>
+        )}
         <input
           type="text"
           placeholder="Username"

@@ -16,31 +16,36 @@ import Signup from './components/pages/Signup';
 import AIQA from './components/AIQA';
 import Producer from './components/Producer';
 import { UserProvider } from './components/pages/UserContext';
+import { SellerProvider } from './components/pages/UserContext';
 
 const App: React.FC = () => {
   return (
-    <UserProvider>
-      <Router>
-        <div className="App">
-          <Navbar />
-          <Routes>
-            <Route path="/" element={<AboutUs />} />
-            <Route path="/home" element={<Home />} /> {/* Handle Login */}
-            <Route path="/market" element={<Market />} />
-            <Route path="/fertilizer" element={<Fertilizer />} />
-            <Route path="/info" element={<Info />} />
-            <Route path="/plan" element={<Plan />} />
-            <Route path="/cart" element={<Cart />} />
-            <Route path="/member" element={<Member />} /> {/* Main Page */}
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path='/aiqa' element={<AIQA/>} />
-            <Route path='/producer' element={<Producer/>} />
-          </Routes>
-          {/* <Footer /> */}
-        </div>
-      </Router>
-    </UserProvider>
+    <SellerProvider>
+      <UserProvider>
+      
+        <Router>
+          <div className="App">
+            <Navbar />
+            <Routes>
+              <Route path="/" element={<AboutUs />} />
+              <Route path="/home" element={<Home />} /> {/* Handle Login */}
+              <Route path="/market" element={<Market />} />
+              <Route path="/fertilizer" element={<Fertilizer />} />
+              <Route path="/info" element={<Info />} />
+              <Route path="/plan" element={<Plan />} />
+              <Route path="/cart" element={<Cart />} />
+              <Route path="/member" element={<Member />} /> {/* Main Page */}
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
+              <Route path='/aiqa' element={<AIQA/>} />
+              <Route path='/producer' element={<Producer/>} />
+            </Routes>
+            {/* <Footer /> */}
+          </div>
+        </Router>
+      
+      </UserProvider>
+    </SellerProvider>
   );
 }
 

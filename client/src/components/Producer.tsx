@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useUser } from './pages/UserContext';
+import { useSeller } from './pages/UserContext';
 import './css/Producer.css';
 import { Pencil, Delete } from 'lucide-react';
 
 const Producer: React.FC = () => {
-  const { user } = useUser();
+  const { seller } = useSeller();
+  const navigate = useNavigate();
+  console.log("Seller info:", seller);
   const [products, setProducts] = useState<{
     name: string,
     price: number,
@@ -50,10 +53,13 @@ const Producer: React.FC = () => {
   const [deleteProductId, setDeleteProductId] = useState<string | null>(null);
   const MAX_BASE64_SIZE = 50 * 1024 * 1024; // 50 MB
 
-
   useEffect(() => {
-    if (user) {
-      axios.get(`http://localhost:8000/api/auth/products/${user.lineUserId}`)
+    if (!seller) {
+      // Redirect to login page if seller is not logged in
+      navigate('/login');
+    } else {
+      // Fetch products if the seller is logged in
+      axios.get(`http://localhost:8000/api/auth/products/get_all`, {params: {username: seller.username}})
         .then(response => {
           setProducts(response.data);
         })
@@ -61,7 +67,7 @@ const Producer: React.FC = () => {
           console.error('There was an error fetching the products!', error);
         });
     }
-  }, [user]);
+  }, [seller, navigate]);  
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -115,11 +121,11 @@ const Producer: React.FC = () => {
   };
 
   const handleAddProduct = () => {
-    if (user) {
+    if (seller) {
       const productData = {
         ...newProduct,
-        lineUserId: user.lineUserId,
-        lineUserName: user.displayName,
+        lineUserId: seller.username, //user.lineUserId,
+        lineUserName: seller.name, //user.displayName,
         timestamp: new Date().toISOString()
       };
       axios.post('http://localhost:8000/api/auth/products', productData)
@@ -163,154 +169,158 @@ const Producer: React.FC = () => {
 
   return (
     <section className="market">
-      <h2>賣家中心</h2>
-      <h3>{user?.displayName} 的產品</h3>
-      {errorMessage && <div className="error-message">{errorMessage}</div>}
-      <div className="product-list">
-        <div className="product-grid">
-          {products.map((product) => (
-            <div className="product-box" key={product.productId}>
-              <div className="product-name">{product.name}</div>
-              <div className="product-price">單價: ${product.price}</div>
-              <div className="product-quantity">數量: {product.quantity}個</div>
-              <div className="product-farmPlace">產地: {product.farmPlace}</div>
-              <div className="product-netWeight">重量: {product.netWeight}g</div>
-              <div className="product-pesticideRecord">農藥紀錄: {product.pesticideRecord}</div>
-              {product.imageBase64 && <img src={product.imageBase64} alt={product.name} className="product-image" />}
-              <div className="product-timestamp">上架時間: {new Date(product.timestamp).toLocaleString()}</div>
-              <div className="button-group">
-                <button onClick={() => { setEditProduct({
-                    ...product,
-                    imageBase64: product.imageBase64 || '' // Ensure imageBase64 is a string
-                  });
-                  setShowEditModal(true);
-                }}><Pencil /></button>
-                <button onClick={() => product.productId && setDeleteProductId(product.productId)}><Delete /></button>
-              </div>
+      {seller && (
+        <>
+          <h2>賣家中心</h2>
+          <h3>{seller?.name} 的產品</h3>
+          {errorMessage && <div className="error-message">{errorMessage}</div>}
+          <div className="product-list">
+            <div className="product-grid">
+              {products.map((product) => (
+                <div className="product-box" key={product.productId}>
+                  <div className="product-name">{product.name}</div>
+                  <div className="product-price">單價: ${product.price}</div>
+                  <div className="product-quantity">數量: {product.quantity}個</div>
+                  <div className="product-farmPlace">產地: {product.farmPlace}</div>
+                  <div className="product-netWeight">重量: {product.netWeight}g</div>
+                  <div className="product-pesticideRecord">農藥紀錄: {product.pesticideRecord}</div>
+                  {product.imageBase64 && <img src={product.imageBase64} alt={product.name} className="product-image" />}
+                  <div className="product-timestamp">上架時間: {new Date(product.timestamp).toLocaleString()}</div>
+                  <div className="button-group">
+                    <button onClick={() => { setEditProduct({
+                        ...product,
+                        imageBase64: product.imageBase64 || '' // Ensure imageBase64 is a string
+                      });
+                      setShowEditModal(true);
+                    }}><Pencil /></button>
+                    <button onClick={() => product.productId && setDeleteProductId(product.productId)}><Delete /></button>
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-      </div>
+          </div>
 
-      <div className="add-product">
-        <h3>新增產品</h3>
-        <input 
-          type="text" 
-          name="name" 
-          value={newProduct.name} 
-          onChange={handleInputChange} 
-          placeholder="產品名稱"
-        />
-        <input 
-          type="number" 
-          name="price" 
-          value={newProduct.price} 
-          onChange={handleInputChange} 
-          placeholder="單價"
-        />
-        <input 
-          type="number" 
-          name="quantity" 
-          value={newProduct.quantity} 
-          onChange={handleInputChange} 
-          placeholder="數量"
-        />
-        <input 
-          type="text" 
-          name="farmPlace" 
-          value={newProduct.farmPlace} 
-          onChange={handleInputChange} 
-          placeholder="產地"
-        />
-        <input 
-          type="number" 
-          name="netWeight" 
-          value={newProduct.netWeight} 
-          onChange={handleInputChange} 
-          placeholder="重量(g)"
-        />
-        <input 
-          type="text" 
-          name="pesticideRecord" 
-          value={newProduct.pesticideRecord} 
-          onChange={handleInputChange} 
-          placeholder="農藥紀錄"
-        />
-        <input 
-          type="file" 
-          name="imageFile" 
-          onChange={handleFileChange} 
-          placeholder="產品圖片"
-        />
-        <button onClick={handleAddProduct}>新增</button>
-      </div>
-
-      {showEditModal && editProduct && (
-        <div className="modal">
-          <div className="modal-content">
-            <h3>編輯產品</h3>
+          <div className="add-product">
+            <h3>新增產品</h3>
             <input 
               type="text" 
               name="name" 
-              value={editProduct.name} 
-              onChange={handleEditInputChange} 
+              value={newProduct.name} 
+              onChange={handleInputChange} 
               placeholder="產品名稱"
             />
             <input 
               type="number" 
               name="price" 
-              value={editProduct.price} 
-              onChange={handleEditInputChange} 
+              value={newProduct.price} 
+              onChange={handleInputChange} 
               placeholder="單價"
             />
             <input 
               type="number" 
               name="quantity" 
-              value={editProduct.quantity} 
-              onChange={handleEditInputChange} 
+              value={newProduct.quantity} 
+              onChange={handleInputChange} 
               placeholder="數量"
             />
             <input 
               type="text" 
               name="farmPlace" 
-              value={editProduct.farmPlace} 
-              onChange={handleEditInputChange} 
+              value={newProduct.farmPlace} 
+              onChange={handleInputChange} 
               placeholder="產地"
             />
             <input 
               type="number" 
               name="netWeight" 
-              value={editProduct.netWeight} 
-              onChange={handleEditInputChange} 
+              value={newProduct.netWeight} 
+              onChange={handleInputChange} 
               placeholder="重量(g)"
             />
             <input 
               type="text" 
               name="pesticideRecord" 
-              value={editProduct.pesticideRecord} 
-              onChange={handleEditInputChange} 
+              value={newProduct.pesticideRecord} 
+              onChange={handleInputChange} 
               placeholder="農藥紀錄"
             />
             <input 
               type="file" 
-              name="imageBase64" 
-              onChange={handleEditFileChange} 
+              name="imageFile" 
+              onChange={handleFileChange} 
+              placeholder="產品圖片"
             />
-            <button onClick={handleEditProduct}>保存</button>
-            <button onClick={() => setShowEditModal(false)}>取消</button>
+            <button onClick={handleAddProduct}>新增</button>
           </div>
-        </div>
-      )}
-  
-      {deleteProductId && (
-        <div className="modal">
-          <div className="modal-content">
-            <h3>確認刪除</h3>
-            <p>您確定要刪除此產品嗎？</p>
-            <button onClick={handleDeleteProduct}>確認</button>
-            <button onClick={() => setDeleteProductId(null)}>取消</button>
-          </div>
-        </div>
+
+          {showEditModal && editProduct && (
+            <div className="modal">
+              <div className="modal-content">
+                <h3>編輯產品</h3>
+                <input 
+                  type="text" 
+                  name="name" 
+                  value={editProduct.name} 
+                  onChange={handleEditInputChange} 
+                  placeholder="產品名稱"
+                />
+                <input 
+                  type="number" 
+                  name="price" 
+                  value={editProduct.price} 
+                  onChange={handleEditInputChange} 
+                  placeholder="單價"
+                />
+                <input 
+                  type="number" 
+                  name="quantity" 
+                  value={editProduct.quantity} 
+                  onChange={handleEditInputChange} 
+                  placeholder="數量"
+                />
+                <input 
+                  type="text" 
+                  name="farmPlace" 
+                  value={editProduct.farmPlace} 
+                  onChange={handleEditInputChange} 
+                  placeholder="產地"
+                />
+                <input 
+                  type="number" 
+                  name="netWeight" 
+                  value={editProduct.netWeight} 
+                  onChange={handleEditInputChange} 
+                  placeholder="重量(g)"
+                />
+                <input 
+                  type="text" 
+                  name="pesticideRecord" 
+                  value={editProduct.pesticideRecord} 
+                  onChange={handleEditInputChange} 
+                  placeholder="農藥紀錄"
+                />
+                <input 
+                  type="file" 
+                  name="imageBase64" 
+                  onChange={handleEditFileChange} 
+                />
+                <button onClick={handleEditProduct}>保存</button>
+                <button onClick={() => setShowEditModal(false)}>取消</button>
+              </div>
+            </div>
+          )}
+      
+          {deleteProductId && (
+            <div className="modal">
+              <div className="modal-content">
+                <h3>確認刪除</h3>
+                <p>您確定要刪除此產品嗎？</p>
+                <button onClick={handleDeleteProduct}>確認</button>
+                <button onClick={() => setDeleteProductId(null)}>取消</button>
+              </div>
+            </div>
+          )}
+        </>
       )}
     </section>
   );
