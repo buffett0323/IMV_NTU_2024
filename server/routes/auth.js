@@ -6,15 +6,20 @@ const fs = require('fs');
 const User = require('../models/user');
 const Product = require('../models/product');
 const Order = require('../models/order');
+const Seller = require('../models/seller');
 const { v4: uuidv4 } = require('uuid');
 const { spawn } = require('child_process');
 const router = express.Router();
 const XLSX = require('xlsx');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 const clientId = '2005899680';
 const clientSecret = 'fb1c25c861ce3f9cf3519375bc3e1361';
 const redirectUri = 'http://localhost:8000/api/auth/callback';
 
+// Secret key for JWT
+const JWT_SECRET = '4c08215bafc4612c49c18896207640b87b4512a89d283bbf99b5660b70911f063d1076d75104a07a333b8a50e1d4793c324bd0484914b826027d8e8c89335f08';
 
 // Functions to catch the line login information
 router.get('/callback', async (req, res) => {
@@ -297,6 +302,64 @@ router.get('/get-faq', (req, res) => {
   }
 });
 
+
+// Register route
+router.post('/seller/register', async (req, res) => {
+  const { username, password } = req.body;
+  console.log("Seller Register:", req.body);
+
+  try {
+    // Check if user already exists
+    const existingSeller = await Seller.findOne({ username });
+    if (existingSeller) {
+      return res.status(400).json({ message: 'Username already exists' });
+    }
+
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Create new seller
+    const newSeller = new Seller({
+      username,
+      password: hashedPassword,
+    });
+
+    await newSeller.save();
+
+    res.status(201).json({ message: 'Registration successful' });
+  } catch (error) {
+    console.error('Error registering seller:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Login route
+router.post('/seller/login', async (req, res) => {
+  console.log("Login:", req.body);
+  const { username, password } = req.body;
+
+  try {
+    // Find the seller by username
+    const seller = await Seller.findOne({ username });
+    if (!seller) {
+      return res.status(400).json({ message: 'Invalid username or password' });
+    }
+
+    // Check the password
+    const isPasswordValid = await bcrypt.compare(password, seller.password);
+    if (!isPasswordValid) {
+      return res.status(400).json({ message: 'Invalid username or password' });
+    }
+
+    // Generate JWT token
+    const token = jwt.sign({ id: seller._id }, JWT_SECRET, { expiresIn: '1h' });
+
+    res.json({ message: 'Login successful', token });
+  } catch (error) {
+    console.error('Error logging in seller:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
 
 
 module.exports = router;

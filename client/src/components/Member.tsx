@@ -103,7 +103,7 @@ const Member: React.FC = () => {
         </div>
       ) : (
         <div className="auth-buttons">
-          <Link to="/login" className="btn">以Line登入</Link>
+          <Link to="/login" className="btn">點此登入</Link>
         </div>
       )}
     </div>
