@@ -141,10 +141,10 @@ router.post('/products', async (req, res) => {
 });
 
 
-// Get all products available
+// Get all seller's related products
 router.get('/products/get_all', async (req, res) => {
   try {
-    console.log("Search all objects by", req.query.username);
+    console.log("Search all products by", req.query.username);
     const products = await Product.find({ lineUserId: req.query.username });
     if (!products.length) {
       console.log('No products found for this user');
@@ -152,6 +152,22 @@ router.get('/products/get_all', async (req, res) => {
       console.log('Find', products.length, "products!");
     }
     res.json(products);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+
+// Get all seller's related orders
+router.get('/orders/get_all', async (req, res) => {
+  try {
+    console.log("Search all orders by", req.query.username);
+    const orders = await Order.find({ productOwnerID: req.query.username });
+    if (!orders.length) {
+      console.log('No orders found for this user');
+    } else {
+      console.log('Find', orders.length, "orders!");
+    }
+    res.json(orders);
   } catch (err) {
     res.status(500).send(err);
   }
@@ -198,21 +214,29 @@ router.get('/products', async (req, res) => {
 
 // Create a new order
 router.post('/orders', async (req, res) => {
-  console.log("Create New Order!");
+  console.log("Create New Order with", req.body);
   const { userId, productId, productName, productPrice, quantity, totalAmount } = req.body;
   const prd = await Product.findOne({ productId: productId });
   const productOwnerID = prd.lineUserId;
+
+  const buyer = await User.findOne({ lineUserId: userId });
+  const buyerName = buyer.displayName;
+  const buyerContact = buyer.email;
+
   console.log("productId:", productId);
   console.log("productOwnerID:", productOwnerID);
 
   const newOrder = new Order({
-    userId,
-    productId,
-    productName,
-    productPrice,
-    productOwnerID,
-    quantity,
-    totalAmount,
+    orderId: uuidv4(),
+    buyerId: userId,
+    buyerName: buyerName,
+    buyerContact: buyerContact,
+    productId: productId,
+    productName: productName,
+    productPrice: productPrice,
+    productOwnerID: productOwnerID,
+    quantity: quantity,
+    totalAmount: totalAmount,
   });
 
   try {
@@ -229,7 +253,7 @@ router.get('/orders/:userId', async (req, res) => {
   const { userId } = req.params;
   
   try {
-    const orders = await Order.find({ userId });
+    const orders = await Order.find({ buyerId: userId });
     res.json(orders);
   } catch (error) {
     res.status(500).json({ message: error.message });

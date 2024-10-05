@@ -23,6 +23,20 @@ const Producer: React.FC = () => {
     timestamp: string
   }[]>([]);
   
+  const [orders, setOrders] = useState<{
+    orderId: string,
+    buyerId: string,
+    buyerName: string,
+    buyerContact: string,
+    productId: string,
+    productName: string,
+    productPrice: number,
+    productOwnerID: string,
+    quantity: number,
+    totalAmount: number,
+    orderDate: Date
+  }[]>([]); // State to store orders
+
   const [newProduct, setNewProduct] = useState<{
     name: string,
     price: number,
@@ -65,6 +79,15 @@ const Producer: React.FC = () => {
         })
         .catch(error => {
           console.error('There was an error fetching the products!', error);
+        });
+      
+      // Fetch orders associated with the seller
+      axios.get(`http://localhost:8000/api/auth/orders/get_all`, {params: {username: seller.username}})
+        .then(response => {
+          setOrders(response.data);
+        })
+        .catch(error => {
+          console.error('There was an error fetching the orders!', error);
         });
     }
   }, [seller, navigate]);  
@@ -251,6 +274,27 @@ const Producer: React.FC = () => {
               placeholder="產品圖片"
             />
             <button onClick={handleAddProduct}>新增</button>
+          </div>
+
+          {/* Order Section */}
+          <div className="order-list">
+            <h3>{seller?.name} 的訂單</h3>
+            {orders.length > 0 ? (
+              <div className="order-grid">
+                {orders.map(order => (
+                  <div className="order-box" key={order.orderId}>
+                    <div className="order-productName">產品名稱: {order.productName}</div>
+                    <div className="order-quantity">數量: {order.quantity}</div>
+                    <div className="order-totalAmount">總金額: ${order.totalAmount}</div>
+                    <div className="order-buyerName">購買者: {order.buyerName}</div>
+                    <div className="order-buyerContact">聯絡方式: {order.buyerContact}</div>
+                    <div className="order-date">訂單日期: {new Date(order.orderDate).toLocaleString()}</div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p>目前沒有訂單。</p>
+            )}
           </div>
 
           {showEditModal && editProduct && (
