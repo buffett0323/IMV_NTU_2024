@@ -200,12 +200,17 @@ router.get('/products', async (req, res) => {
 router.post('/orders', async (req, res) => {
   console.log("Create New Order!");
   const { userId, productId, productName, productPrice, quantity, totalAmount } = req.body;
+  const prd = await Product.findOne({ productId: productId });
+  const productOwnerID = prd.lineUserId;
+  console.log("productId:", productId);
+  console.log("productOwnerID:", productOwnerID);
 
   const newOrder = new Order({
     userId,
     productId,
     productName,
     productPrice,
+    productOwnerID,
     quantity,
     totalAmount,
   });

@@ -6,6 +6,7 @@ const orderSchema = new Schema({
   productId: String,
   productName: String,
   productPrice: Number,
+  productOwnerID: String,
   quantity: Number,
   totalAmount: Number,
   orderDate: { type: Date, default: Date.now },
