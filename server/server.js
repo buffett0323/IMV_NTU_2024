@@ -7,6 +7,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const authRoutes = require('./routes/auth');
 const app = express();
+const router = express.Router();
 const PORT = process.env.PORT || 8000;
 
 // Construct the MongoDB URI using the password from the text file
@@ -40,4 +41,5 @@ connect();
 
 app.listen(PORT, () => {
   console.log(`Server now started on port ${PORT}.`);
+  console.log(`Router now is on ${router}.`);
 });
