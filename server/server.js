@@ -44,5 +44,5 @@ async function connect() {
 connect();
 
 app.listen(PORT, () => {
-  console.log(`Server started on port ${PORT}.`);
+  console.log(`Server now started on port ${PORT}.`);
 });

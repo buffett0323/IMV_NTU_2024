@@ -296,6 +296,7 @@ router.post('/calculate', (req, res) => {
 router.get('/get-faq', (req, res) => {
   try {
       // Specify the path to the Excel file
+      console.log("Getting Frequent Questions");
       const filePath = path.join(__dirname, '../xlsx/qa_0804.xlsx');
       
       // Read the Excel file
