@@ -12,8 +12,12 @@ const PORT = process.env.PORT || 8000;
 // Construct the MongoDB URI using the password from the text file
 const uri = process.env.MONGO_URI;
 
+const corsOptions = {
+  origin: ['https://imv-ntu-2024.com'],
+  optionsSuccessStatus: 200,
+};
 
-app.use(cors()); //app.use(cors(corsOptions));
+app.use(cors(corsOptions)); //app.use(cors());
 
 // Increase the request size limit
 app.use(bodyParser.json({ limit: '50mb' }));
