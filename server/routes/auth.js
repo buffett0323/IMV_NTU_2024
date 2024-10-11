@@ -63,7 +63,7 @@ router.get('/callback', async (req, res) => {
       console.log("Existing User:", existingUser);
 
       // Redirect to frontend with updated user information
-      res.redirect(`http://localhost:3000/home?userId=${existingUser.lineUserId}&displayName=${existingUser.displayName}&pictureUrl=${existingUser.pictureUrl}&email=${existingUser.email}&deliveryAddress=${existingUser.deliveryAddress}&premiereLevel=${existingUser.premiereLevel}`);
+      res.redirect(`${process.env.REACT_APP_SERVER_URL}/home?userId=${existingUser.lineUserId}&displayName=${existingUser.displayName}&pictureUrl=${existingUser.pictureUrl}&email=${existingUser.email}&deliveryAddress=${existingUser.deliveryAddress}&premiereLevel=${existingUser.premiereLevel}`);
     } else {
       // Create a new user
       const newUser = new User({
@@ -79,7 +79,7 @@ router.get('/callback', async (req, res) => {
       console.log("New User:", newUser);
 
       // Redirect to frontend with new user information
-      res.redirect(`http://localhost:3000/home?userId=${newUser.lineUserId}&displayName=${newUser.displayName}&pictureUrl=${newUser.pictureUrl}&email=${newUser.email}`);
+      res.redirect(`${process.env.REACT_APP_SERVER_URL}/home?userId=${newUser.lineUserId}&displayName=${newUser.displayName}&pictureUrl=${newUser.pictureUrl}&email=${newUser.email}`);
     }
   } catch (error) {
     console.error('Error exchanging code for token or fetching profile:', error.response ? error.response.data : error.message);
