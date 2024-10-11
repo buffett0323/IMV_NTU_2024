@@ -6,7 +6,10 @@ You can view the live demo of this project here: [IMV_NTU_2024](https://buffett0
 
 
 Frontend: TS React<br>
+Deployed with Vercel<br>
+
 Backend: Node JS<br>
+Deployed with Render<br>
 
 [MongoDB Cluster Links](https://cloud.mongodb.com/v2/66977b13805e6a0b5953a4d6#/clusters)
 
