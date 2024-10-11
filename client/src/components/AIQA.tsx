@@ -9,7 +9,7 @@ const AIQA: React.FC = () => {
         const fetchFAQ = async () => {
             try {
                 // Fetch the FAQ data from the backend API
-                const response = await axios.get('http://localhost:8000/api/auth/get-faq');
+                const response = await axios.get(`{env.process.SERVER_URL}/api/auth/get-faq`);
                 setFaq(response.data);
             } catch (error) {
                 console.error('Failed to load FAQ data', error);

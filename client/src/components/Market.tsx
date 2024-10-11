@@ -25,7 +25,7 @@ const Market: React.FC = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/api/auth/products');
+        const response = await axios.get(`{env.process.SERVER_URL}/api/auth/products`);
         setProducts(response.data);
       } catch (error) {
         console.error('Error fetching the products', error);
@@ -54,7 +54,7 @@ const Market: React.FC = () => {
       };
   
       try {
-        await axios.post('http://localhost:8000/api/auth/orders', order);
+        await axios.post(`{env.process.SERVER_URL}/api/auth/orders`, order);
         alert('Order placed successfully');
       } catch (error) {
         console.error('Error placing the order', error);

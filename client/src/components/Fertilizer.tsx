@@ -10,7 +10,7 @@ const Fertilizer: React.FC = () => {
 
   const handleCalculate = async () => {
     try {
-      const response = await axios.post('http://localhost:8000/api/auth/calculate', { values: [param1, param2, param3] });
+      const response = await axios.post(`{env.process.SERVER_URL}/api/auth/calculate`, { values: [param1, param2, param3] });
       if (response.data.result) {
         setPlotUrl(response.data.result);
       }
