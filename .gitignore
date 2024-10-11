@@ -19,6 +19,7 @@ server/node_modules
 .env.test.local
 .env.production.local
 client/.env
+server/.env
 
 # password
 # server/password.txt

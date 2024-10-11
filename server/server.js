@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
@@ -6,15 +7,21 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const authRoutes = require('./routes/auth');
 const app = express();
-const PORT = 8000;
+const PORT = process.env.PORT || 8000;
 
 // Construct the MongoDB URI using the password from the text file
-const password = fs.readFileSync(path.join(__dirname, 'password.txt'), 'utf8').trim();
-const uri = `mongodb+srv://buffett:${password}@imvntu2024.2zjdkz5.mongodb.net/?retryWrites=true&w=majority&appName=IMVNTU2024`;
+const uri = process.env.MONGO_URI;
+// const uri = `mongodb+srv://buffett:${password}@imvntu2024.2zjdkz5.mongodb.net/?retryWrites=true&w=majority&appName=IMVNTU2024`;
 
 // Middleware
-app.use(cors());
-app.use(bodyParser.json());
+const corsOptions = {
+  origin: ['http://localhost:3000', 'https://imv-ntu-2024.vercel.app', 'https://imv-ntu-2024.onrender.com'],
+  optionsSuccessStatus: 200,
+};
+
+app.use(cors(corsOptions));
+
+// app.use(cors());
 
 // Increase the request size limit
 app.use(bodyParser.json({ limit: '50mb' }));
