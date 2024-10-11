@@ -14,10 +14,10 @@ const XLSX = require('xlsx');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-const clientId = `${process.env.REACT_APP_CLIENT_ID}`;
-const clientSecret = `${process.env.REACT_APP_CLIENT_SECRET}`;
+const clientId = process.env.REACT_APP_CLIENT_ID;
+const clientSecret = process.env.REACT_APP_CLIENT_SECRET;
 const redirectUri = `${process.env.REACT_APP_SERVER_URL}/api/auth/callback`;
-const JWT_SECRET = `${process.env.REACT_APP_JWT_SECRET}`;
+const JWT_SECRET = process.env.REACT_APP_JWT_SECRET;
 
 
 // Functions to catch the line login information

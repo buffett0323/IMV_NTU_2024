@@ -11,7 +11,6 @@ const PORT = process.env.PORT || 8000;
 
 // Construct the MongoDB URI using the password from the text file
 const uri = process.env.MONGO_URI;
-// const uri = `mongodb+srv://buffett:${password}@imvntu2024.2zjdkz5.mongodb.net/?retryWrites=true&w=majority&appName=IMVNTU2024`;
 
 // Middleware
 const corsOptions = {
@@ -20,8 +19,6 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-
-// app.use(cors());
 
 // Increase the request size limit
 app.use(bodyParser.json({ limit: '50mb' }));
