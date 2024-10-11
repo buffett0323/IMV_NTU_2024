@@ -13,12 +13,12 @@ const PORT = process.env.PORT || 8000;
 const uri = process.env.MONGO_URI;
 
 // Middleware
-const corsOptions = {
-  origin: ['http://localhost:3000', 'https://imv-ntu-2024.vercel.app', 'https://imv-ntu-2024.onrender.com'],
-  optionsSuccessStatus: 200,
-};
+// const corsOptions = {
+//   origin: ['http://localhost:3000', 'https://imv-ntu-2024.vercel.app', 'https://imv-ntu-2024.onrender.com'],
+//   optionsSuccessStatus: 200,
+// };
 
-app.use(cors(corsOptions));
+app.use(cors()); //app.use(cors(corsOptions));
 
 // Increase the request size limit
 app.use(bodyParser.json({ limit: '50mb' }));

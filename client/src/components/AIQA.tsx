@@ -22,7 +22,7 @@ const AIQA: React.FC = () => {
     return (
         <section className="aiqa">
             <h2>Q&A</h2>
-            <h3>碳索者農業網，把您所有的問題變成沒有問題。</h3>
+            <h3>碳索者農業網，把您所有的問題XXX變成沒有問題。</h3>
             
             <div className="faq-section">
               <h3>常見問題 (FAQ)</h3>
