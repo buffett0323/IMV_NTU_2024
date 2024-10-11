@@ -12,11 +12,6 @@ const PORT = process.env.PORT || 8000;
 // Construct the MongoDB URI using the password from the text file
 const uri = process.env.MONGO_URI;
 
-// Middleware
-// const corsOptions = {
-//   origin: ['http://localhost:3000', 'https://imv-ntu-2024.vercel.app', 'https://imv-ntu-2024.onrender.com'],
-//   optionsSuccessStatus: 200,
-// };
 
 app.use(cors()); //app.use(cors(corsOptions));
 
