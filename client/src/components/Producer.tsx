@@ -73,7 +73,7 @@ const Producer: React.FC = () => {
       navigate('/login');
     } else {
       // Fetch products if the seller is logged in
-      axios.get(`{env.process.SERVER_URL}/api/auth/products/get_all`, {params: {username: seller.username}})
+      axios.get(`${process.env.REACT_APP_SERVER_URL}/api/auth/products/get_all`, {params: {username: seller.username}})
         .then(response => {
           setProducts(response.data);
         })
@@ -82,7 +82,7 @@ const Producer: React.FC = () => {
         });
       
       // Fetch orders associated with the seller
-      axios.get(`{env.process.SERVER_URL}/api/auth/orders/get_all`, {params: {username: seller.username}})
+      axios.get(`${process.env.REACT_APP_SERVER_URL}/api/auth/orders/get_all`, {params: {username: seller.username}})
         .then(response => {
           setOrders(response.data);
         })
@@ -151,7 +151,7 @@ const Producer: React.FC = () => {
         lineUserName: seller.name, //user.displayName,
         timestamp: new Date().toISOString()
       };
-      axios.post(`{env.process.SERVER_URL}/api/auth/products`, productData)
+      axios.post(`${process.env.REACT_APP_SERVER_URL}/api/auth/products`, productData)
         .then(response => {
           setProducts([...products, response.data]);
           setNewProduct({ name: '', price: 0, quantity: 0, farmPlace: '', netWeight: 0, pesticideRecord: '', imageBase64: '', timestamp: '' });
@@ -165,7 +165,7 @@ const Producer: React.FC = () => {
 
   const handleEditProduct = () => {
     if (editProduct) {
-      axios.put(`{env.process.SERVER_URL}/api/auth/products/${editProduct.productId}`, editProduct)
+      axios.put(`${process.env.REACT_APP_SERVER_URL}/api/auth/products/${editProduct.productId}`, editProduct)
         .then(response => {
           setProducts(products.map(p => (p.productId === editProduct.productId ? response.data : p)));
           setShowEditModal(false);
@@ -179,7 +179,7 @@ const Producer: React.FC = () => {
 
   const handleDeleteProduct = () => {
     if (deleteProductId) {
-      axios.delete(`{env.process.SERVER_URL}/api/auth/products/${deleteProductId}`)
+      axios.delete(`${process.env.REACT_APP_SERVER_URL}/api/auth/products/${deleteProductId}`)
         .then(() => {
           setProducts(products.filter(p => p.productId !== deleteProductId));
           setDeleteProductId(null);

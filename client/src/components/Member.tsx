@@ -30,7 +30,7 @@ const Member: React.FC = () => {
 
       try {
         console.log("MEMBER:", user);
-        const response = await axios.put(`{env.process.SERVER_URL}/api/auth/user/${user.lineUserId}`, updatedUser);
+        const response = await axios.put(`${process.env.REACT_APP_SERVER_URL}/api/auth/user/${user.lineUserId}`, updatedUser);
         console.log('User updated successfully', response.data);
         setUser(response.data);
         setIsEditing(false);

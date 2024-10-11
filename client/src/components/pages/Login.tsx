@@ -17,7 +17,7 @@ const LoginPage: React.FC = () => {
   const handleLogin = () => {
     const responseType = 'code';
     const clientId = '2005899680';
-    const redirectUri = encodeURIComponent(`{env.process.SERVER_URL}/api/auth/callback`);
+    const redirectUri = encodeURIComponent(`${process.env.REACT_APP_SERVER_URL}/api/auth/callback`);
     const state = Math.random().toString(36).substring(7);
     const scope = 'profile%20openid%20email';
   
@@ -28,7 +28,7 @@ const LoginPage: React.FC = () => {
   // Handle seller login
   const handleSellerLogin = async () => {
     try {
-      const response = await fetch(`{env.process.SERVER_URL}/api/auth/seller/login`, {
+      const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/api/auth/seller/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -60,7 +60,7 @@ const LoginPage: React.FC = () => {
   // Handle seller registration
   const handleSellerRegistration = async () => {
     try {
-      const response = await fetch(`{env.process.SERVER_URL}/api/auth/seller/register`, {
+      const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/api/auth/seller/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

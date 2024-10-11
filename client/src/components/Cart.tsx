@@ -22,7 +22,7 @@ const Cart: React.FC = () => {
     if (user) {
       const fetchOrders = async () => {
         try {
-          const response = await axios.get(`{env.process.SERVER_URL}/api/auth/orders/${user.lineUserId}`);
+          const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/api/auth/orders/${user.lineUserId}`);
           setOrders(response.data);
         } catch (error) {
           console.error('Error fetching the orders', error);
