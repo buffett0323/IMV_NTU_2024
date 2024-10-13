@@ -64,7 +64,7 @@ router.get('/callback', async (req, res) => {
 
       // Redirect to frontend with updated user information
       // res.redirect(`${process.env.REACT_APP_SERVER_URL}/`);
-      res.redirect(`${process.env.REACT_APP_SERVER_URL}/home?userId=${existingUser.lineUserId}&displayName=${existingUser.displayName}&pictureUrl=${existingUser.pictureUrl}&email=${existingUser.email}&deliveryAddress=${existingUser.deliveryAddress}&premiereLevel=${existingUser.premiereLevel}`);
+      res.redirect(`${process.env.REACT_APP_URL}/home?userId=${existingUser.lineUserId}&displayName=${existingUser.displayName}&pictureUrl=${existingUser.pictureUrl}&email=${existingUser.email}&deliveryAddress=${existingUser.deliveryAddress}&premiereLevel=${existingUser.premiereLevel}`);
     } else {
       // Create a new user
       const newUser = new User({
