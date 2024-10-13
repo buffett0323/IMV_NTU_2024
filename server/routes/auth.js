@@ -81,7 +81,7 @@ router.get('/callback', async (req, res) => {
 
       // Redirect to frontend with new user information
       // res.redirect(`${process.env.REACT_APP_SERVER_URL}/`);
-      res.redirect(`${process.env.REACT_APP_SERVER_URL}/home?userId=${newUser.lineUserId}&displayName=${newUser.displayName}&pictureUrl=${newUser.pictureUrl}&email=${newUser.email}`);
+      res.redirect(`${process.env.REACT_APP_URL}/home?userId=${newUser.lineUserId}&displayName=${newUser.displayName}&pictureUrl=${newUser.pictureUrl}&email=${newUser.email}`);
     }
   } catch (error) {
     console.error('Error exchanging code for token or fetching profile:', error.response ? error.response.data : error.message);
