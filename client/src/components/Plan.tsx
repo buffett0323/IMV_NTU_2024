@@ -15,7 +15,7 @@ const Plan: React.FC = () => {
       <h3>固碳農法: ⽣態農業新紀元</h3>
       <div className="pdf-container">
         <Worker workerUrl={`https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js`}>
-          <Viewer fileUrl={MyPDF} plugins={[defaultLayoutPluginInstance]} />
+          <Viewer fileUrl="https://drive.google.com/uc?export=download&id=1YN9hT-Y6q8d001QIrDTkPY7YHDPY4wNU" plugins={[defaultLayoutPluginInstance]} />
         </Worker>
       </div>
       <div className="other-info">
