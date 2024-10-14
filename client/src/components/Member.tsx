@@ -31,8 +31,8 @@ const Member: React.FC = () => {
       try {
         console.log("MEMBER:", user, user.lineUserId);
         const response = await axios.put(`${process.env.REACT_APP_SERVER_URL}/api/auth/user/${user.lineUserId}`, updatedUser);
-        console.log('User updated successfully', response.data);
-        setUser(response.data);
+        // console.log('User updated successfully', response.data);
+        // setUser(response.data);
         setIsEditing(false);
       } catch (error) {
         console.error('There was an error updating the user!', error);

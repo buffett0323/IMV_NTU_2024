@@ -108,6 +108,7 @@ router.put('/user/:id', async (req, res) => {
       return res.status(404).json({ message: 'User not found' });
     } else {
       res.redirect(`${process.env.REACT_APP_URL}/home?userId=${lineUserId}&displayName=${displayName}&email=${email}&deliveryAddress=${deliveryAddress}`);
+      console.log("Successfully Update User:", req.body );
     }
     res.json(updatedUser);
   } catch (error) {
