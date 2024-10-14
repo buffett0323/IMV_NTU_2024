@@ -23,7 +23,7 @@ const Plan: React.FC = () => {
 
       {/* Section for additional information */}
       <div className="other-info">
-        <h3>其他資訊</h3>
+        {/* <h3>其他資訊</h3> */}
         <p>
           For more details, please visit the{' '}
           <a
