@@ -19,7 +19,7 @@ const Member: React.FC = () => {
     setIsEditing(true);
   };
 
-  const handleSave = async () => {
+  const handleSave = () => {
     if (user) {
       const updatedUser = {
         displayName,
@@ -28,15 +28,23 @@ const Member: React.FC = () => {
         lineUserId: user.lineUserId,
       };
 
-      try {
-        console.log("MEMBER:", user, user.lineUserId);
-        const response = await axios.put(`${process.env.REACT_APP_SERVER_URL}/api/auth/user/${user.lineUserId}`, updatedUser);
-        // console.log('User updated successfully', response.data);
-        // setUser(response.data);
-        setIsEditing(false);
-      } catch (error) {
-        console.error('There was an error updating the user!', error);
-      }
+      axios.put(`${process.env.REACT_APP_SERVER_URL}/api/auth/user/${user.lineUserId}`, updatedUser)
+        .then(response => {
+          setIsEditing(false);
+        })
+        .catch(error => {
+          console.error('There was an error editing the user!', error);
+        });
+
+      // try {
+      //   console.log("MEMBER:", user, user.lineUserId);
+      //   const response = await axios.put(`${process.env.REACT_APP_SERVER_URL}/api/auth/user/${user.lineUserId}`, updatedUser);
+      //   // console.log('User updated successfully', response.data);
+      //   // setUser(response.data);
+      //   setIsEditing(false);
+      // } catch (error) {
+      //   console.error('There was an error updating the user!', error);
+      // }
     }
   };
 
