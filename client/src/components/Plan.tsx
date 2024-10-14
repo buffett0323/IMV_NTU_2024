@@ -18,9 +18,9 @@ const Plan: React.FC = () => {
       {/* Container for the PDF viewer */}
       <div className="pdf-container">
         <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js">
-          {/* Reference the PDF file located in the public directory */}
+          {/* Reference the PDF file from Google Drive */}
           <Viewer
-            fileUrl="/pdf/imv_propose.pdf"
+            fileUrl="https://drive.google.com/uc?export=download&id=1YN9hT-Y6q8d001QIrDTkPY7YHDPY4wNU"
             plugins={[defaultLayoutPluginInstance]}
           />
         </Worker>
