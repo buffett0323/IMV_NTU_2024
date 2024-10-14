@@ -12,14 +12,15 @@ const Member: React.FC = () => {
   const [displayName, setDisplayName] = useState(user?.displayName || '');
   const [email, setEmail] = useState(user?.email || '');
   const [deliveryAddress, setDeliveryAddress] = useState(user?.deliveryAddress || '');
-  // const [premiereLevel, setPremiereLevel] = useState(user?.premiereLevel || 0);
   const [isEditing, setIsEditing] = useState(false);
 
   const handleEdit = () => {
     setIsEditing(true);
   };
 
-  const handleSave = () => {
+  const handleSave = async (e: React.FormEvent) => {
+    e.preventDefault(); // Prevent form submission from reloading the page
+
     if (user) {
       const updatedUser = {
         displayName,
@@ -28,23 +29,18 @@ const Member: React.FC = () => {
         lineUserId: user.lineUserId,
       };
 
-      axios.put(`${process.env.REACT_APP_SERVER_URL}/api/auth/user/${user.lineUserId}`, updatedUser)
-        .then(response => {
-          setIsEditing(false);
-        })
-        .catch(error => {
-          console.error('There was an error editing the user!', error);
+      try {
+        const response = await axios.put(`${process.env.REACT_APP_SERVER_URL}/api/auth/user/${user.lineUserId}`, updatedUser, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
         });
-
-      // try {
-      //   console.log("MEMBER:", user, user.lineUserId);
-      //   const response = await axios.put(`${process.env.REACT_APP_SERVER_URL}/api/auth/user/${user.lineUserId}`, updatedUser);
-      //   // console.log('User updated successfully', response.data);
-      //   // setUser(response.data);
-      //   setIsEditing(false);
-      // } catch (error) {
-      //   console.error('There was an error updating the user!', error);
-      // }
+        console.log('User updated successfully', response.data);
+        setIsEditing(false); // Exit edit mode after saving
+        setUser(response.data); // Update the user context with new data
+      } catch (error) {
+        console.error('There was an error updating the user!', error);
+      }
     }
   };
 
@@ -66,7 +62,7 @@ const Member: React.FC = () => {
           {isEditing ? (
             <div className="edit-form-container">
               <h2 className="edit-form-title">Edit Your Profile</h2>
-              <form className="edit-form">
+              <form className="edit-form" onSubmit={handleSave}>
                 <div className="form-group">
                   <label htmlFor="name" className="form-label">名字</label>
                   <input 
@@ -92,7 +88,7 @@ const Member: React.FC = () => {
                   />
                 </div>
                 
-                <button type="submit" className="form-submit-btn" onClick={handleSave}>Save Changes</button>
+                <button type="submit" className="form-submit-btn">Save Changes</button>
               </form>
             </div>
           ) : (

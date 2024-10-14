@@ -94,8 +94,9 @@ router.get('/callback', async (req, res) => {
 // Update user info
 router.put('/user/:id', async (req, res) => {
   console.log("Update USER INFO:", req.body);
-  const {displayName, email, deliveryAddress, lineUserId} = req.body;
+  const { displayName, email, deliveryAddress, lineUserId } = req.body;
   console.log("Receive user info:", displayName, email, deliveryAddress, lineUserId);
+
   try {
     const updatedUser = await User.findOneAndUpdate(
       { lineUserId },
@@ -107,10 +108,9 @@ router.put('/user/:id', async (req, res) => {
       console.log("User Not found!")
       return res.status(404).json({ message: 'User not found' });
     } else {
-      res.redirect(`${process.env.REACT_APP_URL}/home?userId=${lineUserId}&displayName=${displayName}&email=${email}&deliveryAddress=${deliveryAddress}`);
-      console.log("Successfully Update User:", req.body );
+      console.log("Successfully Update User:", updatedUser);
+      res.json(updatedUser); // Send updated user back to the client
     }
-    res.json(updatedUser);
   } catch (error) {
     console.error('Error updating user:', error);
     res.status(500).json({ message: 'Server error' });
