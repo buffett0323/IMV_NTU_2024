@@ -3,7 +3,6 @@ import { Worker, Viewer } from '@react-pdf-viewer/core';
 import '@react-pdf-viewer/core/lib/styles/index.css';
 import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout';
 import '@react-pdf-viewer/default-layout/lib/styles/index.css';
-import MyPDF from './pdf/imv_propose.pdf';
 import './css/Plan.css'; // Import your CSS file
 
 const Plan: React.FC = () => {
@@ -15,7 +14,8 @@ const Plan: React.FC = () => {
       <h3>固碳農法: ⽣態農業新紀元</h3>
       <div className="pdf-container">
         <Worker workerUrl={`https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js`}>
-          <Viewer fileUrl="https://drive.google.com/uc?export=download&id=1YN9hT-Y6q8d001QIrDTkPY7YHDPY4wNU" plugins={[defaultLayoutPluginInstance]} />
+          {/* Reference the file in the public directory */}
+          <Viewer fileUrl="/pdf/imv_propose.pdf" plugins={[defaultLayoutPluginInstance]} />
         </Worker>
       </div>
       <div className="other-info">
