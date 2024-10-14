@@ -1,14 +1,7 @@
 import React from 'react';
-import { Worker, Viewer } from '@react-pdf-viewer/core';
-import '@react-pdf-viewer/core/lib/styles/index.css';
-import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout';
-import '@react-pdf-viewer/default-layout/lib/styles/index.css';
 import './css/Plan.css'; // Import your CSS file
 
 const Plan: React.FC = () => {
-  // Initialize the default layout plugin for the PDF viewer
-  const defaultLayoutPluginInstance = defaultLayoutPlugin();
-
   return (
     <section className="plan">
       {/* Section title */}
@@ -17,13 +10,15 @@ const Plan: React.FC = () => {
 
       {/* Container for the PDF viewer */}
       <div className="pdf-container">
-        <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js">
-          {/* Reference the PDF file from Google Drive */}
-          <Viewer
-            fileUrl="https://drive.google.com/uc?export=download&id=1YN9hT-Y6q8d001QIrDTkPY7YHDPY4wNU"
-            plugins={[defaultLayoutPluginInstance]}
-          />
-        </Worker>
+        {/* Embedding Google Drive PDF viewer using iframe */}
+        <iframe
+          title="Google Drive PDF Viewer"
+          src="https://drive.google.com/file/d/1YN9hT-Y6q8d001QIrDTkPY7YHDPY4wNU/preview"
+          width="100%"
+          height="780"
+          allow="autoplay"
+          style={{ border: 'none' }}
+        ></iframe>
       </div>
 
       {/* Section for additional information */}
