@@ -138,52 +138,44 @@
   font-size: 18px;
 }
 
-
 .order-section {
-  margin-top: 30px;
+  margin-top: 20px;
   text-align: center;
 }
 
-.order-section label {
-  display: block;
-  margin-bottom: 10px;
-  font-size: 18px;
-  color: #2c3e50;
+.order-form-inline {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px; /* Add some spacing between the elements */
+  margin-top: 10px;
 }
 
-.order-section input {
-  width: 40%;
-  padding: 10px;
-  font-size: 16px;
-  border-radius: 8px;
-  border: 1px solid #bdc3c7;
-  margin-bottom: 20px;
-  outline: none;
-  transition: border-color 0.3s ease;
-}
-
-.order-section input:focus {
-  border-color: #3498db;
+.order-form-inline input {
+  padding: 8px;
+  width: 80px;
+  text-align: center;
+  border-radius: 5px;
+  border: 1px solid #ccc;
 }
 
 .order-button {
-  padding: 12px 25px;
-  font-size: 18px;
-  background-color: #239818;
+  padding: 8px 16px;
+  background-color: #50bc44;
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
 .order-button:hover {
-  background-color: #2eba43;
+  background-color: #89e071;
 }
 
 .order-message {
   margin-top: 15px;
-  font-size: 16px;
+  font-size: 14px;
   color: #16a085;
 }
 
@@ -234,4 +226,16 @@
 
 .fertilizer-inputs .calculate-button:hover {
   background-color: #2980b9;
+}
+
+.fertilizer-image-container {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.fertilizer-image {
+  max-width: 40%;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }

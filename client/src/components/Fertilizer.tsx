@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './css/Fertilizer.css';  // Import the CSS file
+// import Fertilizer_pic from './img/fertilizer_bag.png';
 
 const Fertilizer: React.FC = () => {
   const [param1, setParam1] = useState<string>('空心菜'); // Default to '空心菜'
@@ -112,17 +113,23 @@ const Fertilizer: React.FC = () => {
       {/* Order Section */}
       <section className="order-section">
         <h3>訂購肥料</h3>
-        <label>
-          訂購數量 (包)： 
+        <div className="order-form-inline">
+          <label>訂購數量 (包)：</label>
           <input
             type="number"
             value={orderQuantity}
             onChange={(e) => setOrderQuantity(Number(e.target.value) || '')}
           />
-        </label>
-        <button className="order-button" onClick={handleOrder}>立即訂購</button>
+          <button className="order-button" onClick={handleOrder}>立即訂購</button>
+        </div>
         {orderMessage && <p className="order-message">{orderMessage}</p>}
       </section>
+
+      {/* Add the image for the fertilizer */}
+      {/* <div className="fertilizer-image-container">
+        <img src={Fertilizer_pic} alt="Carbon Reduction Fertilizer" className="fertilizer-image" />
+      </div> */}
+
       {/* Section for additional information */}
       <div className="other-info">
         {/* <h3>其他資訊</h3> */}
