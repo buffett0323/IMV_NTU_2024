@@ -1,92 +1,237 @@
 .fertilizer-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .fertilizer-container h2 {
-    text-align: center;
-    color: #333;
-    margin-bottom: 20px;
-  }
-  
-  .fertilizer-container p {
-    text-align: center;
-    color: #555;
-    margin-bottom: 20px;
-  }
-  
-  .input-group {
-    margin-bottom: 15px;
-  }
-  
-  .input-group label {
-    font-weight: bold;
-    color: #333;
-    display: block;
-    margin-bottom: 5px;
-  }
-  
-  .input-group input, .input-group select {
-    width: calc(100% - 500px);
-    padding: 8px 10px;
-    font-size: 16px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    outline: none;
-    box-sizing: border-box;
-  }
-  
-  .input-group input:focus, .input-group select:focus {
-    border-color: #007bff;
-  }
-  
-  .calculate-button {
-    display: center;
-    width: calc(100% - 500px);
-    padding: 10px 0;
-    font-size: 18px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin-bottom: 20px;
-  }
-  
-  .calculate-button:hover {
-    background-color: #0056b3;
-  }
-  
-  .plot-container {
-    text-align: center;
-    margin-top: 20px;
-  }
-  
-  .plot-container img {
-    max-width: 100%;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .download-button {
-    display: block;
-    margin: 10px auto;
-    padding: 10px 20px;
-    font-size: 16px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .download-button:hover {
-    background-color: #218838;
-  }
-  
+  max-width: 1100px;
+  margin: 30px auto;
+  padding: 30px;
+  background-color: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.fertilizer-container h2 {
+  text-align: center;
+  color: #2c3e50;
+  font-size: 28px;
+  margin-bottom: 25px;
+  font-weight: bold;
+}
+
+.fertilizer-container p {
+  text-align: center;
+  color: #7f8c8d;
+  font-size: 16px;
+  margin-bottom: 30px;
+}
+
+.input-group {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.input-group label {
+  font-weight: bold;
+  color: #2c3e50;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.input-group input, .input-group select {
+  width: 60%;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 1px solid #bdc3c7;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+}
+
+.input-group input:focus, .input-group select:focus {
+  border-color: #3498db;
+}
+
+.calculate-button {
+  display: block;
+  width: 60%;
+  padding: 12px 0;
+  font-size: 18px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin: 20px auto;
+}
+
+.calculate-button:hover {
+  background-color: #2980b9;
+}
+
+.plot-container {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.plot-container img {
+  max-width: 80%;
+  border-radius: 15px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.download-button {
+  display: inline-block;
+  margin: 20px auto;
+  padding: 12px 25px;
+  font-size: 16px;
+  background-color: #2ecc71;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.download-button:hover {
+  background-color: #27ae60;
+}
+
+/* Additional section styling for fertilizer info and order section */
+.fertilizer-info {
+  background-color: #f1f1f1;
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 30px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.fertilizer-info h3 {
+  font-size: 22px;
+  color: #34495e;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.fertilizer-info p {
+  font-size: 16px;
+  color: #7f8c8d;
+  line-height: 1.6;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.fertilizer-info .label {
+  font-weight: bold;
+  color: #2c3e50;
+  font-size: 18px;
+}
+
+.fertilizer-info .value {
+  font-weight: normal;
+  color: #1d3443;
+  font-size: 18px;
+}
+
+
+.order-section {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.order-section label {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 18px;
+  color: #2c3e50;
+}
+
+.order-section input {
+  width: 40%;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 1px solid #bdc3c7;
+  margin-bottom: 20px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.order-section input:focus {
+  border-color: #3498db;
+}
+
+.order-button {
+  padding: 12px 25px;
+  font-size: 18px;
+  background-color: #239818;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.order-button:hover {
+  background-color: #2eba43;
+}
+
+.order-message {
+  margin-top: 15px;
+  font-size: 16px;
+  color: #16a085;
+}
+
+
+.fertilizer-inputs {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 30px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.fertilizer-inputs .input-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.fertilizer-inputs .label {
+  font-weight: bold;
+  color: #2c3e50;
+  font-size: 16px;
+}
+
+.fertilizer-inputs .value {
+  font-size: 16px;
+  padding: 8px;
+  border: 1px solid #bdc3c7;
+  border-radius: 5px;
+  width: 60%;
+}
+
+.fertilizer-inputs .calculate-button {
+  width: 100%;
+  padding: 10px;
+  font-size: 18px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 15px;
+}
+
+.fertilizer-inputs .calculate-button:hover {
+  background-color: #2980b9;
+}
