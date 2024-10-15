@@ -194,29 +194,41 @@ const Producer: React.FC = () => {
     <section className="market">
       {seller && (
         <>
-          <h2>賣家中心</h2>
+          <h1>賣家中心</h1> 
+          <h2>Welcome - {seller?.name}</h2>
           <h3>{seller?.name} 的產品</h3>
           {errorMessage && <div className="error-message">{errorMessage}</div>}
           <div className="product-list">
             <div className="product-grid">
               {products.map((product) => (
-                <div className="product-box" key={product.productId}>
-                  <div className="product-name">{product.name}</div>
-                  <div className="product-price">單價: ${product.price}</div>
-                  <div className="product-quantity">數量: {product.quantity}個</div>
-                  <div className="product-farmPlace">產地: {product.farmPlace}</div>
-                  <div className="product-netWeight">重量: {product.netWeight}g</div>
-                  <div className="product-pesticideRecord">農藥紀錄: {product.pesticideRecord}</div>
-                  {product.imageBase64 && <img src={product.imageBase64} alt={product.name} className="product-image" />}
-                  <div className="product-timestamp">上架時間: {new Date(product.timestamp).toLocaleString()}</div>
-                  <div className="button-group">
-                    <button onClick={() => { setEditProduct({
-                        ...product,
-                        imageBase64: product.imageBase64 || '' // Ensure imageBase64 is a string
-                      });
-                      setShowEditModal(true);
-                    }}><Pencil /></button>
-                    <button onClick={() => product.productId && setDeleteProductId(product.productId)}><Delete /></button>
+                <div className="product-card" key={product.productId}>
+                  <div className="product-image">
+                    {product.imageBase64 && <img src={product.imageBase64} alt={product.name} className="product-image" />}
+                  </div>
+                  <div className="product-info">
+                    <h3>{product.name}</h3>
+                    <div className="info-columns">
+                      <div className="column">
+                        <p><span className="label">單價:</span><span className="value">${product.price}</span></p>
+                        <p><span className="label">數量:</span><span className="value">{product.quantity} 個</span></p>
+                        <p><span className="label">產地:</span><span className="value">{product.farmPlace}</span></p>
+                      </div>
+                      <div className="column">
+                        <p><span className="label">重量:</span><span className="value">{product.netWeight}g</span></p>
+                        <p><span className="label">農藥紀錄:</span><span className="value">{product.pesticideRecord}</span></p>
+                        <p><span className="label">上架時間:</span><span className="value">{new Date(product.timestamp).toLocaleString()}</span></p>
+                      </div>
+                    </div>
+
+                    <div className="button-group">
+                      <button onClick={() => { setEditProduct({
+                          ...product,
+                          imageBase64: product.imageBase64 || ''
+                        });
+                        setShowEditModal(true);
+                      }}><Pencil /></button>
+                      <button onClick={() => product.productId && setDeleteProductId(product.productId)}><Delete /></button>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -278,7 +290,7 @@ const Producer: React.FC = () => {
 
           {/* Order Section */}
           <div className="order-list">
-            <h3>{seller?.name} 的訂單</h3>
+            <h3>向 {seller?.name} 訂購的訂單</h3>
             {orders.length > 0 ? (
               <div className="order-grid">
                 {orders.map(order => (
@@ -348,7 +360,7 @@ const Producer: React.FC = () => {
                   name="imageBase64" 
                   onChange={handleEditFileChange} 
                 />
-                <button onClick={handleEditProduct}>保存</button>
+                <button onClick={handleEditProduct}>確認修改</button>
                 <button onClick={() => setShowEditModal(false)}>取消</button>
               </div>
             </div>
