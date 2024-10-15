@@ -93,8 +93,8 @@ const Market: React.FC = () => {
               <div className="order-form">
                 <input
                   type="number"
-                  min="1"
-                  value={orderQuantities[product.productId] || 1}
+                  // min="1"
+                  value={orderQuantities[product.productId]}
                   onChange={(e) => handleQuantityChange(product.productId, parseInt(e.target.value))}
                 />
                 <button onClick={() => handleOrder(product)}>訂購</button>

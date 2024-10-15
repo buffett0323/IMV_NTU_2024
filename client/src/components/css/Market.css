@@ -27,7 +27,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #eaeee9eb;
+  background-color: #f7f7f7eb;
   overflow: hidden; /* Ensure the image does not overflow */
 }
 
@@ -35,7 +35,7 @@
   max-width: 100%;
   max-height: 100%;
   object-fit: cover;
-  transform: scale(0.7); /* Zoom out the image */
+  transform: scale(1); /* Zoom out the image */
 }
 
 .product-image img:hover {
