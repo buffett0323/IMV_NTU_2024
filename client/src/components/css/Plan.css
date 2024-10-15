@@ -1,6 +1,71 @@
+/* Overall section styling */
+.plan {
+  background-color: #f5f5f5; /* Light grey background */
+  padding: 40px 20px; /* Padding around the entire section */
+  font-family: 'Roboto', sans-serif; /* Modern, clean font */
+}
+
+/* Section title styling */
+.plan h2 {
+  font-size: 2.5rem; /* Larger font for the main title */
+  color: #2c3e50; /* Dark blue-gray text */
+  text-align: center; /* Center align the text */
+  margin-bottom: 20px; /* Space below the title */
+}
+
+.plan h3 {
+  font-size: 1.8rem; /* Slightly smaller than main title */
+  color: #16a085; /* Greenish color for subheading */
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+/* Styling for PDF container */
 .pdf-container {
-    width: 80%;
-    height: 750px;
-    margin: 0 auto; /* Center the div */
+  margin: 0 auto; /* Center the container */
+  max-width: 1000px; /* Set a max width */
+  border: 1px solid #ccc; /* Light border around the container */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  border-radius: 10px; /* Rounded corners */
+  overflow: hidden; /* Ensures iframe fits nicely inside the container */
+}
+
+/* Iframe styling for PDF viewer */
+.pdf-container iframe {
+  width: 100%; /* Full width */
+  height: 780px; /* Height as mentioned */
+  border: none; /* Remove default border */
+}
+
+/* Styling for other information section */
+.other-info {
+  margin-top: 30px;
+  text-align: center; /* Center align text */
+  font-size: 1rem; /* Regular font size */
+}
+
+.other-info a {
+  color: #e74c3c; /* Red color for links */
+  text-decoration: none; /* Remove underline */
+  font-weight: bold; /* Make links bold */
+}
+
+.other-info a:hover {
+  text-decoration: underline; /* Underline on hover */
+  color: #c0392b; /* Slightly darker red on hover */
+}
+
+@media screen and (max-width: 768px) {
+  /* Mobile responsiveness */
+  .plan h2 {
+    font-size: 2rem; /* Smaller title on mobile */
   }
-  
+
+  .plan h3 {
+    font-size: 1.5rem; /* Smaller subtitle on mobile */
+  }
+
+  .pdf-container {
+    width: 90%; /* Limit width to fit mobile screen */
+  }
+}
