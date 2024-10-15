@@ -33,6 +33,16 @@ const Cart: React.FC = () => {
     }
   }, [user]);
 
+  const handleDeleteOrder = async (orderId: string) => {
+    try {
+      await axios.delete(`${process.env.REACT_APP_SERVER_URL}/api/auth/orders/delete/${orderId}`);
+      // After deleting, filter out the deleted order from the state
+      setOrders(orders.filter(order => order._id !== orderId));
+    } catch (error) {
+      console.error('Error deleting the order', error);
+    }
+  };
+
   if (!user) {
     return (
       <section className="cart">
@@ -48,17 +58,34 @@ const Cart: React.FC = () => {
       {orders.length === 0 ? (
         <p>購物車內沒有商品。</p>
       ) : (
-        <div className="order-list">
-          {orders.map(order => (
-            <div className="order-box" key={order._id}>
-              <h3>{order.productName}</h3>
-              <p>價錢: {order.productPrice}</p>
-              <p>數量: {order.quantity}</p>
-              <p>總金額: {order.totalAmount}</p>
-              <p>訂購日期: {new Date(order.orderDate).toLocaleString()}</p>
-            </div>
-          ))}
-        </div>
+        <table className="order-sheet">
+          <thead>
+            <tr>
+              <th>產品名稱</th>
+              <th>價錢</th>
+              <th>數量</th>
+              <th>總金額</th>
+              <th>訂購日期</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            {orders.map(order => (
+              <tr key={order._id}>
+                <td>{order.productName}</td>
+                <td>{order.productPrice}</td>
+                <td>{order.quantity}</td>
+                <td>{order.totalAmount}</td>
+                <td>{new Date(order.orderDate).toLocaleString()}</td>
+                <td>
+                  <button onClick={() => handleDeleteOrder(order._id)} className="delete-button">
+                    刪除
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       )}
     </section>
   );
