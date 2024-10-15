@@ -55,7 +55,7 @@ const Fertilizer: React.FC = () => {
     <section className="fertilizer-container">
       <h2>肥料與資源</h2>
       <h3>「科技耕種，橄石作力—減碳滿分，收成翻倍」</h3>
-      <p>突出科技在農業中的應用，以及橄欖石肥料如何科學地提升土壤質量，同時達到減碳和增產的目標。</p>
+      <p>應用科學與科技於吸收大氣中的溫室氣體，同時改善土壤品質與提升作物產量。</p>
       <p>輸入以下參數，以比較「原始農法」及「固碳農法」的成本效益。</p>
 
       <section className="fertilizer-inputs">
