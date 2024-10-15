@@ -65,6 +65,7 @@ const Producer: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [showEditModal, setShowEditModal] = useState(false);
   const [deleteProductId, setDeleteProductId] = useState<string | null>(null);
+  const [showAddProductModal, setShowAddProductModal] = useState(false); // State to control modal visibility
   const MAX_BASE64_SIZE = 50 * 1024 * 1024; // 50 MB
 
   useEffect(() => {
@@ -234,8 +235,72 @@ const Producer: React.FC = () => {
               ))}
             </div>
           </div>
+          {/* Button to open the modal */}
+          <button onClick={() => setShowAddProductModal(true)} className="open-modal-button">
+            新增產品
+          </button>
 
-          <div className="add-product">
+          {/* Modal for adding a product */}
+          {showAddProductModal && (
+            <div className="modal">
+              <div className="modal-content">
+                <h3>新增產品</h3>
+                <input 
+                  type="text" 
+                  name="name" 
+                  value={newProduct.name} 
+                  onChange={handleInputChange} 
+                  placeholder="產品名稱"
+                />
+                <input 
+                  type="number" 
+                  name="price" 
+                  value={newProduct.price} 
+                  onChange={handleInputChange} 
+                  placeholder="單價"
+                />
+                <input 
+                  type="number" 
+                  name="quantity" 
+                  value={newProduct.quantity} 
+                  onChange={handleInputChange} 
+                  placeholder="數量"
+                />
+                <input 
+                  type="text" 
+                  name="farmPlace" 
+                  value={newProduct.farmPlace} 
+                  onChange={handleInputChange} 
+                  placeholder="產地"
+                />
+                <input 
+                  type="number" 
+                  name="netWeight" 
+                  value={newProduct.netWeight} 
+                  onChange={handleInputChange} 
+                  placeholder="重量(g)"
+                />
+                <input 
+                  type="text" 
+                  name="pesticideRecord" 
+                  value={newProduct.pesticideRecord} 
+                  onChange={handleInputChange} 
+                  placeholder="農藥紀錄"
+                />
+                <input 
+                  type="file" 
+                  name="imageFile" 
+                  onChange={handleFileChange} 
+                  placeholder="產品圖片"
+                />
+                <div className="modal-buttons">
+                  <button onClick={handleAddProduct}>新增</button>
+                  <button onClick={() => setShowAddProductModal(false)}>取消</button>
+                </div>
+              </div>
+            </div>
+          )}
+          {/* <div className="add-product">
             <h3>新增產品</h3>
             <input 
               type="text" 
@@ -286,24 +351,36 @@ const Producer: React.FC = () => {
               placeholder="產品圖片"
             />
             <button onClick={handleAddProduct}>新增</button>
-          </div>
+          </div> */}
 
           {/* Order Section */}
           <div className="order-list">
-            <h3>向 {seller?.name} 訂購的訂單</h3>
+          <h3>{seller?.name} 的客人訂單</h3>
             {orders.length > 0 ? (
-              <div className="order-grid">
-                {orders.map(order => (
-                  <div className="order-box" key={order.orderId}>
-                    <div className="order-productName">產品名稱: {order.productName}</div>
-                    <div className="order-quantity">數量: {order.quantity}</div>
-                    <div className="order-totalAmount">總金額: ${order.totalAmount}</div>
-                    <div className="order-buyerName">購買者: {order.buyerName}</div>
-                    <div className="order-buyerContact">聯絡方式: {order.buyerContact}</div>
-                    <div className="order-date">訂單日期: {new Date(order.orderDate).toLocaleString()}</div>
-                  </div>
-                ))}
-              </div>
+              <table className="order-sheet">
+                <thead>
+                  <tr>
+                    <th>產品名稱</th>
+                    <th>數量</th>
+                    <th>總金額</th>
+                    <th>購買者</th>
+                    <th>聯絡方式</th>
+                    <th>下訂日期</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {orders.map(order => (
+                    <tr key={order.orderId}>
+                      <td>{order.productName}</td>
+                      <td>{order.quantity}</td>
+                      <td>${order.totalAmount}</td>
+                      <td>{order.buyerName}</td>
+                      <td>{order.buyerContact}</td>
+                      <td>{new Date(order.orderDate).toLocaleString()}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             ) : (
               <p>目前沒有訂單。</p>
             )}
