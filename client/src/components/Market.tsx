@@ -78,12 +78,18 @@ const Market: React.FC = () => {
             </div>
             <div className="product-info">
               <h3>{product.name}</h3>
-              <p>價錢: {product.price} 元</p>
-              <p>數量: {product.quantity}</p>
-              <p>生產者: {product.lineUserName}</p>
-              <p>生產地: {product.farmPlace}</p>
-              <p>淨重量: {product.netWeight}g</p>
-              <p>農藥紀錄: {product.pesticideRecord}</p>
+              <div className="info-columns">
+                <div className="column">
+                  <p><span className="label">價錢:</span><span className="value">{product.price} 元</span></p>
+                  <p><span className="label">生產者:</span><span className="value">{product.lineUserName}</span></p>
+                  <p><span className="label">淨重量:</span><span className="value">{product.netWeight}g</span></p>
+                </div>
+                <div className="column">
+                  <p><span className="label">數量:</span><span className="value">{product.quantity}</span></p>
+                  <p><span className="label">生產地:</span><span className="value">{product.farmPlace}</span></p>
+                  <p><span className="label">農藥紀錄:</span><span className="value">{product.pesticideRecord}</span></p>
+                </div>
+              </div>
               <div className="order-form">
                 <input
                   type="number"

@@ -12,8 +12,8 @@
   border: 1px solid #ccc;
   border-radius: 8px;
   overflow: hidden;
-  width: 300px;
-  height: 600px; /* Keep the card square */
+  width: 350px;
+  height: 500px; /* Keep the card square */
   display: flex;
   flex-direction: column;
   justify-content: flex-start; /* Align content at the top */
@@ -27,7 +27,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #effaeb;
+  background-color: #eaeee9eb;
   overflow: hidden; /* Ensure the image does not overflow */
 }
 
@@ -45,12 +45,70 @@
 .product-info {
   padding: 15px;
   background-color: #ffffff;
+  width: 80%; /* Ensure the info section spans the full width */
 }
 
 .product-info h3 {
   font-size: 1.2rem;
   margin-bottom: 10px;
 }
+
+.info-columns {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px; /* Add some space between the columns */
+}
+
+.column {
+  flex: 1; /* Ensure the columns take equal space */
+}
+
+.product-info p {
+  display: flex;
+  justify-content: space-between; /* Align label and value with space between */
+  margin-bottom: 10px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.product-info .label {
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+.product-info .value {
+  color: #132e41;
+  text-align: right; /* Align value to the right */
+}
+
+/* Order form styling */
+.order-form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.order-form input {
+  padding: 5px;
+  width: 60px;
+  text-align: center;
+}
+
+.order-form button {
+  padding: 5px 10px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.order-form button:hover {
+  background-color: #2980b9;
+}
+
 
 .order-form {
   display: flex;
