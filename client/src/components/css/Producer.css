@@ -250,18 +250,34 @@ button {
   padding: 20px;
   border-radius: 8px;
   max-width: 500px;
-  width: 90%;
+  width: 100%;
   text-align: center;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.modal-content input {
-  display: block;
-  width: 90%;
+.form-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  flex-basis: 35%;
+  text-align: right;
+  margin-right: 10px;
+  font-weight: bold;
+}
+
+.form-group input {
+  flex-basis: 60%;
   padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #ddd;
   border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+.form-group input[type="file"] {
+  padding: 0;
 }
 
 .modal-buttons {
@@ -281,4 +297,14 @@ button {
 
 .modal-buttons button:hover {
   background-color: #2980b9;
+}
+
+
+.modal-content input {
+  display: block;
+  width: 90%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
 }

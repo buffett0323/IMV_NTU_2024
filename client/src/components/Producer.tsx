@@ -245,59 +245,87 @@ const Producer: React.FC = () => {
             <div className="modal">
               <div className="modal-content">
                 <h3>新增產品</h3>
-                <input 
-                  type="text" 
-                  name="name" 
-                  value={newProduct.name} 
-                  onChange={handleInputChange} 
-                  placeholder="產品名稱"
-                />
-                <input 
-                  type="number" 
-                  name="price" 
-                  value={newProduct.price} 
-                  onChange={handleInputChange} 
-                  placeholder="單價"
-                />
-                <input 
-                  type="number" 
-                  name="quantity" 
-                  value={newProduct.quantity} 
-                  onChange={handleInputChange} 
-                  placeholder="數量"
-                />
-                <input 
-                  type="text" 
-                  name="farmPlace" 
-                  value={newProduct.farmPlace} 
-                  onChange={handleInputChange} 
-                  placeholder="產地"
-                />
-                <input 
-                  type="number" 
-                  name="netWeight" 
-                  value={newProduct.netWeight} 
-                  onChange={handleInputChange} 
-                  placeholder="重量(g)"
-                />
-                <input 
-                  type="text" 
-                  name="pesticideRecord" 
-                  value={newProduct.pesticideRecord} 
-                  onChange={handleInputChange} 
-                  placeholder="農藥紀錄"
-                />
-                <input 
-                  type="file" 
-                  name="imageFile" 
-                  onChange={handleFileChange} 
-                  placeholder="產品圖片"
-                />
+                <div className="form-group">
+                  <label htmlFor="name">產品名稱：</label>
+                  <input 
+                    type="text" 
+                    id="name"
+                    name="name" 
+                    value={newProduct.name} 
+                    onChange={handleInputChange} 
+                    placeholder="產品名稱"
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="price">單價：</label>
+                  <input 
+                    type="number" 
+                    id="price"
+                    name="price" 
+                    value={newProduct.price} 
+                    onChange={handleInputChange} 
+                    placeholder="單價"
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="quantity">數量：</label>
+                  <input 
+                    type="number" 
+                    id="quantity"
+                    name="quantity" 
+                    value={newProduct.quantity} 
+                    onChange={handleInputChange} 
+                    placeholder="數量"
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="farmPlace">產地：</label>
+                  <input 
+                    type="text" 
+                    id="farmPlace"
+                    name="farmPlace" 
+                    value={newProduct.farmPlace} 
+                    onChange={handleInputChange} 
+                    placeholder="產地"
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="netWeight">重量(g)：</label>
+                  <input 
+                    type="number" 
+                    id="netWeight"
+                    name="netWeight" 
+                    value={newProduct.netWeight} 
+                    onChange={handleInputChange} 
+                    placeholder="重量(g)"
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="pesticideRecord">農藥紀錄：</label>
+                  <input 
+                    type="text" 
+                    id="pesticideRecord"
+                    name="pesticideRecord" 
+                    value={newProduct.pesticideRecord} 
+                    onChange={handleInputChange} 
+                    placeholder="農藥紀錄"
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="imageFile">產品圖片：</label>
+                  <input 
+                    type="file" 
+                    id="imageFile"
+                    name="imageFile" 
+                    onChange={handleFileChange} 
+                  />
+                </div>
                 <div className="modal-buttons">
-                  <button onClick={handleAddProduct}>新增</button>
                   <button onClick={() => setShowAddProductModal(false)}>取消</button>
+                  <button onClick={handleAddProduct}>新增</button>
                 </div>
               </div>
+
             </div>
           )}
           {/* <div className="add-product">
@@ -390,56 +418,94 @@ const Producer: React.FC = () => {
             <div className="modal">
               <div className="modal-content">
                 <h3>編輯產品</h3>
-                <input 
-                  type="text" 
-                  name="name" 
-                  value={editProduct.name} 
-                  onChange={handleEditInputChange} 
-                  placeholder="產品名稱"
-                />
-                <input 
-                  type="number" 
-                  name="price" 
-                  value={editProduct.price} 
-                  onChange={handleEditInputChange} 
-                  placeholder="單價"
-                />
-                <input 
-                  type="number" 
-                  name="quantity" 
-                  value={editProduct.quantity} 
-                  onChange={handleEditInputChange} 
-                  placeholder="數量"
-                />
-                <input 
-                  type="text" 
-                  name="farmPlace" 
-                  value={editProduct.farmPlace} 
-                  onChange={handleEditInputChange} 
-                  placeholder="產地"
-                />
-                <input 
-                  type="number" 
-                  name="netWeight" 
-                  value={editProduct.netWeight} 
-                  onChange={handleEditInputChange} 
-                  placeholder="重量(g)"
-                />
-                <input 
-                  type="text" 
-                  name="pesticideRecord" 
-                  value={editProduct.pesticideRecord} 
-                  onChange={handleEditInputChange} 
-                  placeholder="農藥紀錄"
-                />
-                <input 
-                  type="file" 
-                  name="imageBase64" 
-                  onChange={handleEditFileChange} 
-                />
-                <button onClick={handleEditProduct}>確認修改</button>
-                <button onClick={() => setShowEditModal(false)}>取消</button>
+                <div className="form-group">
+                  <label htmlFor="name">產品名稱：</label>
+                  <input 
+                    type="text" 
+                    id="name"
+                    name="name" 
+                    value={editProduct.name} 
+                    onChange={handleEditInputChange} 
+                    placeholder="產品名稱"
+                  />
+                </div>
+                
+                <div className="form-group">
+                  <label htmlFor="price">單價：</label>
+                  <input 
+                    type="number" 
+                    id="price"
+                    name="price" 
+                    value={editProduct.price} 
+                    onChange={handleEditInputChange} 
+                    placeholder="單價"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="quantity">數量：</label>
+                  <input 
+                    type="number" 
+                    id="quantity"
+                    name="quantity" 
+                    value={editProduct.quantity} 
+                    onChange={handleEditInputChange} 
+                    placeholder="數量"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="farmPlace">產地：</label>
+                  <input 
+                    type="text" 
+                    id="farmPlace"
+                    name="farmPlace" 
+                    value={editProduct.farmPlace} 
+                    onChange={handleEditInputChange} 
+                    placeholder="產地"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="netWeight">重量(g)：</label>
+                  <input 
+                    type="number" 
+                    id="netWeight"
+                    name="netWeight" 
+                    value={editProduct.netWeight} 
+                    onChange={handleEditInputChange} 
+                    placeholder="重量(g)"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="pesticideRecord">農藥紀錄：</label>
+                  <input 
+                    type="text" 
+                    id="pesticideRecord"
+                    name="pesticideRecord" 
+                    value={editProduct.pesticideRecord} 
+                    onChange={handleEditInputChange} 
+                    placeholder="農藥紀錄"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="imageBase64">產品圖片：</label>
+                  <input 
+                    type="file" 
+                    id="imageBase64"
+                    name="imageBase64" 
+                    onChange={handleEditFileChange} 
+                  />
+                </div>
+
+                <div className="modal-buttons">
+                  <button onClick={handleEditProduct}>確認修改</button>
+                  <button onClick={() => setShowEditModal(false)}>取消</button>
+                </div>
               </div>
+
             </div>
           )}
       
