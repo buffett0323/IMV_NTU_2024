@@ -294,6 +294,40 @@ router.get('/orders/:userId', async (req, res) => {
 });
 
 
+// Delete an order and restore the product quantity
+router.delete('/orders/delete/:id', async (req, res) => {
+  try {
+    console.log("Deleting order id:", req.params.id);
+    
+    // Find and delete the order by orderId
+    const deletedOrder = await Order.findOneAndDelete({ orderId: req.params.id });
+    if (!deletedOrder) {
+      return res.status(404).json({ message: 'Order not found' });
+    }
+    
+    console.log("Order deleted:", req.params.id);
+
+    // Find the product associated with the deleted order
+    const prd = await Product.findOne({ productId: deletedOrder.productId });
+    if (!prd) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+
+    // Restore the product's quantity based on the deleted order's quantity
+    prd.quantity += deletedOrder.quantity;
+    await prd.save();
+
+    console.log("Product quantity restored for productId:", deletedOrder.productId);
+    
+    res.json({ message: 'Order deleted and product quantity restored' });
+    
+  } catch (err) {
+    console.error("Error deleting order:", err);
+    res.status(500).json({ message: err.message });
+  }
+});
+
+
 // Calculation of fertilizer
 router.post('/calculate', (req, res) => {
   
