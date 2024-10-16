@@ -219,35 +219,64 @@ router.get('/products', async (req, res) => {
 // Create a new order
 router.post('/orders', async (req, res) => {
   console.log("Create New Order with", req.body);
+  
   const { userId, productId, productName, productPrice, quantity, totalAmount } = req.body;
-  const prd = await Product.findOne({ productId: productId });
-  const productOwnerID = prd.lineUserId;
-
-  const buyer = await User.findOne({ lineUserId: userId });
-  const buyerName = buyer.displayName;
-  const buyerContact = buyer.email;
-
-  console.log("productId:", productId);
-  console.log("productOwnerID:", productOwnerID);
-
-  const newOrder = new Order({
-    orderId: uuidv4(),
-    buyerId: userId,
-    buyerName: buyerName,
-    buyerContact: buyerContact,
-    productId: productId,
-    productName: productName,
-    productPrice: productPrice,
-    productOwnerID: productOwnerID,
-    quantity: quantity,
-    totalAmount: totalAmount,
-  });
 
   try {
-    await newOrder.save();
-    res.status(201).json(newOrder);
+    // Find the product by productId
+    const prd = await Product.findOne({ productId: productId });
+    if (!prd) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+
+    const productOwnerID = prd.lineUserId;
+    
+    // Find the buyer by userId
+    const buyer = await User.findOne({ lineUserId: userId });
+    if (!buyer) {
+      return res.status(404).json({ message: 'Buyer not found' });
+    }
+
+    const buyerName = buyer.displayName;
+    const buyerContact = buyer.email;
+
+    console.log("productId:", productId);
+    console.log("productOwnerID:", productOwnerID);
+
+    // Check if there is sufficient stock for the requested quantity
+    if (quantity <= prd.quantity) {
+      // Create a new order
+      const newOrder = new Order({
+        orderId: uuidv4(),
+        buyerId: userId,
+        buyerName: buyerName,
+        buyerContact: buyerContact,
+        productId: productId,
+        productName: productName,
+        productPrice: productPrice,
+        productOwnerID: productOwnerID,
+        quantity: quantity,
+        totalAmount: totalAmount,
+      });
+
+      // Update product quantity
+      prd.quantity -= quantity;
+      await prd.save();
+
+      try {
+        await newOrder.save();
+        return res.status(201).json(newOrder);
+      } catch (error) {
+        return res.status(400).json({ message: error.message });
+      }
+    } else {
+      // Return an error if the purchase quantity exceeds the available stock
+      return res.status(400).json({ message: 'Purchase quantity exceeds available stock' });
+    }
+
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    console.error("Error creating order:", error);
+    return res.status(500).json({ message: 'Server error' });
   }
 });
 
