@@ -5,7 +5,7 @@ import loginButtonImage from '../img/btn_login_base.png';
 import { useSeller } from './UserContext';
 
 const LoginPage: React.FC = () => {
-  const { seller, setSeller } = useSeller(); // access setSeller function from context
+  const { setSeller } = useSeller(); // access setSeller function from context
   const [sellerName, setSellerName] = useState('');
   const [sellerUsername, setSellerUsername] = useState('');
   const [sellerPassword, setSellerPassword] = useState('');
