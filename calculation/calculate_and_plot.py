@@ -116,7 +116,7 @@ def water_spanish(fertilizer_amount,olivine_amount):
     mpl.rc('font', family='Taipei Sans TC Beta')
     fig, ax = plt.subplots(figsize=(12, 6))
     plt.bar(x - 0.2, data1, color=color1, width=0.35, align='center', edgecolor='black', label='只有添加肥料')
-    plt.bar(x + 0.2, data2, color=color2, width=0.35, align='center', edgecolor='black', label='同時添加肥及橄欖砂')
+    plt.bar(x + 0.2, data2, color=color2, width=0.35, align='center', edgecolor='black', label='同時添加肥料及橄欖砂')
     
     plt.xlabel('類別', fontsize=20)
     plt.ylabel('新臺幣', fontsize=24)

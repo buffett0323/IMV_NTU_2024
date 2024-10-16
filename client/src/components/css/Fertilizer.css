@@ -73,17 +73,20 @@
 .plot-container {
   text-align: center;
   margin-top: 30px;
+  display: flex;
+  flex-direction: column; /* Arrange elements in a column */
+  align-items: center;    /* Center elements horizontally */
 }
 
 .plot-container img {
   max-width: 80%;
   border-radius: 15px;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  margin-bottom: 20px; /* Add space between image and button */
 }
 
 .download-button {
   display: inline-block;
-  margin: 20px auto;
   padding: 12px 25px;
   font-size: 16px;
   background-color: #2ecc71;
