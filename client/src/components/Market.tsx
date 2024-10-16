@@ -42,7 +42,7 @@ const Market: React.FC = () => {
   const handleOrder = async (product: Product) => {
     if (user) {
       const userId = user.lineUserId;
-      const quantity = orderQuantities[product.productId] || 1; // Default to 1 if not specified
+      const quantity = orderQuantities[product.productId] || 1; // 預設為 1，如果未指定
   
       const order = {
         userId,
@@ -54,17 +54,30 @@ const Market: React.FC = () => {
       };
   
       try {
+        // 發送訂單請求到後端，並等待響應
         const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/api/auth/orders`, order);
+        
+        // 提示來自後端的成功訊息，或使用默認訊息
         alert(response.data.message || 'Order placed successfully');
-      } catch (error) {
-        console.error('Error placing the order', error);
-        alert('Failed to place the order');
+      } catch (error: unknown) {
+        // 檢查錯誤是否為 Axios 錯誤
+        if (axios.isAxiosError(error)) {
+          // 確保 error.response 存在並有 message
+          if (error.response && error.response.data && error.response.data.message) {
+            alert(`Failed to place the order: ${error.response.data.message}`);
+          } else {
+            console.error('Error placing the order', error);
+            alert('Failed to place the order');
+          }
+        } else {
+          // 非 Axios 錯誤的處理邏輯
+          console.error('An unexpected error occurred', error);
+          alert('An unexpected error occurred. Please try again.');
+        }
       }
-    }
-    else {
+    } else {
       alert("Please Login First!");
     }
-    
   };
 
   return (
