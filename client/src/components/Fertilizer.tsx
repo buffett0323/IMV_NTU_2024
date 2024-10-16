@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './css/Fertilizer.css';  // Import the CSS file
+import { useSeller } from './pages/UserContext';
 // import Fertilizer_pic from './img/fertilizer_bag.png';
 
 const Fertilizer: React.FC = () => {
+  const { seller } = useSeller();
   const [param1, setParam1] = useState<string>('空心菜'); // Default to '空心菜'
   const [param2, setParam2] = useState<number | ''>('');
   const [param3, setParam3] = useState<number | ''>('');
@@ -49,6 +51,14 @@ const Fertilizer: React.FC = () => {
     } else {
       setOrderMessage('Please enter a valid quantity.');
     }
+  };
+
+  if (!seller) {
+    return (
+      <section className="fertilizer-container">
+        <h2>請先註冊賣家會員</h2>
+      </section>
+    );
   };
 
   return (
