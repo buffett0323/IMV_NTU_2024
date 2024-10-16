@@ -11,13 +11,16 @@ const Fertilizer: React.FC = () => {
   const [param4, setParam4] = useState<number | ''>('');  // Fertilizer order quantity
   const [param5, setParam5] = useState<number | ''>('');  // Olivine order quantity
   const [plotUrl, setPlotUrl] = useState<string | null>(null);  // State for the plot image
-  // const [orderQuantity, setOrderQuantity] = useState<number | ''>(''); // Order quantity
   const [orderMessage, setOrderMessage] = useState<string | null>(null);  // Order confirmation message
   const [totalAmount, setTotalAmount] = useState<number>(0);  // Total amount of the order
   const [orderHistory, setOrderHistory] = useState<any[]>([]);  // State for storing order history
 
   // Handle the calculation request
   const handleCalculate = async () => {
+    if (!param2 || !param3) {
+      alert('請輸入基礎肥料重量和橄欖石重量！'); // Add this in the handleCalculate function to check param2 and param3
+      return;
+    }
     try {
       const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/api/auth/calculate`, { values: [param1, param2, param3] });
       if (response.data.result) {
@@ -218,12 +221,15 @@ const Fertilizer: React.FC = () => {
                     <button
                       className="delete-button"
                       onClick={async () => {
-                        try {
-                          await axios.delete(`${process.env.REACT_APP_SERVER_URL}/api/auth/fertilizer/delete/${order._id}`);
-                          // After deletion, refetch the order history
-                          fetchOrderHistory();
-                        } catch (error) {
-                          console.error('Error deleting the order:', error);
+                        const confirmDelete = window.confirm('確定要刪除此訂單嗎？');
+                        if (confirmDelete) {
+                          try {
+                            await axios.delete(`${process.env.REACT_APP_SERVER_URL}/api/auth/fertilizer/delete/${order._id}`);
+                            // After deletion, refetch the order history
+                            fetchOrderHistory();
+                          } catch (error) {
+                            console.error('Error deleting the order:', error);
+                          }
                         }
                       }}
                     >

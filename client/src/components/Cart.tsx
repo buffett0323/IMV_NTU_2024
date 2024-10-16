@@ -51,7 +51,7 @@ const Cart: React.FC = () => {
     return (
       <section className="cart">
         <h2>購物車</h2>
-        <p>請先登入以查看您的購物車。</p>
+        <p>請先以買家身份登入，以查看您的購物車。</p>
       </section>
     );
   }

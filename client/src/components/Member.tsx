@@ -78,6 +78,11 @@ const Member: React.FC = () => {
         <div>
           <h1>{user ? '買家會員中心' : '賣家會員中心'}</h1>
           <h2>{user ? user.displayName : seller?.name} 的會員資訊</h2>
+          {user ? (
+            <div className="member-figure-container">
+            <img src={user.pictureUrl} className="member-figure" alt="Community Figure" />
+          </div>):(<div></div>)
+          }
           {seller && (
             <div className="seller-info">
               {/* <p>Seller Username: {seller.username}</p> */}
@@ -132,6 +137,13 @@ const Member: React.FC = () => {
             </div>
           ) : (
             <div>
+              {user ? (
+                <div>
+                  <p>電子郵件: {user.email || '未提供'}</p>
+                  <p>配送地址: {user.deliveryAddress || '未提供'}</p>
+                  <p>會員分級等制: {user.premiereLevel || '0'} 級</p>
+                </div>
+              ) : (<div></div>)}
               <button onClick={handleEdit} className="btn edit">Edit</button>
             </div>
           )}

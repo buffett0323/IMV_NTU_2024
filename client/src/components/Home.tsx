@@ -15,7 +15,6 @@ const Home: React.FC = () => {
     const deliveryAddress = query.get('deliveryAddress');
     const email = query.get('email');
     const premiereLevel = query.get('premiereLevel');
-    const premiereLevelNumber: number | undefined = premiereLevel ? Number(premiereLevel) : undefined;
 
     console.log("UserID:", userId);
     console.log("displayName:", displayName);
@@ -31,7 +30,7 @@ const Home: React.FC = () => {
         pictureUrl: pictureUrl ?? undefined,
         deliveryAddress: deliveryAddress ?? undefined,
         email: email ?? undefined,
-        premiereLevel: premiereLevelNumber,
+        premiereLevel: premiereLevel ? Number(premiereLevel) : 0,
       });
       navigate('/');
     } else {
