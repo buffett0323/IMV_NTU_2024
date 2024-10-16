@@ -66,7 +66,10 @@ const Fertilizer: React.FC = () => {
       <h2>肥料與資源</h2>
       <h3>「科技耕種，橄石作力—減碳滿分，收成翻倍」</h3>
       <p>應用科學與科技於吸收大氣中的溫室氣體，同時改善土壤品質與提升作物產量。</p>
+      <p className='highlighted'>數學公式：淨效益 = 農產品價格 + 碳權價格 - 總成本。</p>
       <p>輸入以下參數，以比較「原始農法」及「固碳農法」的成本效益。</p>
+      <p>P.S.肥料和橄欖石的用量以「公斤」為單位，適用於「每公頃」的農田。</p>
+      <p>範例輸入：農作物：空心菜，肥料重量：1800公斤，橄欖石重量：5000公斤。</p>
 
       <section className="fertilizer-inputs">
         <div className="input-group">
@@ -79,7 +82,7 @@ const Fertilizer: React.FC = () => {
         </div>
 
         <div className="input-group">
-          <label className="label">Fertilizer amount (g)：</label>
+          <label className="label">肥料重量（公斤）：</label>
           <input
             className="value"
             type="number"
@@ -89,7 +92,7 @@ const Fertilizer: React.FC = () => {
         </div>
 
         <div className="input-group">
-          <label className="label">Olivine amount (g)：</label>
+          <label className="label">橄欖石重量（公斤）：</label>
           <input
             className="value"
             type="number"
