@@ -54,8 +54,8 @@ const Market: React.FC = () => {
       };
   
       try {
-        await axios.post(`${process.env.REACT_APP_SERVER_URL}/api/auth/orders`, order);
-        alert('Order placed successfully');
+        const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/api/auth/orders`, order);
+        alert(response.data.message || 'Order placed successfully');
       } catch (error) {
         console.error('Error placing the order', error);
         alert('Failed to place the order');
