@@ -35,7 +35,7 @@ const Fertilizer: React.FC = () => {
 
   // Handle calculating total amount
   useEffect(() => {
-    const calculatedAmount = (param4 || 0) * 400 + (param5 || 0) * 10;
+    const calculatedAmount = (param4 || 0) * 333 + (param5 || 0) * 7;
     setTotalAmount(calculatedAmount);
   }, [param4, param5]);
 
