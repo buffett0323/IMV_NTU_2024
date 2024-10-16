@@ -15,6 +15,7 @@ interface Seller {
   password?: string;
   email: string;
   phoneNumber: string;
+  submit: string;
 }
 
 interface UserContextType {

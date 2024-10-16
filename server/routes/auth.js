@@ -384,7 +384,7 @@ router.get('/get-faq', (req, res) => {
 });
 
 
-// Register route
+// Seller Register route
 router.post('/seller/register', async (req, res) => {
   const { name, username, password, email, phoneNumber } = req.body;
 
@@ -400,13 +400,14 @@ router.post('/seller/register', async (req, res) => {
 
     // Create new seller
     const newSeller = new Seller({
-      name,
-      username,
+      name: name,
+      username: username,
       password: hashedPassword,
-      email,
-      phoneNumber,
+      email: email,
+      phoneNumber: phoneNumber,
+      submit: "已訂閱",
     });
-
+    console.log("Successfully register a new seller:", newSeller);
     await newSeller.save();
 
     res.status(201).json({ message: 'Registration successful' });
@@ -416,7 +417,7 @@ router.post('/seller/register', async (req, res) => {
   }
 });
 
-// Login route
+// Seller Login route
 router.post('/seller/login', async (req, res) => {
   const { username, password } = req.body;
 
@@ -445,6 +446,7 @@ router.post('/seller/login', async (req, res) => {
         username: seller.username,
         email: seller.email,
         phoneNumber: seller.phoneNumber,
+        submit: seller.submit,
       }
     });
   } catch (error) {
@@ -453,6 +455,28 @@ router.post('/seller/login', async (req, res) => {
   }
 });
 
+
+// Seller update profile
+router.put('/seller/:username', async (req, res) => {
+  const { username } = req.params;
+  const { name, email, phoneNumber } = req.body;
+
+  try {
+    const updatedSeller = await Seller.findOneAndUpdate(
+      { username },
+      { name, email, phoneNumber },
+      { new: true } // Return the updated document
+    );
+
+    if (!updatedSeller) {
+      return res.status(404).json({ message: 'Seller not found' });
+    }
+
+    res.status(200).json(updatedSeller);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
 
 
 module.exports = router;

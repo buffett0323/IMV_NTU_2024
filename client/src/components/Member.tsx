@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useUser } from './pages/UserContext';
+import { useUser, useSeller } from './pages/UserContext';
 import './css/Member.css';
 import axios from 'axios';
 
 const Member: React.FC = () => {
   const { setUser, user } = useUser();
+  const { seller, setSeller } = useSeller();
   const navigate = useNavigate();
 
   // State to manage the form inputs
-  const [displayName, setDisplayName] = useState(user?.displayName || '');
-  const [email, setEmail] = useState(user?.email || '');
+  const [displayName, setDisplayName] = useState(user?.displayName || seller?.name || '');
+  const [email, setEmail] = useState(user?.email || seller?.email || '');
   const [deliveryAddress, setDeliveryAddress] = useState(user?.deliveryAddress || '');
   const [isEditing, setIsEditing] = useState(false);
 
@@ -41,23 +42,50 @@ const Member: React.FC = () => {
       } catch (error) {
         console.error('There was an error updating the user!', error);
       }
+    } else if (seller) {
+      const updatedSeller = {
+        name: displayName,
+        email,
+        phoneNumber: seller.phoneNumber,
+        username: seller.username,
+      };
+
+      try {
+        const response = await axios.put(`${process.env.REACT_APP_SERVER_URL}/api/auth/seller/${seller.username}`, updatedSeller, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        console.log('Seller updated successfully', response.data);
+        setIsEditing(false); // Exit edit mode after saving
+        setSeller(response.data); // Update the seller context with new data
+      } catch (error) {
+        console.error('There was an error updating the seller!', error);
+      }
     }
   };
 
   const handleLogout = () => {
     setUser(null);
-    navigate('/login');
+    setSeller(null);
+    navigate('/');
   };
 
   return (
     <div className="member">
-      <h1>會員資訊</h1>
-      {user ? (
+      
+      {user || seller ? (
         <div>
-          <h2>{user.displayName} 的會員中心</h2>
-          <div className="member-figure-container">
-            <img src={user.pictureUrl} className="member-figure" alt="Community Figure" />
-          </div>
+          <h1>{user ? '買家會員中心' : '賣家會員中心'}</h1>
+          <h2>{user ? user.displayName : seller?.name} 的會員資訊</h2>
+          {seller && (
+            <div className="seller-info">
+              {/* <p>Seller Username: {seller.username}</p> */}
+              <p>電子郵件: {seller.email}</p>
+              <p>電話號碼: {seller.phoneNumber}</p>
+              <p>會員等級: {seller.submit}</p>
+            </div>
+          )}
 
           {isEditing ? (
             <div className="edit-form-container">
@@ -79,23 +107,31 @@ const Member: React.FC = () => {
                     onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
-                <div className="form-group">
-                  <label htmlFor="deliveryAddress" className="form-label">配送地址</label>
-                  <input 
-                    type="text" className="form-input" 
-                    value={deliveryAddress}
-                    onChange={(e) => setDeliveryAddress(e.target.value)}
-                  />
-                </div>
-                
+                {seller && (
+                  <div className="form-group">
+                    <label htmlFor="phoneNumber" className="form-label">Phone Number</label>
+                    <input 
+                      type="text" id="phoneNumber" name="phoneNumber" className="form-input" 
+                      value={seller.phoneNumber}
+                      onChange={(e) => setSeller({ ...seller, phoneNumber: e.target.value })}
+                    />
+                  </div>
+                )}
+                {user && (
+                  <div className="form-group">
+                    <label htmlFor="deliveryAddress" className="form-label">配送地址</label>
+                    <input 
+                      type="text" className="form-input" 
+                      value={deliveryAddress}
+                      onChange={(e) => setDeliveryAddress(e.target.value)}
+                    />
+                  </div>
+                )}
                 <button type="submit" className="form-submit-btn">Save Changes</button>
               </form>
             </div>
           ) : (
             <div>
-              <p>電子郵件: {user.email || '未提供'}</p>
-              <p>配送地址: {user.deliveryAddress || '未提供'}</p>
-              <p>會員分級等制: {user.premiereLevel} 級</p>
               <button onClick={handleEdit} className="btn edit">Edit</button>
             </div>
           )}

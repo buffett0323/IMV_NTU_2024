@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import '../css/Login.css';
+import { useNavigate } from 'react-router-dom';
 import loginButtonImage from '../img/btn_login_base.png';
-import { useSeller } from './UserContext'; 
+import { useSeller } from './UserContext';
 
 const LoginPage: React.FC = () => {
-  // State for seller login and registration
   const { seller, setSeller } = useSeller(); // access setSeller function from context
   const [sellerName, setSellerName] = useState('');
   const [sellerUsername, setSellerUsername] = useState('');
@@ -12,6 +12,7 @@ const LoginPage: React.FC = () => {
   const [sellerEmail, setSellerEmail] = useState('');
   const [sellerPhoneNumber, setSellerPhoneNumber] = useState('');
   const [isRegistering, setIsRegistering] = useState(false);
+  const navigate = useNavigate();
 
   // Handle buyer login using Line
   const handleLogin = () => {
@@ -47,8 +48,9 @@ const LoginPage: React.FC = () => {
           username: data.seller.username,
           email: data.seller.email,
           phoneNumber: data.seller.phoneNumber,
+          submit: data.seller.submit,
         }); // Store seller data globally
-        console.log("SET Seller!", seller);
+        navigate('/member');
       } else {
         alert('Login failed: ' + data.message);
       }
@@ -57,32 +59,37 @@ const LoginPage: React.FC = () => {
     }
   };
 
-  // Handle seller registration
+  // Handle seller registration with membership payment
   const handleSellerRegistration = async () => {
-    try {
-      const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/api/auth/seller/register`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: sellerName,
-          username: sellerUsername,
-          password: sellerPassword,
-          email: sellerEmail,
-          phoneNumber: sellerPhoneNumber,
-        }),
-      });
+    const confirmPayment = window.confirm('Do you want to proceed with the membership payment of 600 NTD/year?');
 
-      const data = await response.json();
-      if (response.ok) {
-        alert('Registration successful!');
-        setIsRegistering(false); // Switch back to login form
-      } else {
-        alert('Registration failed: ' + data.message);
+    if (confirmPayment) {
+      try {
+        const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/api/auth/seller/register`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name: sellerName,
+            username: sellerUsername,
+            password: sellerPassword,
+            email: sellerEmail,
+            phoneNumber: sellerPhoneNumber,
+            // membershipPayment: 600, // Add membership payment information
+          }),
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+          alert('Registration and payment successful!');
+          setIsRegistering(false); // Switch back to login form
+        } else {
+          alert('Registration failed: ' + data.message);
+        }
+      } catch (error) {
+        console.error('Error registering:', error);
       }
-    } catch (error) {
-      console.error('Error registering:', error);
     }
   };
 
@@ -130,7 +137,7 @@ const LoginPage: React.FC = () => {
           onChange={(e) => setSellerPassword(e.target.value)}
         />
         <button onClick={isRegistering ? handleSellerRegistration : handleSellerLogin}>
-          {isRegistering ? 'Register' : 'Login'}
+          {isRegistering ? 'Register and Pay 600 NTD/year' : 'Login'}
         </button>
         <p>
           {isRegistering ? 'Already have an account?' : "Don't have an account?"}{' '}
