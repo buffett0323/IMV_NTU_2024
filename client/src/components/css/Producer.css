@@ -27,11 +27,6 @@
   align-items: center; /* Center-align all elements */
 }
 
-/* .product-image {
-  width: 100%;
-  height: auto;
-  margin-bottom: 10px;
-} */
 
 .product-name {
   font-size: 18px;
@@ -44,7 +39,7 @@
   border: 1px solid #ccc;
   border-radius: 8px;
   overflow: hidden;
-  width: 350px;
+  width: 330px;
   height: 500px; /* Keep the card square */
   display: flex;
   flex-direction: column;
@@ -77,7 +72,7 @@
 .product-info {
   padding: 15px;
   background-color: #ffffff;
-  width: 80%; /* Ensure the info section spans the full width */
+  width: 90%; /* Ensure the info section spans the full width */
 }
 
 .product-info h3 {
@@ -157,28 +152,6 @@ button {
   margin: 5px;
 }
 
-/* .modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.modal-content {
-  background: white;
-  padding: 20px;
-  border-radius: 8px;
-  text-align: center;
-}
-
-.modal-content button {
-  margin: 10px;
-} */
 
 .order-sheet {
   width: 100%;
