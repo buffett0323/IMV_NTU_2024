@@ -4,7 +4,7 @@ import axios from 'axios';
 import './css/Cart.css';
 
 interface Order {
-  _id: string;
+  orderId: string;
   userId: string;
   productId: string;
   productName: string;
@@ -37,7 +37,7 @@ const Cart: React.FC = () => {
     try {
       await axios.delete(`${process.env.REACT_APP_SERVER_URL}/api/auth/orders/delete/${orderId}`);
       // After deleting, filter out the deleted order from the state
-      setOrders(orders.filter(order => order._id !== orderId));
+      setOrders(orders.filter(order => order.orderId !== orderId));
     } catch (error) {
       console.error('Error deleting the order', error);
     }
@@ -71,14 +71,14 @@ const Cart: React.FC = () => {
           </thead>
           <tbody>
             {orders.map(order => (
-              <tr key={order._id}>
+              <tr key={order.orderId}>
                 <td>{order.productName}</td>
                 <td>{order.productPrice}</td>
                 <td>{order.quantity}</td>
                 <td>{order.totalAmount}</td>
                 <td>{new Date(order.orderDate).toLocaleString()}</td>
                 <td>
-                  <button onClick={() => handleDeleteOrder(order._id)} className="delete-button">
+                  <button onClick={() => handleDeleteOrder(order.orderId)} className="delete-button">
                     刪除
                   </button>
                 </td>
