@@ -146,7 +146,7 @@ const Fertilizer: React.FC = () => {
         </div>
 
         <div className="input-group">
-          <label className="label">基礎肥料訂購包數（每包10公斤，400元）：</label>
+          <label className="label">基礎肥料訂購包數（每包10公斤，333元）：</label>
           <input
             className="value"
             type="number"
@@ -156,7 +156,7 @@ const Fertilizer: React.FC = () => {
         </div>
 
         <div className="input-group">
-          <label className="label">橄欖石訂購包數（每包10公斤，10元）：</label>
+          <label className="label">橄欖石訂購包數（每包10公斤，7元）：</label>
           <input
             className="value"
             type="number"
@@ -187,7 +187,7 @@ const Fertilizer: React.FC = () => {
         <h3>肥料資訊</h3>
         <p><span className="label">產品名稱：</span><span className="value">減碳肥料包</span></p>
         <p><span className="label">重量：</span><span className="value">每包 10 公斤</span></p>
-        <p><span className="label">價格：</span><span className="value">每包基礎肥料售價為 400 元，每包橄欖石售價為 10 元</span></p>
+        <p><span className="label">價格：</span><span className="value">每包基礎肥料售價為 333 元，每包橄欖石售價為 7 元</span></p>
         <p><span className="label">內容物：</span><span className="value">基礎肥料、橄欖石（Mg₂SiO₄）</span></p>
         <p><span className="label">基礎肥料：</span><span className="value">全氮 (N)、水溶性磷酐 (P₂O₅)、水溶性氧化鉀 (K₂O)</span></p>
         
