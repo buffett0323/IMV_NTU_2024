@@ -40,7 +40,6 @@ const Cart: React.FC = () => {
     if (confirmed) {
       try {
         await axios.delete(`${process.env.REACT_APP_SERVER_URL}/api/auth/orders/delete/${orderId}`);
-        // After deleting, filter out the deleted order from the state
         setOrders(orders.filter(order => order.orderId !== orderId));
       } catch (error) {
         console.error('Error deleting the order', error);
