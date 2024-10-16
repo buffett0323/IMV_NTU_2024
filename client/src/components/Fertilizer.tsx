@@ -1,17 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import './css/Fertilizer.css';  // Import the CSS file
 import { useSeller } from './pages/UserContext';
-// import Fertilizer_pic from './img/fertilizer_bag.png';
 
 const Fertilizer: React.FC = () => {
   const { seller } = useSeller();
   const [param1, setParam1] = useState<string>('空心菜'); // Default to '空心菜'
-  const [param2, setParam2] = useState<number | ''>('');
-  const [param3, setParam3] = useState<number | ''>('');
-  const [plotUrl, setPlotUrl] = useState<string | null>(null); // State for the plot image
-  const [orderQuantity, setOrderQuantity] = useState<number | ''>(''); // Order quantity
-  const [orderMessage, setOrderMessage] = useState<string | null>(null); // Order confirmation message
+  const [param2, setParam2] = useState<number | ''>('');  // Fertilizer amount
+  const [param3, setParam3] = useState<number | ''>('');  // Olivine amount
+  const [param4, setParam4] = useState<number | ''>('');  // Fertilizer order quantity
+  const [param5, setParam5] = useState<number | ''>('');  // Olivine order quantity
+  const [plotUrl, setPlotUrl] = useState<string | null>(null);  // State for the plot image
+  // const [orderQuantity, setOrderQuantity] = useState<number | ''>(''); // Order quantity
+  const [orderMessage, setOrderMessage] = useState<string | null>(null);  // Order confirmation message
+  const [totalAmount, setTotalAmount] = useState<number>(0);  // Total amount of the order
+  const [orderHistory, setOrderHistory] = useState<any[]>([]);  // State for storing order history
 
   // Handle the calculation request
   const handleCalculate = async () => {
@@ -27,6 +30,12 @@ const Fertilizer: React.FC = () => {
     }
   };
 
+  // Handle calculating total amount
+  useEffect(() => {
+    const calculatedAmount = (param4 || 0) * 400 + (param5 || 0) * 10;
+    setTotalAmount(calculatedAmount);
+  }, [param4, param5]);
+
   // Handle downloading the plot
   const handleDownload = () => {
     if (plotUrl) {
@@ -41,17 +50,49 @@ const Fertilizer: React.FC = () => {
 
   // Handle placing an order for fertilizer
   const handleOrder = async () => {
-    if (orderQuantity && orderQuantity > 0) {
+    if (param4 && param5 && totalAmount > 0 && seller) {
+      const fertilizerData = {
+        username: seller.username,
+        order_time: new Date().toISOString(),
+        fertilizer_amount: param4,
+        olivine_amount: param5,
+        total_amount: totalAmount,
+      };
       try {
-        // Simulate order placement (Replace this with your order API request if needed)
-        setOrderMessage(`You have successfully ordered ${orderQuantity} package(s) of fertilizer.`);
+        await axios.post(`${process.env.REACT_APP_SERVER_URL}/api/auth/fertilizer`, fertilizerData);
+        setOrderMessage(`You have successfully ordered ${param4} fertilizer package(s) and ${param5} olivine package(s). Total cost is ${totalAmount} NTD.`);
+        
+        // Fetch order history after placing the order
+        fetchOrderHistory();
       } catch (error) {
         console.error('Error placing order:', error);
       }
     } else {
-      setOrderMessage('Please enter a valid quantity.');
+      setOrderMessage('Please fill in all required fields and enter valid quantities.');
     }
   };
+
+  // Fetch order history from the backend
+  // Memoize the fetchOrderHistory function using useCallback
+  const fetchOrderHistory = useCallback(async () => {
+    if (seller) {
+      try {
+        const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/api/auth/fertilizer/${seller.username}`);
+        setOrderHistory(response.data);
+      } catch (error) {
+        console.error('Error fetching order history:', error);
+      }
+    }
+  }, [seller]);  // Add seller as a dependency
+
+
+  // Fetch order history on page load if seller is logged in
+  useEffect(() => {
+    if (seller) {
+      fetchOrderHistory();
+    }
+  }, [seller, fetchOrderHistory]);  // Add fetchOrderHistory to the dependency array
+  
 
   if (!seller) {
     return (
@@ -64,12 +105,12 @@ const Fertilizer: React.FC = () => {
   return (
     <section className="fertilizer-container">
       <h2>肥料與資源</h2>
-      <h3>「科技耕種，橄石作力—減碳滿分，收成翻倍」</h3>
+        <h3>「科技耕種，橄石作力—減碳滿分，收成翻倍」</h3>
       <p>應用科學與科技於吸收大氣中的溫室氣體，同時改善土壤品質與提升作物產量。</p>
       <p className='highlighted'>數學公式：淨效益 = 農產品價格 + 碳權價格 - 總成本。</p>
-      <p>輸入以下參數，以比較「原始農法」及「固碳農法」的成本效益。</p>
-      <p>P.S.肥料和橄欖石的用量以「公斤」為單位，適用於「每公頃」的農田。</p>
-      <p>範例輸入：農作物：空心菜，肥料重量：1800公斤，橄欖石重量：5000公斤。</p>
+      <p>輸入以下參數，比較「原始農法」及「固碳農法」的成本效益，下訂前調配比例以查看淨收益。</p>
+      <p>P.S.肥料和橄欖石的用量以「公斤」為單位，適用於「每公頃」的農田，每包為10公斤。</p>
+      <p>範例輸入：農作物：空心菜，基礎肥料重量：1800公斤，橄欖石重量：5000公斤。</p>
 
       <section className="fertilizer-inputs">
         <div className="input-group">
@@ -82,7 +123,7 @@ const Fertilizer: React.FC = () => {
         </div>
 
         <div className="input-group">
-          <label className="label">肥料重量（公斤）：</label>
+          <label className="label">基礎肥料重量（公斤）：</label>
           <input
             className="value"
             type="number"
@@ -101,14 +142,40 @@ const Fertilizer: React.FC = () => {
           />
         </div>
 
-        <button className="calculate-button" onClick={handleCalculate}>Calculate</button>
+        <div className="input-group">
+          <label className="label">基礎肥料訂購包數（每包10公斤，400元）：</label>
+          <input
+            className="value"
+            type="number"
+            value={param4}
+            onChange={(e) => setParam4(Number(e.target.value) || '')}
+          />
+        </div>
+
+        <div className="input-group">
+          <label className="label">橄欖石訂購包數（每包10公斤，10元）：</label>
+          <input
+            className="value"
+            type="number"
+            value={param5}
+            onChange={(e) => setParam5(Number(e.target.value) || '')}
+          />
+        </div>
+
+        <div className="input-group">
+          <label className="label">訂購總額：</label>
+          <span className="value">{totalAmount} 元</span>
+        </div>
+
+        <button className="calculate-button" onClick={handleCalculate}>模擬數值並作圖</button>
+        <button className="calculate-button" onClick={handleOrder}>立即訂購</button>
+        {orderMessage && <p className="order-message">{orderMessage}</p>}
       </section>
 
-      
       {plotUrl && (
         <div className="plot-container">
           <img src={`data:image/png;base64,${plotUrl}`} alt="Generated Plot" />
-          <button className="download-button" onClick={handleDownload}>Download Figure</button>
+          <button className="download-button" onClick={handleDownload}>下載成本效益比較圖</button>
         </div>
       )}
 
@@ -116,49 +183,64 @@ const Fertilizer: React.FC = () => {
       <section className="fertilizer-info">
         <h3>肥料資訊</h3>
         <p><span className="label">產品名稱：</span><span className="value">減碳肥料包</span></p>
-        <p><span className="label">價格與包裝：</span><span className="value">每包售價 $400，重量為 10 公斤</span></p>
-        <p><span className="label">內容物：</span><span className="value">全氮 (N)、水溶性磷酐 (P₂O₅)、水溶性氧化鉀 (K₂O)、橄欖石（Mg₂SiO₄）</span></p>
+        <p><span className="label">重量：</span><span className="value">每包 10 公斤</span></p>
+        <p><span className="label">價格：</span><span className="value">每包基礎肥料售價為 400 元，每包橄欖石售價為 10 元</span></p>
+        <p><span className="label">內容物：</span><span className="value">基礎肥料、橄欖石（Mg₂SiO₄）</span></p>
+        <p><span className="label">基礎肥料：</span><span className="value">全氮 (N)、水溶性磷酐 (P₂O₅)、水溶性氧化鉀 (K₂O)</span></p>
+        
         <p><span className="label">提升土壤 pH 值：</span><span className="value">在酸性土壤中 pH 值可從 4.1 提升至 4.6</span></p>
         <p><span className="label">促進植物生長：</span><span className="value">植物生長量可增加至最多 217.4%</span></p>
         <p><span className="label">二氧化碳吸收量：</span><span className="value">每公頃可吸收 1973.4 公斤的二氧化碳</span></p>
       </section>
 
-      {/* Order Section */}
-      <section className="order-section">
-        <h3>訂購肥料</h3>
-        <div className="order-form-inline">
-          <label>訂購數量 (包)：</label>
-          <input
-            type="number"
-            value={orderQuantity}
-            onChange={(e) => setOrderQuantity(Number(e.target.value) || '')}
-          />
-          <button className="order-button" onClick={handleOrder}>立即訂購</button>
-        </div>
-        {orderMessage && <p className="order-message">{orderMessage}</p>}
+      {/* Order History Section */}
+      <section className="order-history">
+        <h3>訂購紀錄</h3>
+        {orderHistory.length > 0 ? (
+          <table className="order-table">
+            <thead>
+              <tr>
+                <th>訂購時間</th>
+                <th>基礎肥料數量</th>
+                <th>橄欖石數量</th>
+                <th>總金額</th>
+                <th>操作</th> {/* Added column for delete button */}
+              </tr>
+            </thead>
+            <tbody>
+              {orderHistory.map((order, index) => (
+                <tr key={index}>
+                  <td>{new Date(order.order_time).toLocaleString()}</td>
+                  <td>{order.fertilizer_amount}</td>
+                  <td>{order.olivine_amount}</td>
+                  <td>{order.total_amount} NTD</td>
+                  <td>
+                    <button
+                      className="delete-button"
+                      onClick={async () => {
+                        try {
+                          await axios.delete(`${process.env.REACT_APP_SERVER_URL}/api/auth/fertilizer/delete/${order._id}`);
+                          // After deletion, refetch the order history
+                          fetchOrderHistory();
+                        } catch (error) {
+                          console.error('Error deleting the order:', error);
+                        }
+                      }}
+                    >
+                      刪除
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <p>尚無訂購紀錄</p>
+        )}
       </section>
 
-      {/* Add the image for the fertilizer */}
-      {/* <div className="fertilizer-image-container">
-        <img src={Fertilizer_pic} alt="Carbon Reduction Fertilizer" className="fertilizer-image" />
-      </div> */}
-
-      {/* Section for additional information */}
-      <div className="other-info">
-        {/* <h3>其他資訊</h3> */}
-        <p>
-          For more details, please visit the{' '}
-          <a
-            href="https://www.remineralize.org/2023/01/crash-course-on-enhanced-rock-weathering-for-carbon-removal/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Crash Course on Enhanced Rock Weathering for Carbon Removal
-          </a>.
-        </p>
-      </div>
     </section>
   );
-}
+};
 
 export default Fertilizer;

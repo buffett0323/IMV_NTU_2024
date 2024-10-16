@@ -7,12 +7,14 @@ const User = require('../models/user');
 const Product = require('../models/product');
 const Order = require('../models/order');
 const Seller = require('../models/seller');
+const Fertilizer = require('../models/fertilizer');
 const { v4: uuidv4 } = require('uuid');
 const { spawn } = require('child_process');
 const router = express.Router();
 const XLSX = require('xlsx');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const fertilizer = require('../models/fertilizer');
 
 const clientId = process.env.REACT_APP_CLIENT_ID;
 const clientSecret = process.env.REACT_APP_CLIENT_SECRET;
@@ -286,7 +288,7 @@ router.get('/orders/:userId', async (req, res) => {
   const { userId } = req.params;
   
   try {
-    const orders = await Order.find({ buyerId: userId });
+    const orders = await Order.find({ buyerId: userId }).sort({ orderDate: -1 });
     res.json(orders);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -478,5 +480,62 @@ router.put('/seller/:username', async (req, res) => {
   }
 });
 
+
+// POST: Place a fertilizer order
+router.post('/fertilizer', async (req, res) => {
+  const { username, order_time, fertilizer_amount, olivine_amount, total_amount } = req.body;
+
+  // Validate input
+  if (!username || !fertilizer_amount || !olivine_amount || !total_amount) {
+    return res.status(400).json({ message: 'Missing required fields' });
+  }
+
+  try {
+    const newFertilizer = new Fertilizer({
+      username,
+      order_time,
+      fertilizer_amount,
+      olivine_amount,
+      total_amount,
+    });
+
+    await newFertilizer.save();
+    res.status(201).json({ message: 'Fertilizer placed successfully', fertilizer: newFertilizer });
+  } catch (error) {
+    console.error('Error placing fertilizer:', error);
+    res.status(500).json({ message: 'Error placing fertilizer', error });
+  }
+});
+
+
+// GET: Retrieve order history for a seller
+router.get('/fertilizer/:username', async (req, res) => {
+  const { username } = req.params;
+
+  try {
+    const orders = await Fertilizer.find({ username }).sort({ order_time: -1 });  // Fetch orders, sorted by time
+    res.status(200).json(orders);
+  } catch (error) {
+    console.error('Error fetching order history:', error);
+    res.status(500).json({ message: 'Error fetching order history', error });
+  }
+});
+
+// Delete the fertilizer order
+router.delete('/fertilizer/delete/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const deletedFertilizer = await Fertilizer.findByIdAndDelete(id);
+    if (!deletedFertilizer) {
+      return res.status(404).json({ message: 'Fertilizer not found' });
+    }
+    console.log('Fertilizer deleted successfully');
+    res.status(200).json({ message: 'Fertilizer deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting fertilizer:', error);
+    res.status(500).json({ message: 'Error deleting fertilizer', error });
+  }
+});
 
 module.exports = router;
