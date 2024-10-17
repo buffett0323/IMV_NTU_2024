@@ -1,10 +1,9 @@
 # IMV_NTU_2024
 
-### Designed by Buffett
+### Designed by Buffett (Jeng-Yue Liu)
 
-## Live Demo
-
-You can view the live demo of this project here: [IMV_NTU_2024](https://buffett0323.github.io/IMV_NTU_2024)
+## Live Website Link
+You can view the website deployed here: [IMV_NTU_2024](https://imv-ntu-2024.vercel.app/)
 
 Frontend: TypeScript React with Vercel<br>
 
