@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../css/Login.css';
+import '../css/Login.css';  // Make sure to update your CSS file
 import { useNavigate } from 'react-router-dom';
 import loginButtonImage from '../img/btn_login_base.png';
 import { useSeller } from './UserContext';
@@ -11,6 +11,7 @@ const LoginPage: React.FC = () => {
   const [sellerPassword, setSellerPassword] = useState('');
   const [sellerEmail, setSellerEmail] = useState('');
   const [sellerPhoneNumber, setSellerPhoneNumber] = useState('');
+  const [sellerImage, setSellerImage] = useState<File | null>(null); // New state for image
   const [isRegistering, setIsRegistering] = useState(false);
   const navigate = useNavigate();
 
@@ -64,20 +65,20 @@ const LoginPage: React.FC = () => {
     const confirmPayment = window.confirm('Do you want to proceed with the membership payment of 600 NTD/year?');
 
     if (confirmPayment) {
+      const formData = new FormData();
+      formData.append('name', sellerName);
+      formData.append('username', sellerUsername);
+      formData.append('password', sellerPassword);
+      formData.append('email', sellerEmail);
+      formData.append('phoneNumber', sellerPhoneNumber);
+      if (sellerImage) {
+        formData.append('image', sellerImage); // Append the image to the form data
+      }
+
       try {
         const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/api/auth/seller/register`, {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            name: sellerName,
-            username: sellerUsername,
-            password: sellerPassword,
-            email: sellerEmail,
-            phoneNumber: sellerPhoneNumber,
-            // membershipPayment: 600, // Add membership payment information
-          }),
+          body: formData,  // Send FormData, including image
         });
 
         const data = await response.json();
@@ -94,54 +95,87 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className="login-container">
       <h1>Buyer Login</h1>
       <button onClick={handleLogin}>
         <img src={loginButtonImage} alt="Login with Line" width="150" />
       </button>
       
       <h1>{isRegistering ? 'Seller Registration' : 'Seller Login'}</h1>
-      <div>
+      <div className="seller-form">
         {isRegistering && (
           <>
-            <input
-              type="text"
-              placeholder="Name"
-              value={sellerName}
-              onChange={(e) => setSellerName(e.target.value)}
-            />
-            <input
-              type="email"
-              placeholder="Email"
-              value={sellerEmail}
-              onChange={(e) => setSellerEmail(e.target.value)}
-            />
-            <input
-              type="text"
-              placeholder="Phone Number"
-              value={sellerPhoneNumber}
-              onChange={(e) => setSellerPhoneNumber(e.target.value)}
-            />
+            <div className="form-group">
+              <label className="form-label">名字</label>
+              <input
+                type="text"
+                placeholder="Name"
+                value={sellerName}
+                onChange={(e) => setSellerName(e.target.value)}
+                className="form-input"
+              />
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">信箱</label>
+              <input
+                type="email"
+                placeholder="Email"
+                value={sellerEmail}
+                onChange={(e) => setSellerEmail(e.target.value)}
+                className="form-input"
+              />
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">手機號碼</label>
+              <input
+                type="text"
+                placeholder="Phone Number"
+                value={sellerPhoneNumber}
+                onChange={(e) => setSellerPhoneNumber(e.target.value)}
+                className="form-input"
+              />
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">上傳商業證明</label>
+              <input
+                type="file"
+                onChange={(e) => setSellerImage(e.target.files ? e.target.files[0] : null)}
+                className="form-input"
+              />
+            </div>
           </>
         )}
-        <input
-          type="text"
-          placeholder="Username"
-          value={sellerUsername}
-          onChange={(e) => setSellerUsername(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={sellerPassword}
-          onChange={(e) => setSellerPassword(e.target.value)}
-        />
-        <button onClick={isRegistering ? handleSellerRegistration : handleSellerLogin}>
+        <div className="form-group">
+          <label className="form-label">Username</label>
+          <input
+            type="text"
+            placeholder="Username"
+            value={sellerUsername}
+            onChange={(e) => setSellerUsername(e.target.value)}
+            className="form-input"
+          />
+        </div>
+        <div className="form-group">
+          <label className="form-label">Password</label>
+          <input
+            type="password"
+            placeholder="Password"
+            value={sellerPassword}
+            onChange={(e) => setSellerPassword(e.target.value)}
+            className="form-input"
+          />
+        </div>
+
+        <button onClick={isRegistering ? handleSellerRegistration : handleSellerLogin} className="form-button">
           {isRegistering ? 'Register and Pay 600 NTD/year' : 'Login'}
         </button>
+
         <p>
           {isRegistering ? 'Already have an account?' : "Don't have an account?"}{' '}
-          <button onClick={() => setIsRegistering(!isRegistering)}>
+          <button onClick={() => setIsRegistering(!isRegistering)} className="form-toggle-button">
             {isRegistering ? 'Login' : 'Register'}
           </button>
         </p>

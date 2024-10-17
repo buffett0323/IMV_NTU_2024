@@ -32,3 +32,58 @@
 .profile-button {
     margin: 20px 0
 }
+.login-container {
+    width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .seller-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .form-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;  /* This ensures both label and input are aligned vertically */
+    margin-bottom: 15px;
+  }
+  
+  .form-label {
+    /* width: 20%; */
+    text-align: center;  /* Center the label horizontally */
+    vertical-align: middle;  /* Ensure the text is vertically centered */
+  }
+  
+  .form-input {
+    width: 65%;
+    padding: 8px;
+  }
+  
+  .form-button {
+    width: 100%;
+    padding: 12px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .form-button:hover {
+    background-color: #45a049;
+  }
+  
+  .form-toggle-button {
+    background: none;
+    border: none;
+    color: #0066cc;
+    cursor: pointer;
+  }
+  
+  .form-toggle-button:hover {
+    text-decoration: underline;
+  }
+  
