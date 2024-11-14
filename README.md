@@ -6,8 +6,8 @@
 You can view the website deployed here: [IMV_NTU_2024](https://imv-ntu-2024.vercel.app/)
 
 Frontend: TypeScript React with Vercel<br>
-
 Backend: Node.js with Render<br>
+Demo Video: [Link](https://drive.google.com/file/d/1QVP1eD1tSuqbL2uTVZ9_d2YFJtwXY6zI/view?usp=drivesdk)
 
 ## About the Project
 
