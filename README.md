@@ -1,4 +1,4 @@
-# IMV_NTU_2024
+# IMV Contest 2024: CarbonSeeker 2.0 (advanced to semi-finals)
 
 ### Designed by Buffett (Jeng-Yue Liu)
 
