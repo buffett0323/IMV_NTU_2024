@@ -1,6 +1,6 @@
-# IMV Contest 2024: CarbonSeeker 2.0 (advanced to semi-finals)
+# IMV Contest 2024: CarbonSeeker 2.0
 
-### Designed by Buffett (Jeng-Yue Liu)
+### Advanced to Semi-finals, designed by Buffett (Jeng-Yue Liu)
 
 ## Live Website Link
 You can view the website deployed here: [IMV_NTU_2024](https://imv-ntu-2024.vercel.app/)
