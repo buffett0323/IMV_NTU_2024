@@ -27,7 +27,7 @@
     "passport": "^0.7.0",
     "passport-line": "^0.0.4",
     "pdfjs-dist": "^3.11.174",
-    "postcss": "^8.4.31",
+    "postcss": "^8.5.0",
     "qs": "^6.12.3",
     "querystring": "^0.2.1",
     "react": "^18.3.1",
